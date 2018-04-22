@@ -6,6 +6,9 @@ import firebase from 'firebase';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { LoginPage } from '../pages/login/login';
+import { AuthProvider } from '../providers/auth/auth';
+import { Unsubscribe } from '@firebase/util';
 
 @Component({
   templateUrl: 'app.html'
@@ -13,11 +16,11 @@ import { ListPage } from '../pages/list/list';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider:AuthProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -35,6 +38,16 @@ export class MyApp {
     messagingSenderId: "72415286155"
     });
 
+    const unsubscribe: Unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.rootPage = HomePage;
+        unsubscribe();
+      } else {
+        this.rootPage = LoginPage;
+        unsubscribe();
+      }
+    });
+
   }
 
   initializeApp() {
@@ -50,5 +63,15 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  async logOut(): Promise<void> {
+    await this.authProvider.logoutUser();
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
+    this.nav.setRoot(LoginPage);
   }
 }
