@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import firebase from 'firebase';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
@@ -24,6 +25,15 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage }
     ];
+
+    firebase.initializeApp({
+      apiKey: "AIzaSyAVpnGuapjU3HaCGa-CmBHidWrOGV2RSBI",
+    authDomain: "pwa-firebase-hosting.firebaseapp.com",
+    databaseURL: "https://pwa-firebase-hosting.firebaseio.com",
+    projectId: "pwa-firebase-hosting",
+    storageBucket: "pwa-firebase-hosting.appspot.com",
+    messagingSenderId: "72415286155"
+    });
 
   }
 
