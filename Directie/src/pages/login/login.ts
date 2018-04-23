@@ -14,6 +14,7 @@ import { EmailValidator } from '../../validators/email';
 import firebase from 'firebase/app';
 import { SignupPage } from '../../pages/signup/signup';
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
+import { Facebook } from '@ionic-native/facebook';
 
 @IonicPage()
 @Component({
@@ -27,6 +28,7 @@ export class LoginPage {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public authProvider: AuthProvider,
+    public facebook:Facebook,
     formBuilder: FormBuilder
   ) {
     this.loginForm = formBuilder.group({
@@ -77,5 +79,19 @@ export class LoginPage {
         alert.present();
       }
     }
+  }
+  facebookLogin(): Promise<any> {
+    return this.facebook.login(['email'])
+      .then( response => {
+        const facebookCredential = firebase.auth.FacebookAuthProvider
+          .credential(response.authResponse.accessToken);
+  
+        firebase.auth().signInWithCredential(facebookCredential)
+          .then( success => { 
+            console.log("Firebase success: " + JSON.stringify(success));
+            this.navCtrl.setRoot(HomePage); 
+          });
+  
+      }).catch((error) => { console.log(error) });
   }
 }
