@@ -4,7 +4,7 @@ import { BeaconPage } from './beacon';
 
 @NgModule({
   declarations: [
-    BeaconPage,
+
   ],
   imports: [
     IonicPageModule.forChild(BeaconPage),

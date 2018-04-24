@@ -18,7 +18,7 @@ export class BeaconPage {
   beaconRegion: any;
   beaconUUID = '11111111-1111-1111-1111-111111111111';
   constructor(public navCtrl: NavController, public navParams: NavParams, private ibeacon:IBeacon) {
-    this.detectBeacon();
+    
   }
 
   ionViewDidLoad() {
@@ -49,12 +49,25 @@ delegate.didEnterRegion()
     }
   );
 
-this.beaconRegion = this.ibeacon.BeaconRegion('estimote', this.beaconUUID);
+
+ 
+
+this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
+
 this.ibeacon.startMonitoringForRegion(this.beaconRegion)
   .then(
     () => console.log('Native layer recieved the request to monitoring'),
     error => console.error('Native layer failed to begin monitoring: ', error)
   );
+  this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
+  console.log(this.ibeacon.getMonitoredRegions());
+  }
+  
+  onBluetooth(){
+    this.ibeacon.enableBluetooth();
+  }
+  stopDetectBeacon(){
+    this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
   }
 
 }
