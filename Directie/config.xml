@@ -85,5 +85,6 @@
         <variable name="APP_ID" value="1856434767990242" />
         <variable name="APP_NAME" value="Directie" />
     </plugin>
+    <plugin name="com.unarin.cordova.beacon" spec="~3.6.1" />
     <engine name="android" spec="7.0.0" />
 </widget>

@@ -8,11 +8,13 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { SignupPage } from '../pages/signup/signup';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
+import { BeaconPage } from '../pages/beacon/beacon';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
 import { Facebook } from '@ionic-native/facebook';
+import { IBeacon } from '@ionic-native/ibeacon';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { Facebook } from '@ionic-native/facebook';
     HomePage,
     ListPage,
     SignupPage,
-    ResetPasswordPage
+    ResetPasswordPage,
+    BeaconPage
   ],
   imports: [
     BrowserModule,
@@ -34,14 +37,16 @@ import { Facebook } from '@ionic-native/facebook';
     HomePage,
     ListPage,
     SignupPage,
-    ResetPasswordPage
+    ResetPasswordPage,
+    BeaconPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    Facebook
+    Facebook,
+    IBeacon
   ]
 })
 export class AppModule {}
