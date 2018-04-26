@@ -27,51 +27,35 @@ export class BeaconPage {
         PB:150,NB:152,DIR:'straight'
       },
       {
-        PB:149,NB:152,DIR:'turn right'
+        PB:148,NB:152,DIR:'turn right'
       }],
       152:[{
         PB:151,NB:153,DIR:'straight'
       }],
       153:[{
         PB:152,NB:154,DIR:"turn left"
+      }],
+      154:[{
+        PB:153,NB:155,DIR:"straight"
+      }],
+      155:[{
+        PB:154,NB:156,DIR:"straight"
+      },
+      {
+        PB:149,NB:156,DIR:"turn right"
+      }],
+      156:[{
+        PB:155,NB:157,DIR:"turn left"
+      }],
+      157:[{
+        PB:156,NB:158,DIR:"straight"
       }]
     }
-        // Request permission to use location on iOS
-this.ibeacon.requestAlwaysAuthorization();
-// create a new delegate and register it with the native layer
-let delegate = this.ibeacon.Delegate();
-
-// Subscribe to some of the delegate's event handlers
-delegate.didRangeBeaconsInRegion()
-  .subscribe(
-    data => {
-      //console.log('didRangeBeaconsInRegion: ', data.beacons[0]['accuracy'])
-      if (data.beacons.length > 0) {
-
-        console.log(data.beacons[0]["minor"]);
-        for(let i=0;i<data.beacons.length;i++){
-          if(i==0){
-            this.pBeaconAccuracy=data.beacons[i]["accuracy"]
-            this.currentBeacon=data.beacons[i]["major"];
-          }
-          else{
-            if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
-              this.pBeaconAccuracy=data.beacons[i]["accuracy"];
-              this.currentBeacon=data.beacons[i]["major"];
-            }
-          }
-        }
-      }
-  },
-    error => console.error()
-  );
-    this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
-  this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
-  setTimeout(() => {
-    this.stopDetectBeacon();
-    console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
-  }, 10000);
-  
+    this.determineCurrentBeacon();
+    setTimeout(() => {
+      this.stopDetectBeacon();
+      console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
+    }, 10000);
   }
 
   ionViewDidLoad() {
@@ -112,8 +96,37 @@ this.ibeacon.startMonitoringForRegion(this.beaconRegion)
   this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
   
-  onBluetooth(){
-    this.ibeacon.enableBluetooth();
+  determineCurrentBeacon(){
+    // Request permission to use location on iOS
+this.ibeacon.requestAlwaysAuthorization();
+// create a new delegate and register it with the native layer
+let delegate = this.ibeacon.Delegate();
+
+// Subscribe to some of the delegate's event handlers
+delegate.didRangeBeaconsInRegion()
+  .subscribe(
+    data => {
+      //console.log('didRangeBeaconsInRegion: ', data.beacons[0]['accuracy'])
+      if (data.beacons.length > 0) {
+        for(let i=0;i<data.beacons.length;i++){
+          if(i==0){
+            this.pBeaconAccuracy=data.beacons[i]["accuracy"]
+            this.currentBeacon=data.beacons[i]["major"];
+          }
+          else{
+            if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
+              this.pBeaconAccuracy=data.beacons[i]["accuracy"];
+              this.currentBeacon=data.beacons[i]["major"];
+            }
+          }
+        }
+      }
+  },
+    error => console.error()
+  );
+    this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
+  this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
+
   }
   stopDetectBeacon(){
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
