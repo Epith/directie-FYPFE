@@ -19,7 +19,8 @@ export class BeaconPage {
   beaconUUID = '11111111-1111-1111-1111-111111111111';
   beaconRelation: any;
   pBeaconAccuracy: any;
-  nBreaconId: any;
+  currentBeacon: any;
+  previousBeacon: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private ibeacon:IBeacon) {
     this.beaconRelation={
       151:[{
@@ -47,21 +48,29 @@ delegate.didRangeBeaconsInRegion()
       //console.log('didRangeBeaconsInRegion: ', data.beacons[0]['accuracy'])
       if (data.beacons.length > 0) {
 
-        console.log(data.beacons.length);
+        console.log(data.beacons[0]["minor"]);
         for(let i=0;i<data.beacons.length;i++){
-          this.pBeaconAccuracy=data.beacons[i]["accuracy"]
-          if(this.pBeaconAccuracy<data.beacons[i]["accuracy"]){
-            this.pBeaconAccuracy=data.beacons[i]["accuracy"];
-            this.nBreaconId=data.beacons[i]["major"];
+          if(i==0){
+            this.pBeaconAccuracy=data.beacons[i]["accuracy"]
+            this.currentBeacon=data.beacons[i]["major"];
+          }
+          else{
+            if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
+              this.pBeaconAccuracy=data.beacons[i]["accuracy"];
+              this.currentBeacon=data.beacons[i]["major"];
+            }
           }
         }
       }
-      console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.nBreaconId);
   },
     error => console.error()
   );
     this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
   this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
+  setTimeout(() => {
+    this.stopDetectBeacon();
+    console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
+  }, 10000);
   
   }
 
