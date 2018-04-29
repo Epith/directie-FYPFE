@@ -8,7 +8,7 @@ import { IBeacon } from '@ionic-native/ibeacon';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+declare var require: any;
 @IonicPage()
 @Component({
   selector: 'page-beacon',
@@ -20,46 +20,60 @@ export class BeaconPage {
   beaconRelation: any;
   pBeaconAccuracy: any;
   currentBeacon: any;
-  previousBeacon: any;
+  relatedBeacon: any;
+  shortestPath: any;
+  beaconDetails: any;
+  relationTest:{};
   constructor(public navCtrl: NavController, public navParams: NavParams, private ibeacon:IBeacon) {
     this.beaconRelation={
-      151:[{
-        PB:150,NB:152,DIR:'straight'
+      "Beacons":[
+      {
+        'beaconID':140,
+        'beaconInfo': 
+          {
+            'PB':139,
+            'NB':146,
+            'DIR':'go straight'
+          },
+        'relatedBeacons':[139,146]
       },
       {
-        PB:148,NB:152,DIR:'turn right'
-      }],
-      152:[{
-        PB:151,NB:153,DIR:'straight'
-      }],
-      153:[{
-        PB:152,NB:154,DIR:"turn left"
-      }],
-      154:[{
-        PB:153,NB:155,DIR:"straight"
-      }],
-      155:[{
-        PB:154,NB:156,DIR:"straight"
+        'beaconID':146,
+        'beaconInfo': {
+          'PB':140,
+          'NB':158,
+          'DIR':'go straight'
+        },
+        'relatedBeacons':[140,158]
       },
       {
-        PB:149,NB:156,DIR:"turn right"
-      }],
-      156:[{
-        PB:155,NB:157,DIR:"turn left"
-      }],
-      157:[{
-        PB:156,NB:158,DIR:"straight"
-      }]
-    }
+        'beaconID':158,
+        'beaconInfo': [{
+          'PB':146,
+          'NB':153,
+          'DIR':'turn right'
+        },
+        {
+          'PB':146,
+          'NB':156,
+          "DIR":'turn left'
+        }],
+        'relatedBeacons':[146,153,156]
+      }
+    ]
+  }
+      
     this.determineCurrentBeacon();
     setTimeout(() => {
       this.stopDetectBeacon();
       console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
     }, 10000);
+    this.beaconDetails=this.beaconRelation["Beacons"];
+    this.inputDijkstra();
   }
 
   ionViewDidLoad() {
-    console.dir(this.beaconRelation[151][0]["DIR"]);
+    console.dir(this.beaconDetails);
   }
   
   detectBeacon(){
@@ -130,6 +144,42 @@ delegate.didRangeBeaconsInRegion()
   }
   stopDetectBeacon(){
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
+  }
+  
+  inputDijkstra(){
+    const Graph = require('node-dijkstra');
+ 
+    const route = new Graph();
+    /*
+    route.addNode('A', { B:1 });
+    route.addNode('B', { A:1, C:2, D: 4 });
+    route.addNode('C', { B:2, D:1 });
+    route.addNode('D', { C:1, B:4 });
+    
+    this.shortestPath=route.path('A', 'D');
+
+    console.log(this.shortestPath[0]);
+    */
+   for(let i=0;i<this.beaconDetails.length;i++){
+    this.relatedBeacon={};
+     if(this.beaconDetails[i]["relatedBeacons"].length>1){
+       for(let j=0;j<this.beaconDetails[i]["relatedBeacons"].length;j++){
+         if(j==0){
+          this.relatedBeacon=this.beaconDetails[i]["relatedBeacons"][j]+":1";
+         }
+         else{
+           this.relatedBeacon=this.relatedBeacon+", "+this.beaconDetails[i]["relatedBeacons"][j]+":1";
+         }
+       }
+     }
+     this.relationTest=JSON.stringify(this.relatedBeacon);
+     console.log("beaconID:"+this.beaconDetails[i]["beaconID"]+"related: "+this.relatedBeacon);
+     //route.addNode(this.beaconDetails[i]["beaconID"],this.relatedBeacon);
+     console.log(this.relationTest);
+     //console.log(this.beaconDetails[i]["relatedBeacons"][0]);
+   }
+   this.shortestPath=route.path(140, 153);
+     console.log(this.shortestPath);
   }
 
 }
