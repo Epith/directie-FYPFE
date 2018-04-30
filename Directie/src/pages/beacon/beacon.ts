@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { IBeacon } from '@ionic-native/ibeacon';
+import {Observable} from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the BeaconPage page.
@@ -23,6 +25,7 @@ export class BeaconPage {
   relatedBeacon: any;
   shortestPath: any;
   beaconDetails: any;
+  sub:Subscription;
   relationTest:{};
   constructor(public navCtrl: NavController, public navParams: NavParams, private ibeacon:IBeacon) {
     this.beaconRelation={
@@ -62,12 +65,8 @@ export class BeaconPage {
       }
     ]
   }
-      
-    this.determineCurrentBeacon();
-    setTimeout(() => {
-      this.stopDetectBeacon();
-      console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
-    }, 10000);
+    this.sub=Observable.interval(15000).subscribe((val)=>{this.determineCurrentBeacon()})
+    //this.determineCurrentBeacon();
     this.beaconDetails=this.beaconRelation["Beacons"];
     this.inputDijkstra();
   }
@@ -140,6 +139,10 @@ delegate.didRangeBeaconsInRegion()
   );
     this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
   this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
+  setTimeout(() => {
+    this.stopDetectBeacon();
+    console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
+  }, 2500);
 
   }
   stopDetectBeacon(){
