@@ -11,6 +11,9 @@ import { Subscription } from 'rxjs/Subscription';
  * Ionic pages and navigation.
  */
 declare var require: any;
+declare var Graph: any;
+declare var graph: any;
+declare var Map:any;
 @IonicPage()
 @Component({
   selector: 'page-beacon',
@@ -150,10 +153,11 @@ delegate.didRangeBeaconsInRegion()
   }
   
   inputDijkstra(){
-    const Graph = require('node-dijkstra');
+   
+    /*
+     const Graph = require('node-dijkstra');
  
     const route = new Graph();
-    /*
     route.addNode('A', { B:1 });
     route.addNode('B', { A:1, C:2, D: 4 });
     route.addNode('C', { B:2, D:1 });
@@ -163,7 +167,7 @@ delegate.didRangeBeaconsInRegion()
 
     console.log(this.shortestPath[0]);
     */
-   for(let i=0;i<this.beaconDetails.length;i++){
+   /*for(let i=0;i<this.beaconDetails.length;i++){
     this.relatedBeacon={};
      if(this.beaconDetails[i]["relatedBeacons"].length>1){
        for(let j=0;j<this.beaconDetails[i]["relatedBeacons"].length;j++){
@@ -182,7 +186,21 @@ delegate.didRangeBeaconsInRegion()
      //console.log(this.beaconDetails[i]["relatedBeacons"][0]);
    }
    this.shortestPath=route.path(140, 153);
-     console.log(this.shortestPath);
+     console.log(this.shortestPath)*/
+     const graph = new Map()
+ 
+const a = new Map()
+a.set('B', 1)
+ 
+const b = new Map()
+b.set('A', 1)
+b.set('C', 2)
+b.set('D', 4)
+ 
+graph.set('A', a)
+graph.set('B', b);
+ 
+const route = new Graph(graph)
   }
-
+  
 }
