@@ -29,8 +29,8 @@ export class BeaconPage {
   shortestPath: any;
   beaconDetails: any;
   sub:Subscription;
-  relationTest:{};
   isFirstScan:boolean=true;
+  previousBeacon:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private ibeacon:IBeacon) {
     this.beaconRelation={
       "Beacons":[
@@ -69,7 +69,7 @@ export class BeaconPage {
       }
     ]
   }
-    //this.determineFirstBeacon();
+    this.determineCurrentBeacon();
     //this.sub=Observable.interval(15000).subscribe((val)=>{this.determineCurrentBeacon()})
     
     this.beaconDetails=this.beaconRelation["Beacons"];
@@ -78,6 +78,15 @@ export class BeaconPage {
 
   ionViewDidLoad() {
     console.dir(this.beaconDetails);
+  }
+
+  ionViewDidLeave(){
+    this.isFirstScan=true;
+    this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
+  }
+
+  ionViewWillEnter() {
+      this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
   
   detectBeacon(){
@@ -125,69 +134,46 @@ this.ibeacon.startMonitoringForRegion(this.beaconRegion)
       .subscribe(
         data => {
           //console.log('didRangeBeaconsInRegion: ', data.beacons[0]['accuracy'])
-          if (data.beacons.length > 0) {
-            for(let i=0;i<data.beacons.length;i++){
-              if(i==0){
-                this.pBeaconAccuracy=data.beacons[i]["accuracy"]
-                this.currentBeacon=data.beacons[i]["major"];
-              }
-              else{
-                if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
-                  this.pBeaconAccuracy=data.beacons[i]["accuracy"];
+          if(this.isFirstScan==true){
+            if (data.beacons.length > 0) {
+              for(let i=0;i<data.beacons.length;i++){
+                if(i==0){
+                  this.pBeaconAccuracy=data.beacons[i]["accuracy"]
                   this.currentBeacon=data.beacons[i]["major"];
+                }
+                else{
+                  if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
+                    this.pBeaconAccuracy=data.beacons[i]["accuracy"];
+                    this.currentBeacon=data.beacons[i]["major"];
+                  }
                 }
               }
             }
+            console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
+            this.isFirstScan=false;
+            this.previousBeacon=this.currentBeacon;
+            console.log(this.previousBeacon);
           }
+          else{
+            console.log("second scan");
+          }
+          
+          
       },
         error => console.error()
       );
-        this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
+      this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
       this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
-      setTimeout(() => {
+      
+      /*setTimeout(() => {
         this.stopDetectBeacon();
         //console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
-        console.log("subsequent beacons");
+        //console.log("subsequent beacons");
       }, 11000);
-
+      */
   }
 
-  determineFirstBeacon(){
-            // Request permission to use location on iOS
-        this.ibeacon.requestAlwaysAuthorization();
-        // create a new delegate and register it with the native layer
-        let delegate = this.ibeacon.Delegate();
-
-        // Subscribe to some of the delegate's event handlers
-        delegate.didRangeBeaconsInRegion()
-          .subscribe(
-            data => {
-              //console.log('didRangeBeaconsInRegion: ', data.beacons[0]['accuracy'])
-              if (data.beacons.length > 0) {
-                for(let i=0;i<data.beacons.length;i++){
-                  if(i==0){
-                    this.pBeaconAccuracy=data.beacons[i]["accuracy"]
-                    this.currentBeacon=data.beacons[i]["major"];
-                  }
-                  else{
-                    if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
-                      this.pBeaconAccuracy=data.beacons[i]["accuracy"];
-                      this.currentBeacon=data.beacons[i]["major"];
-                    }
-                  }
-                }
-              }
-          },
-            error => console.error()
-          );
-            this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
-          this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
-          setTimeout(() => {
-            this.stopDetectBeacon();
-            console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
-          }, 11000);
-
-}
+  
 
   stopDetectBeacon(){
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
