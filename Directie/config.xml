@@ -3,11 +3,7 @@
     <name>Directie</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-<<<<<<< HEAD
-    <content original-src="index.html" src="http://192.168.0.101:8100" />
-=======
     <content original-src="index.html" src="http://192.168.0.106:8100" />
->>>>>>> a135a7c1dc2a69a15f4305ccc38581d2f3a85721
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -85,15 +81,14 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.2.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
+    <plugin name="cordova-plugin-facebook4" spec="https://github.com/amritk/cordova-plugin-facebook4">
+        <variable name="APP_ID" value="1856434767990242" />
+        <variable name="APP_NAME" value="Directie" />
+    </plugin>
     <plugin name="com.unarin.cordova.beacon" spec="~3.6.1" />
     <allow-navigation href="http://172.22.34.234:8100" />
     <allow-navigation href="http://192.168.0.106:8100" />
     <allow-navigation href="http://172.22.34.59:8100" />
     <allow-navigation href="http://172.22.36.13:8100" />
-    <allow-navigation href="http://192.168.0.101:8100" />
-    <plugin name="cordova-plugin-facebook4" spec="git+https://github.com/amritk/cordova-plugin-facebook4.git">
-        <variable name="APP_ID" value="1856434767990242" />
-        <variable name="APP_NAME" value="Directie" />
-    </plugin>
     <engine name="android" spec="7.0.0" />
 </widget>
