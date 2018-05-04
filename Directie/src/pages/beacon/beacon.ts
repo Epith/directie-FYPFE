@@ -217,24 +217,18 @@ export class BeaconPage {
           }
           else{
             if (data.beacons.length > 0) {
-              
-                for(let i=0;i<this.beaconDetails.length;i++){
-                  if(this.beaconDetails[i]["beaconID"]==this.previousBeacon){
-                    this.testForRelated=data.beacons;
+              this.testForRelated=[];
+              let index=this.beaconDetails.findIndex(x=>x.beaconID==this.previousBeacon);
                   // this.testForRelated.splice(1,1);
-                    console.log(this.testForRelated);
-                    console.log("before splice");
-                    for(let j=0;j<this.testForRelated.length;j++){
-                      if(this.beaconDetails[i]["relatedBeacons"].includes(parseInt(this.testForRelated[j]["major"]))==false){
-                        this.testForRelated.splice(j,1);
+                    for(let j=0;j<data.beacons.length;j++){
+                      if(this.beaconDetails[index]["relatedBeacons"].includes(Number(data.beacons[j]["major"]))){
+                        this.testForRelated.push(data.beacons[j]);
                         console.log(this.testForRelated);
                         console.log("after splice");
                       }
                     }
-                  }
-                }
                 for(let i=0;i<this.testForRelated.length;i++){
-                  if(i==0){    
+                  if(i==0){
                     this.pBeaconAccuracy=this.testForRelated[i]["accuracy"]
                     this.currentBeacon=this.testForRelated[i]["major"];
                   }
@@ -254,16 +248,14 @@ export class BeaconPage {
                       this.nextBeaconToGo="already at destination";
                     }
                   }
-                  this.previousBeacon=this.currentBeacon;
                   let alert = this.alertCtrl.create({
                     title:'Directie',
                     subTitle: 'current beacon: '+this.currentBeacon+'<br> Next Beacon: '+this.nextBeaconToGo,
                     buttons:['OK']
                   });
                   alert.present();
+                  this.previousBeacon=this.currentBeacon;
                 }
-               
-               
             }
           }
       },
@@ -307,6 +299,7 @@ export class BeaconPage {
         
         this.shortestPath=route.path('139', '159');
           console.log(route.path('139', '159'));
+
   }
  
 }
