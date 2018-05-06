@@ -36,6 +36,7 @@ export class BeaconPage {
   beaconDetails: any;
   sub:Subscription;
   isFirstScan:boolean=true;
+  displayMessage:boolean=false;
   previousBeacon:any;
   nextBeaconToGo:any;
   testForRelated:any;
@@ -129,6 +130,7 @@ export class BeaconPage {
   ionViewDidLeave(){
     this.isFirstScan=true;
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
+    this.displayMessage=false;
   }
 
   ionViewWillEnter() {
@@ -206,6 +208,8 @@ export class BeaconPage {
               this.createAlert(this.currentBeacon,this.nextBeaconToGo,"Go Straight");
             }
             this.isFirstScan=false;
+            this.displayMessage=true;
+            this.directionToGo="Go Straight";
             this.previousBeacon=this.currentBeacon;
           }
           else{
