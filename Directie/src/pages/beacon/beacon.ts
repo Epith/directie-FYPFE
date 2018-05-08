@@ -9,6 +9,7 @@ import { Alert,
 import { IBeacon } from '@ionic-native/ibeacon';
 import {Observable} from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
+import { TextToSpeech } from '@ionic-native/text-to-speech';
 
 /**
  * Generated class for the BeaconPage page.
@@ -44,8 +45,13 @@ export class BeaconPage {
   directionToGo:String;
   accuracyMessage:String;
   displayAccuracyMessage:boolean=false;
-  accuracyIndex:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private ibeacon:IBeacon, public alertCtrl:AlertController) {
+  previousAccuracyIndex:any;
+  currentAccuracyIndex:any;
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    private ibeacon:IBeacon, 
+    public alertCtrl:AlertController,
+    private tts: TextToSpeech) {
     this.beaconRelation={
       "Beacons":[
         {
@@ -123,7 +129,8 @@ export class BeaconPage {
     this.beaconDetails=this.beaconRelation["Beacons"];
     this.inputDijkstra();
     this.determineCurrentBeacon();
-    this.sub=Observable.interval(5000).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy),this.displayAccuracyMessage=true});
+    //this.sub=Observable.interval(5000).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy),this.displayAccuracyMessage=true});
+    this.sub=Observable.interval(8000).subscribe((val)=>{this.tts.speak(JSON.stringify(this.accuracyMessage))});
   }
 
   ionViewDidLoad() {
@@ -215,15 +222,14 @@ export class BeaconPage {
             this.displayMessage=true;
             this.directionToGo="Go Straight";
             this.previousBeacon=this.currentBeacon;
-            this.accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
-            this.previousNextBeaconAccuracy=data.beacons[this.accuracyIndex]["accuracy"];
+            this.previousAccuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
+            this.previousNextBeaconAccuracy=data.beacons[this.previousAccuracyIndex]["accuracy"];
           }
           else{
             if (data.beacons.length > 0) {
-              this.accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
-              this.currentNextBeaconAccuracy=data.beacons[this.accuracyIndex]["accuracy"];
-              console.log(this.currentNextBeaconAccuracy);
-              console.log(this.previousNextBeaconAccuracy);
+              this.currentAccuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
+              this.currentNextBeaconAccuracy=data.beacons[this.currentAccuracyIndex]["accuracy"];
+              this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
               this.testForRelated=[];
               this.previousBeaconIndex=this.beaconDetails.findIndex(x=>x.beaconID==this.previousBeacon);
                     for(let j=0;j<data.beacons.length;j++){
@@ -264,6 +270,8 @@ export class BeaconPage {
       },
         error => console.error()
       );
+      console.log(this.previousNextBeaconAccuracy);
+      console.log(this.currentNextBeaconAccuracy);
       this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
       this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
       
@@ -346,14 +354,14 @@ export class BeaconPage {
 
   determineIfUserOnTheRightTrack(previousAccuracy,currentAccuracy){
     if(currentAccuracy<=previousAccuracy){
-      this.accuracyMessage="user on the right track";
+      this.accuracyMessage="You are walking in the right direction.";
       setTimeout(() => {
         this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         this.displayAccuracyMessage=false;
       }, 1500);
     }
     else if(currentAccuracy>previousAccuracy){
-      this.accuracyMessage="user on the wrong track";
+      this.accuracyMessage="You are walking in the wrong direction. Could you please make some adjustments.";
       setTimeout(() => {
         this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         this.displayAccuracyMessage=false;

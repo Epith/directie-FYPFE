@@ -15,6 +15,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
 import { Facebook } from '@ionic-native/facebook';
 import { IBeacon } from '@ionic-native/ibeacon';
+import { TextToSpeech } from '@ionic-native/text-to-speech';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { IBeacon } from '@ionic-native/ibeacon';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     Facebook,
-    IBeacon
+    IBeacon,
+    TextToSpeech
   ]
 })
 export class AppModule {}
