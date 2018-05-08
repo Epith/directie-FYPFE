@@ -45,6 +45,8 @@ export class BeaconPage {
   directionToGo:String;
   accuracyMessage:String;
   displayAccuracyMessage:boolean=false;
+  displayDestination:any=false;
+  destinationMessage:String;
   previousAccuracyIndex:any;
   currentAccuracyIndex:any;
   constructor(public navCtrl: NavController, 
@@ -130,7 +132,8 @@ export class BeaconPage {
     this.inputDijkstra();
     this.determineCurrentBeacon();
     //this.sub=Observable.interval(5000).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy),this.displayAccuracyMessage=true});
-    this.sub=Observable.interval(8000).subscribe((val)=>{this.tts.speak(JSON.stringify(this.accuracyMessage))});
+    this.sub=Observable.interval(10000).subscribe((val)=>{this.tts.speak(JSON.stringify(this.accuracyMessage))});
+   
   }
 
   ionViewDidLoad() {
@@ -142,6 +145,7 @@ export class BeaconPage {
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
     this.displayMessage=false;
     this.displayAccuracyMessage=false;
+    this.sub.unsubscribe();
   }
 
   ionViewWillEnter() {
@@ -214,12 +218,14 @@ export class BeaconPage {
             }
             if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.arrivedDestination)){
              // this.createAlert(this.currentBeacon,this.arrivedDestination,"");
+             this.displayDestination=true;
+             this.destinationMessage="Arrived at destination beacon "+this.currentBeacon;
             }
             else{
+              this.displayMessage=true;
               //this.createAlert(this.currentBeacon,this.nextBeaconToGo,"Go Straight");
             }
             this.isFirstScan=false;
-            this.displayMessage=true;
             this.directionToGo="Go Straight";
             this.previousBeacon=this.currentBeacon;
             this.previousAccuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
@@ -265,13 +271,13 @@ export class BeaconPage {
                   }
                   this.previousBeacon=this.currentBeacon;
                 }
+                console.log(this.previousNextBeaconAccuracy);
+                console.log(this.currentNextBeaconAccuracy);
             }
           }
       },
         error => console.error()
       );
-      console.log(this.previousNextBeaconAccuracy);
-      console.log(this.currentNextBeaconAccuracy);
       this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
       this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
       
@@ -282,8 +288,6 @@ export class BeaconPage {
       }, 11000);
       */
   }
-
-  
 
   stopDetectBeacon(){
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
@@ -358,20 +362,20 @@ export class BeaconPage {
       setTimeout(() => {
         this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         this.displayAccuracyMessage=false;
-      }, 1500);
+      }, 500);
     }
     else if(currentAccuracy>previousAccuracy){
       this.accuracyMessage="You are walking in the wrong direction. Could you please make some adjustments.";
       setTimeout(() => {
         this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         this.displayAccuracyMessage=false;
-      }, 1500);
+      }, 500);
     }
     else{
       setTimeout(() => {
         this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         this.displayAccuracyMessage=false;
-      }, 1500);
+      }, 500);
     }
   }
  
