@@ -17,9 +17,6 @@ import { Subscription } from 'rxjs/Subscription';
  * Ionic pages and navigation.
  */
 declare var require: any;
-declare var Graph: any;
-declare var graph: any;
-declare var Map:any;
 @IonicPage()
 @Component({
   selector: 'page-beacon',
@@ -38,10 +35,16 @@ export class BeaconPage {
   isFirstScan:boolean=true;
   displayMessage:boolean=false;
   previousBeacon:any;
+  previousBeaconIndex:any;
   nextBeaconToGo:any;
+  previousNextBeaconAccuracy:any;
+  currentNextBeaconAccuracy:any;
   testForRelated:any;
   arrivedDestination:any;
   directionToGo:String;
+  accuracyMessage:String;
+  displayAccuracyMessage:boolean=false;
+  accuracyIndex:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private ibeacon:IBeacon, public alertCtrl:AlertController) {
     this.beaconRelation={
       "Beacons":[
@@ -120,17 +123,18 @@ export class BeaconPage {
     this.beaconDetails=this.beaconRelation["Beacons"];
     this.inputDijkstra();
     this.determineCurrentBeacon();
-    //this.sub=Observable.interval(15000).subscribe((val)=>{this.determineCurrentBeacon()})
+    this.sub=Observable.interval(5000).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy),this.displayAccuracyMessage=true});
   }
 
   ionViewDidLoad() {
-    console.dir(this.beaconDetails);
+    this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
 
   ionViewDidLeave(){
     this.isFirstScan=true;
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
     this.displayMessage=false;
+    this.displayAccuracyMessage=false;
   }
 
   ionViewWillEnter() {
@@ -202,23 +206,28 @@ export class BeaconPage {
               }
             }
             if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.arrivedDestination)){
-              this.createAlert(this.currentBeacon,this.arrivedDestination,"");
+             // this.createAlert(this.currentBeacon,this.arrivedDestination,"");
             }
             else{
-              this.createAlert(this.currentBeacon,this.nextBeaconToGo,"Go Straight");
+              //this.createAlert(this.currentBeacon,this.nextBeaconToGo,"Go Straight");
             }
             this.isFirstScan=false;
             this.displayMessage=true;
             this.directionToGo="Go Straight";
             this.previousBeacon=this.currentBeacon;
+            this.accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
+            this.previousNextBeaconAccuracy=data.beacons[this.accuracyIndex]["accuracy"];
           }
           else{
             if (data.beacons.length > 0) {
+              this.accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
+              this.currentNextBeaconAccuracy=data.beacons[this.accuracyIndex]["accuracy"];
+              console.log(this.currentNextBeaconAccuracy);
+              console.log(this.previousNextBeaconAccuracy);
               this.testForRelated=[];
-              let index=this.beaconDetails.findIndex(x=>x.beaconID==this.previousBeacon);
-                  // this.testForRelated.splice(1,1);
+              this.previousBeaconIndex=this.beaconDetails.findIndex(x=>x.beaconID==this.previousBeacon);
                     for(let j=0;j<data.beacons.length;j++){
-                      if(this.beaconDetails[index]["relatedBeacons"].includes(Number(data.beacons[j]["major"]))){
+                      if(this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(data.beacons[j]["major"]))){
                         this.testForRelated.push(data.beacons[j]);
                         console.log(this.testForRelated);
                         console.log("after splice");
@@ -243,10 +252,10 @@ export class BeaconPage {
                   }//end of for loop
                   this.determineBeaconDirection(this.previousBeacon,this.currentBeacon,this.nextBeaconToGo);
                   if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.arrivedDestination)){
-                    this.createAlert(this.currentBeacon,this.arrivedDestination,"");
+                   // this.createAlert(this.currentBeacon,this.arrivedDestination,"");
                   }
                   else{
-                    this.createAlert(this.currentBeacon,this.nextBeaconToGo,this.directionToGo);
+                   // this.createAlert(this.currentBeacon,this.nextBeaconToGo,this.directionToGo);
                   }
                   this.previousBeacon=this.currentBeacon;
                 }
@@ -332,6 +341,29 @@ export class BeaconPage {
         buttons: ['Ok']
       });
       alert.present();
+    }
+  }
+
+  determineIfUserOnTheRightTrack(previousAccuracy,currentAccuracy){
+    if(currentAccuracy<=previousAccuracy){
+      this.accuracyMessage="user on the right track";
+      setTimeout(() => {
+        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
+        this.displayAccuracyMessage=false;
+      }, 1500);
+    }
+    else if(currentAccuracy>previousAccuracy){
+      this.accuracyMessage="user on the wrong track";
+      setTimeout(() => {
+        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
+        this.displayAccuracyMessage=false;
+      }, 1500);
+    }
+    else{
+      setTimeout(() => {
+        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
+        this.displayAccuracyMessage=false;
+      }, 1500);
     }
   }
  
