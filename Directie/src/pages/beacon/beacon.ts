@@ -76,7 +76,7 @@ export class BeaconPage {
           {
             'PB':139,
             'NB':146,
-            'DIR':'Go right'
+            'DIR':'Go left'
           },
         'relatedBeacons':[139,140,146],
         'turningPoint':true
@@ -86,25 +86,25 @@ export class BeaconPage {
         'beaconInfo': {
           'PB':140,
           'NB':158,
-          'DIR':'Go straight'
+          'DIR':'Go right'
         },
         'relatedBeacons':[140,146,158],
-        'turningPoint':false
+        'turningPoint':true
       },
       {
         'beaconID':158,
         'beaconInfo': [{
           'PB':146,
           'NB':153,
-          'DIR':'Turn right'
+          'DIR':'Turn left'
         },
         {
           'PB':146,
           'NB':156,
-          "DIR":'Turn left'
+          "DIR":'go right'
         }],
         'relatedBeacons':[146,153,158,156],
-        'turningPoint':true
+        'turningPoint':false
       },
       {
         'beaconID':153,
@@ -375,7 +375,7 @@ export class BeaconPage {
           console.dir("beaconID:"+this.beaconDetails[i]["beaconID"]+"related: "+(this.relatedBeacon));
         }
         
-        this.shortestPath=route.path('139', '159');
+        this.shortestPath=route.path('139', '153');
           console.log(route.path('139', '159'));
 
   }

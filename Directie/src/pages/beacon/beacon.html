@@ -18,11 +18,10 @@
   <button ion-button (click)="stopDetectBeacon()">Stop detecting beacon</button>
   <ion-footer *ngIf="displayMessage" no-border>
     <h2>{{currentMessage}}</h2>
-    
     <div *ngIf="displayAccuracyMessage">
-      <h3>{{accuracyMessage}}</h3>
-      <h3>{{previousNextBeaconAccuracy}}</h3>
-      <h3>{{currentNextBeaconAccuracy}}</h3>
+      <h2>{{accuracyMessage}}</h2>
+      <h2>{{previousNextBeaconAccuracy}}</h2>
+      <h2>{{currentNextBeaconAccuracy}}</h2>
     </div>
   </ion-footer>
   <ion-footer *ngIf="displayDestination" no-border>  
