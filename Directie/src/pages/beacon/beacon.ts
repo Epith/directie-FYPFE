@@ -400,7 +400,6 @@ export class BeaconPage {
 
   determinIfTurningPoint(nextBeacon){
     let index=this.beaconDetails.findIndex(x=>x.beaconID==nextBeacon);
-    this.turningPointBeacon=
     this.isTurningPoint=this.beaconDetails[index]["turningPoint"];
   }
 
