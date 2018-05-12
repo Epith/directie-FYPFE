@@ -208,7 +208,7 @@ export class BeaconPage {
     delegate.didRangeBeaconsInRegion()
       .subscribe(
         data => {
-          //console.log('didRangeBeaconsInRegion: ', data.beacons[0]['accuracy'])
+          console.log('didRangeBeaconsInRegion: ', data)
           if(this.isFirstScan==true){
             if (data.beacons.length > 0) {
               this.pBeaconAccuracy=data.beacons[0]["accuracy"]
@@ -258,7 +258,7 @@ export class BeaconPage {
             this.previousBeacon=this.currentBeacon;
             let accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
             this.previousAccuracyBeacon=data.beacons[accuracyIndex];
-            if(this.previousAccuracyBeacon!=null||this.previousAccuracyBeacon!=undefined){
+            if(this.previousAccuracyBeacon!=null || this.previousAccuracyBeacon!=undefined){
               this.previousNextBeaconAccuracy=this.previousAccuracyBeacon["accuracy"];
             } 
           }
@@ -279,7 +279,7 @@ export class BeaconPage {
               else{
                   let accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
                   this.currentAccuracyBeacon=data.beacons[accuracyIndex];
-                  if(this.currentAccuracyBeacon!=null||this.currentAccuracyBeacon!=undefined){
+                  if(this.currentAccuracyBeacon!=null || this.currentAccuracyBeacon!=undefined){
                     this.currentNextBeaconAccuracy=this.currentAccuracyBeacon["accuracy"];
                     this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
                   }
@@ -291,19 +291,21 @@ export class BeaconPage {
                 for(let j=0;j<data.beacons.length;j++){
                   if(this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(data.beacons[j]["major"]))){
                     this.testForRelated.push(data.beacons[j]);
-                    console.log(this.testForRelated);
-                    console.log("after splice");
                   }
                 }
-                this.pBeaconAccuracy=this.testForRelated[0]["accuracy"]
-                this.currentBeacon=this.testForRelated[0]["major"];
-                for(let i=1;i<this.testForRelated.length;i++){
-                  if(this.pBeaconAccuracy>this.testForRelated[i]["accuracy"]){
-                      this.pBeaconAccuracy=this.testForRelated[i]["accuracy"];
-                      this.currentBeacon=this.testForRelated[i]["major"];
-                  }
-                }//end of for loop
-                if(this.nextBeaconToGo==this.currentBeacon){
+                console.log(this.testForRelated);
+                if(this.testForRelated.length>0){
+                    this.pBeaconAccuracy=this.testForRelated[0]["accuracy"]
+                    this.currentBeacon=this.testForRelated[0]["major"];
+                    for(let i=1;i<this.testForRelated.length;i++){
+                      if(this.pBeaconAccuracy>this.testForRelated[i]["accuracy"]){
+                          this.pBeaconAccuracy=this.testForRelated[i]["accuracy"];
+                          this.currentBeacon=this.testForRelated[i]["major"];
+                      }
+                    }//end of for loop
+                }
+                console.log(this.currentBeacon+"hello");
+                if(this.currentBeacon==this.nextBeaconToGo){
                   for(let pathCounter=0;pathCounter<this.shortestPath.length;pathCounter++){
                       if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.shortestPath[pathCounter])){
                         this.nextBeaconToGo=this.shortestPath[pathCounter+1];
@@ -400,7 +402,10 @@ export class BeaconPage {
 
   determinIfTurningPoint(nextBeacon){
     let index=this.beaconDetails.findIndex(x=>x.beaconID==nextBeacon);
-    this.isTurningPoint=this.beaconDetails[index]["turningPoint"];
+    this.turningPointBeacon=this.beaconDetails[index];
+    if(this.turningPointBeacon!=null || this.turningPointBeacon!=undefined){
+      this.isTurningPoint=this.beaconDetails[index]["turningPoint"];
+    }
   }
 
   createAlert(currentBeacon,nextBeacon,direction){
