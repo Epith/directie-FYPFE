@@ -102,9 +102,12 @@ export class LoginPage {
         'webClientId': '72415286155-3qg632qen253cb9ijm57lda2h2hivaem.apps.googleusercontent.com',
         'offline': true
       }).then( res => {
+        const loading: Loading = this.loadingCtrl.create();
+        loading.present();
         firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
           .then( success => {
             console.log("Firebase success: " + JSON.stringify(success));
+            loading.dismiss();
             this.navCtrl.setRoot(HomePage); 
           })
           .catch( error => console.log("Firebase failure: " + JSON.stringify(error)));
