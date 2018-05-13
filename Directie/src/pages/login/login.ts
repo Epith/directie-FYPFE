@@ -87,10 +87,12 @@ export class LoginPage {
       .then( response => {
         const facebookCredential = firebase.auth.FacebookAuthProvider
           .credential(response.authResponse.accessToken);
-  
+        const loading: Loading = this.loadingCtrl.create();
+        loading.present();
         firebase.auth().signInWithCredential(facebookCredential)
           .then( success => { 
             console.log("Firebase success: " + JSON.stringify(success));
+            loading.dismiss();
             this.navCtrl.setRoot(HomePage); 
           });
   
