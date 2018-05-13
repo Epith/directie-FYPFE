@@ -14,6 +14,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
 import { Facebook } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus';
 import { IBeacon } from '@ionic-native/ibeacon';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 
@@ -47,6 +48,7 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     Facebook,
+    GooglePlus,
     IBeacon,
     TextToSpeech
   ]

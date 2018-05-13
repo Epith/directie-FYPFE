@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "5.2.10",
     "@ionic-native/core": "4.7.0",
     "@ionic-native/facebook": "^4.7.0",
+    "@ionic-native/google-plus": "^4.7.0",
     "@ionic-native/ibeacon": "^4.7.0",
     "@ionic-native/splash-screen": "4.7.0",
     "@ionic-native/status-bar": "4.7.0",
@@ -64,7 +65,10 @@
         "APP_NAME": "Directie"
       },
       "com.unarin.cordova.beacon": {},
-      "cordova-plugin-tts": {}
+      "cordova-plugin-tts": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.72415286155-3edmp79mf5qki8esscgg4vbdntkks9dn"
+      }
     },
     "platforms": [
       "android"

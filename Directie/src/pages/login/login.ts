@@ -15,6 +15,7 @@ import firebase from 'firebase/app';
 import { SignupPage } from '../../pages/signup/signup';
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { Facebook } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 @IonicPage()
 @Component({
@@ -29,6 +30,7 @@ export class LoginPage {
     public alertCtrl: AlertController,
     public authProvider: AuthProvider,
     public facebook:Facebook,
+    public googlePlus:GooglePlus,
     formBuilder: FormBuilder
   ) {
     this.loginForm = formBuilder.group({
@@ -94,4 +96,18 @@ export class LoginPage {
   
       }).catch((error) => { console.log(error) });
   }
+
+    googleLogin(): void {
+      this.googlePlus.login({
+        'webClientId': '72415286155-3qg632qen253cb9ijm57lda2h2hivaem.apps.googleusercontent.com',
+        'offline': true
+      }).then( res => {
+        firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
+          .then( success => {
+            console.log("Firebase success: " + JSON.stringify(success));
+            this.navCtrl.setRoot(HomePage); 
+          })
+          .catch( error => console.log("Firebase failure: " + JSON.stringify(error)));
+        }).catch(err => console.error("Error: ", err));
+    }
 }
