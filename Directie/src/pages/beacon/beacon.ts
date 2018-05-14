@@ -512,5 +512,10 @@ export class BeaconPage {
       }, 1000);
     }
   }
+
+  readMessage(){
+    this.tts.speak(JSON.stringify(this.currentMessage)+JSON.stringify(this.accuracyMessage));
+    //this.tts.speak(JSON.stringify(this.accuracyMessage));
+  }
  
 }
