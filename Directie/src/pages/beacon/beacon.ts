@@ -40,7 +40,7 @@ export class BeaconPage {
   nextBeaconToGo:any;
   previousNextBeaconAccuracy:any;
   currentNextBeaconAccuracy:any;
-  testForRelated:any;
+  getCurrenBeacons:any=[];
   arrivedDestination:any;
   directionToGo:String;
   accuracyMessage:String;
@@ -54,6 +54,7 @@ export class BeaconPage {
   currentMessage:String;
   testForCurrentBeacon:any;
   previousPreviousBeacon:any;
+  ifGetFirstCurrentBeacons:boolean=true;
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     private ibeacon:IBeacon, 
@@ -142,7 +143,8 @@ export class BeaconPage {
   }
     this.beaconDetails=this.beaconRelation["Beacons"];
     this.inputDijkstra();
-    this.determineCurrentBeacon();
+    this.detectBeacon();
+    //this.determineCurrentBeacon();
     this.displayAccuracyMessage=true;
     //this.sub=Observable.interval(5000).subscribe((val)=>{this.displayAccuracyMessage=true;});
     //this.sub=Observable.interval(10000).subscribe((val)=>{this.tts.speak(JSON.stringify(this.accuracyMessage))});
@@ -175,29 +177,25 @@ export class BeaconPage {
       // Subscribe to some of the delegate's event handlers
       delegate.didRangeBeaconsInRegion()
         .subscribe(
-          data => console.log('didRangeBeaconsInRegion: ', data),
-          error => console.error()
-        );
-      delegate.didStartMonitoringForRegion()
-        .subscribe(
-          data => console.log('didStartMonitoringForRegion: ', data),
-          error => console.error()
-        );
-      delegate.didEnterRegion()
-        .subscribe(
           data => {
-            console.log('didEnterRegion: ', data);
-          }
+            if(data.beacons.length > 0){
+              for(let i=0;i<data.beacons.length;i++){
+                if(this.getCurrenBeacons["major"].includes(data.beacons[i]["major"])){
+                  console.log("0");
+                }
+                else{
+                  this.getCurrenBeacons.push(data.beacons[i])
+                }
+              }
+              console.log(this.getCurrenBeacons);
+            }
+            
+          },
+          error => console.error()
         );
 
       this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
-
-      this.ibeacon.startMonitoringForRegion(this.beaconRegion)
-        .then(
-          () => console.log('Native layer recieved the request to monitoring'),
-          error => console.error('Native layer failed to begin monitoring: ', error)
-        );
-        this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
+      this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
   
   determineCurrentBeacon(){
