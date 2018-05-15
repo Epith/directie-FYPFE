@@ -146,7 +146,7 @@ export class BeaconPage {
     this.detectBeacon();
     //this.determineCurrentBeacon();
     this.displayAccuracyMessage=true;
-    //this.sub=Observable.interval(5000).subscribe((val)=>{this.displayAccuracyMessage=true;});
+    this.sub=Observable.interval(300).subscribe((val)=>{this.determineCurrentBeacon()});
     //this.sub=Observable.interval(10000).subscribe((val)=>{this.tts.speak(JSON.stringify(this.accuracyMessage))});
    
   }
@@ -157,7 +157,7 @@ export class BeaconPage {
 
   ionViewDidLeave(){
     this.isFirstScan=true;
-    this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
+    //this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
     this.displayMessage=false;
     this.displayAccuracyMessage=false;
     //this.sub.unsubscribe();
@@ -180,16 +180,16 @@ export class BeaconPage {
           data => {
             if(data.beacons.length > 0){
               for(let i=0;i<data.beacons.length;i++){
-                if(this.getCurrenBeacons["major"].includes(data.beacons[i]["major"])){
-                  console.log("0");
+                if(this.getCurrenBeacons.findIndex(x=>x.major==data.beacons[i]["major"])!=-1){
+                  let index=this.getCurrenBeacons.findIndex(x=>x.major==data.beacons[i]["major"]);
+                  this.getCurrenBeacons[index]=data.beacons[i];
                 }
-                else{
+                else if(this.getCurrenBeacons.findIndex(x=>x.major==data.beacons[i]["major"])==-1){
                   this.getCurrenBeacons.push(data.beacons[i])
                 }
               }
               console.log(this.getCurrenBeacons);
             }
-            
           },
           error => console.error()
         );
@@ -198,25 +198,16 @@ export class BeaconPage {
       this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
   
-  determineCurrentBeacon(){
-        // Request permission to use location on iOS
-    this.ibeacon.requestAlwaysAuthorization();
-    // create a new delegate and register it with the native layer
-    let delegate = this.ibeacon.Delegate();
-
-    // Subscribe to some of the delegate's event handlers
-    delegate.didRangeBeaconsInRegion()
-      .subscribe(
-        data => {
+  determineCurrentBeacon(){    
          // console.log('didRangeBeaconsInRegion: ', data)
           if(this.isFirstScan==true){
-            if (data.beacons.length > 0) {
-              this.pBeaconAccuracy=data.beacons[0]["accuracy"]
-              this.testForCurrentBeacon=data.beacons[0]["major"];
-              for(let i=1;i<data.beacons.length;i++){
-                  if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
-                    this.pBeaconAccuracy=data.beacons[i]["accuracy"];
-                    this.testForCurrentBeacon=data.beacons[i]["major"];
+            if (this.getCurrenBeacons.length > 0) {
+              this.pBeaconAccuracy=this.getCurrenBeacons[0]["accuracy"]
+              this.testForCurrentBeacon=this.getCurrenBeacons[0]["major"];
+              for(let i=1;i<this.getCurrenBeacons.length;i++){
+                  if(this.pBeaconAccuracy>this.getCurrenBeacons[i]["accuracy"]){
+                    this.pBeaconAccuracy=this.getCurrenBeacons[i]["accuracy"];
+                    this.testForCurrentBeacon=this.getCurrenBeacons[i]["major"];
                   }
               }
               this.currentBeacon=this.testForCurrentBeacon;
@@ -231,8 +222,8 @@ export class BeaconPage {
               if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.arrivedDestination)){
                this.displayDestination=true;
                this.destinationMessage="Arrived at destination beacon "+this.currentBeacon;
-               let accuracyIndex=data.beacons.findIndex(x=>x.major==this.arrivedDestination);
-                  this.currentAccuracyBeacon=data.beacons[accuracyIndex];
+               let accuracyIndex=this.getCurrenBeacons.findIndex(x=>x.major==this.arrivedDestination);
+                  this.currentAccuracyBeacon=this.getCurrenBeacons[accuracyIndex];
                   if(this.currentAccuracyBeacon!=null||this.currentAccuracyBeacon!=undefined){
                     this.currentNextBeaconAccuracy=this.currentAccuracyBeacon["accuracy"];
                     this.determineIfUserAtDestination(this.currentNextBeaconAccuracy);
@@ -257,18 +248,18 @@ export class BeaconPage {
               this.isFirstScan=false;
               this.previousBeacon=this.currentBeacon;
               this.previousPreviousBeacon=this.previousBeacon;
-              let accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
-              this.previousAccuracyBeacon=data.beacons[accuracyIndex];
+              let accuracyIndex=this.getCurrenBeacons.findIndex(x=>x.major==this.nextBeaconToGo);
+              this.previousAccuracyBeacon=this.getCurrenBeacons[accuracyIndex];
               if(this.previousAccuracyBeacon!=null || this.previousAccuracyBeacon!=undefined){
                 this.previousNextBeaconAccuracy=this.previousAccuracyBeacon["accuracy"];
               }
             }//end of if
           }
           else{
-            if (data.beacons.length > 0) {
+            if (this.getCurrenBeacons.length > 0) {
                 if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.arrivedDestination)){
-                  let accuracyIndex=data.beacons.findIndex(x=>x.major==this.arrivedDestination);
-                  this.currentAccuracyBeacon=data.beacons[accuracyIndex];
+                  let accuracyIndex=this.getCurrenBeacons.findIndex(x=>x.major==this.arrivedDestination);
+                  this.currentAccuracyBeacon=this.getCurrenBeacons[accuracyIndex];
                   if(this.currentAccuracyBeacon!=null||this.currentAccuracyBeacon!=undefined){
                     this.currentNextBeaconAccuracy=this.currentAccuracyBeacon["accuracy"];
                     this.determineIfUserAtDestination(this.currentNextBeaconAccuracy);
@@ -279,21 +270,23 @@ export class BeaconPage {
                   console.log(this.accuracyMessage); 
               }
               else{
-                  let accuracyIndex=data.beacons.findIndex(x=>x.major==this.nextBeaconToGo);
-                  this.currentAccuracyBeacon=data.beacons[accuracyIndex];
+                  let accuracyIndex=this.getCurrenBeacons.findIndex(x=>x.major==this.nextBeaconToGo);
+                  this.currentAccuracyBeacon=this.getCurrenBeacons[accuracyIndex];
                   if(this.currentAccuracyBeacon!=null || this.currentAccuracyBeacon!=undefined){
                     this.currentNextBeaconAccuracy=this.currentAccuracyBeacon["accuracy"];
-                    this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
+                    setTimeout(()=>{
+                      this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
+                    },1000);
                   }
                   console.log(this.previousNextBeaconAccuracy);
                   console.log(this.currentNextBeaconAccuracy); 
               }
-              this.pBeaconAccuracy=data.beacons[0]["accuracy"]
-              this.testForCurrentBeacon=data.beacons[0]["major"];
-              for(let i=1;i<data.beacons.length;i++){
-                  if(this.pBeaconAccuracy>data.beacons[i]["accuracy"]){
-                    this.pBeaconAccuracy=data.beacons[i]["accuracy"];
-                    this.testForCurrentBeacon=data.beacons[i]["major"];
+              this.pBeaconAccuracy=this.getCurrenBeacons[0]["accuracy"]
+              this.testForCurrentBeacon=this.getCurrenBeacons[0]["major"];
+              for(let i=1;i<this.getCurrenBeacons.length;i++){
+                  if(this.pBeaconAccuracy>this.getCurrenBeacons[i]["accuracy"]){
+                    this.pBeaconAccuracy=this.getCurrenBeacons[i]["accuracy"];
+                    this.testForCurrentBeacon=this.getCurrenBeacons[i]["major"];
                   }
               }
               if(this.shortestPath.includes(this.testForCurrentBeacon)){
@@ -317,26 +310,6 @@ export class BeaconPage {
                   }//end of for loop
                 }
               }
-              /*this.testForRelated=[];
-              this.previousBeaconIndex=this.beaconDetails.findIndex(x=>x.beaconID==this.previousBeacon);
-                for(let j=0;j<data.beacons.length;j++){
-                  if(this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(data.beacons[j]["major"]))){
-                    this.testForRelated.push(data.beacons[j]);
-                  }
-                }
-                console.log(this.testForRelated);
-                if(this.testForRelated.length>0){
-                    this.pBeaconAccuracy=this.testForRelated[0]["accuracy"]
-                    this.currentBeacon=this.testForRelated[0]["major"];
-                    for(let i=1;i<this.testForRelated.length;i++){
-                      if(this.pBeaconAccuracy>this.testForRelated[i]["accuracy"]){
-                          this.pBeaconAccuracy=this.testForRelated[i]["accuracy"];
-                          this.currentBeacon=this.testForRelated[i]["major"];
-                      }
-                    }//end of for loop
-                }
-                console.log(this.currentBeacon+"hello");
-                */
                 if(this.currentBeacon==this.nextBeaconToGo){
                   for(let pathCounter=0;pathCounter<this.shortestPath.length;pathCounter++){
                       if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.shortestPath[pathCounter])){
@@ -370,21 +343,10 @@ export class BeaconPage {
                   }
                   this.previousBeacon=this.currentBeacon;
                   this.previousPreviousBeacon=this.previousBeacon;
+                  this.getCurrenBeacons=[];
                 }
             }
           }//end of else
-      },
-        error => console.error()
-      );
-      this.beaconRegion = this.ibeacon.BeaconRegion('estimoteBeacon','11111111-1111-1111-1111-111111111111');
-      this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
-      
-      /*setTimeout(() => {
-        this.stopDetectBeacon();
-        //console.log("Nearest beacon: " + this.pBeaconAccuracy + "beaconId: "+ this.currentBeacon);
-        //console.log("subsequent beacons");
-      }, 11000);
-      */
   }
 
   stopDetectBeacon(){
@@ -441,48 +403,23 @@ export class BeaconPage {
     }
   }
 
-  createAlert(currentBeacon,nextBeacon,direction){
-    if(JSON.stringify(currentBeacon)==JSON.stringify(nextBeacon)){
-      let alert = this.alertCtrl.create({
-        title: 'Directie',
-        message: 'Arrived at destination',
-        buttons: ['Ok']
-      });
-      alert.present();
-    }
-    else{
-      let alert = this.alertCtrl.create({
-        title: 'Directie',
-        message: 'current beacon: '+currentBeacon+'<br> Next Beacon: '+ nextBeacon
-        +'<br> Direction: '+direction,
-        buttons: ['Ok']
-      });
-      alert.present();
-    }
-  }
 
   determineIfUserOnTheRightTrack(previousAccuracy,currentAccuracy){
     if(currentAccuracy<=previousAccuracy){
       this.accuracyMessage='';
       this.accuracyMessage='You are walking in the right direction.';
-      setTimeout(() => {
+      
         this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         //this.displayAccuracyMessage=false;
-      }, 1000);
+    
     }
     else if(currentAccuracy>previousAccuracy){
       this.accuracyMessage='';
-      this.accuracyMessage='You are walking in the wrong direction. Could you please make some adjustments.';
-      setTimeout(() => {
-        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
+      this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         //this.displayAccuracyMessage=false;
-      }, 1000);
     }
     else{
-      setTimeout(() => {
-        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
-        //this.displayAccuracyMessage=false;
-      }, 1000);
+      this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
     }
   }
 
@@ -497,7 +434,7 @@ export class BeaconPage {
     }
     else if(currentAccuracy>1){
       this.accuracyMessage='';
-      this.accuracyMessage='You are out of range of the destination';
+      this.accuracyMessage='You are further from the destination';
       setTimeout(() => {
         this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         //this.displayAccuracyMessage=false;
