@@ -10,7 +10,7 @@ import { IBeacon } from '@ionic-native/ibeacon';
 import {Observable} from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
-
+import { ApiProvider } from '../../providers/api/api';
 /**
  * Generated class for the BeaconPage page.
  *
@@ -60,88 +60,9 @@ export class BeaconPage {
     public navParams: NavParams, 
     private ibeacon:IBeacon, 
     public alertCtrl:AlertController,
+    public apiProvider:ApiProvider,
     private tts: TextToSpeech) {
-    this.beaconRelation={
-      "Beacons":[
-        {
-          'beaconID':139,
-          'beaconInfo': 
-            {
-              'PB':'',
-              'NB':140,
-              'DIR':'Go straight',
-            },
-          'relatedBeacons':[139,140],
-          'turningPoint':false
-        },
-      {
-        'beaconID':140,
-        'beaconInfo': 
-          {
-            'PB':139,
-            'NB':146,
-            'DIR':'Go left'
-          },
-        'relatedBeacons':[139,140,146],
-        'turningPoint':true
-      },
-      {
-        'beaconID':146,
-        'beaconInfo': {
-          'PB':140,
-          'NB':158,
-          'DIR':'Go right'
-        },
-        'relatedBeacons':[140,146,158],
-        'turningPoint':true
-      },
-      {
-        'beaconID':158,
-        'beaconInfo': [{
-          'PB':146,
-          'NB':153,
-          'DIR':'Turn left'
-        },
-        {
-          'PB':146,
-          'NB':156,
-          "DIR":'go right'
-        }],
-        'relatedBeacons':[146,153,158,156],
-        'turningPoint':false
-      },
-      {
-        'beaconID':153,
-        'beaconInfo': {
-          'PB':158,
-          'NB':'159',
-          'DIR':'Go straight'
-        },
-        'relatedBeacons':[153,158,159],
-        'turningPoint':false
-      },
-      {
-        'beaconID':156,
-        'beaconInfo': {
-          'PB':158,
-          'NB':'',
-          'DIR':'Go straight'
-        },
-        'relatedBeacons':[156,158],
-        'turningPoint':false
-      },
-      {
-        'beaconID':159,
-        'beaconInfo': {
-          'PB':153,
-          'NB':'',
-          'DIR':'Go straight'
-        },
-        'relatedBeacons':[153,159],
-        'turningPoint':false
-      }
-    ]
-  }
+    this.getBRelation();
     this.beaconDetails=this.beaconRelation["Beacons"];
     this.inputDijkstra();
     this.detectBeacon();
@@ -152,6 +73,19 @@ export class BeaconPage {
    
   }
 
+  getBRelation() {
+    let data = {
+      BeaconID: 'ALL'
+    }
+    this.apiProvider.getBRelation(data)
+    .then(data => {
+      this.beaconRelation = data;
+      console.log(this.beaconRelation);
+      this.beaconDetails = this.beaconRelation["Beacons"];
+      this.inputDijkstra();
+      
+    });
+  }
   ionViewDidLoad() {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }

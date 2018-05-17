@@ -17,6 +17,8 @@ import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { IBeacon } from '@ionic-native/ibeacon';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiProvider } from '../providers/api/api';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
@@ -50,7 +53,8 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
     Facebook,
     GooglePlus,
     IBeacon,
-    TextToSpeech
+    TextToSpeech,
+    ApiProvider
   ]
 })
 export class AppModule {}

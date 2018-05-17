@@ -3,7 +3,7 @@
     <name>Directie</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://172.22.3.3:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -97,5 +97,6 @@
     </plugin>
     <allow-navigation href="http://192.168.1.213:8100" />
     <allow-navigation href="http://172.22.35.14:8100" />
+    <allow-navigation href="http://172.22.3.3:8100" />
     <engine name="android" spec="7.0.0" />
 </widget>
