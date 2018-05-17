@@ -10,12 +10,8 @@ import { IBeacon } from '@ionic-native/ibeacon';
 import {Observable} from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
-<<<<<<< HEAD
 import { ApiProvider } from '../../providers/api/api';
-=======
-import { JsonPipe } from '@angular/common';
 
->>>>>>> refs/remotes/origin/Add-beacons-into-array
 /**
  * Generated class for the BeaconPage page.
  *
@@ -67,93 +63,7 @@ export class BeaconPage {
     public alertCtrl:AlertController,
     public apiProvider:ApiProvider,
     private tts: TextToSpeech) {
-<<<<<<< HEAD
     this.getBRelation();
-=======
-    this.beaconRelation={
-      "Beacons":[
-        {
-          'beaconID':139,
-          'beaconInfo': 
-            {
-              'PB':'',
-              'NB':140,
-              'DIR':'Go straight',
-            },
-          'relatedBeacons':[139,140],
-          'turningPoint':false
-        },
-      {
-        'beaconID':140,
-        'beaconInfo': 
-          {
-            'PB':139,
-            'NB':146,
-            'DIR':'Turn right'
-          },
-        'relatedBeacons':[139,140,146],
-        'turningPoint':true
-      },
-      {
-        'beaconID':146,
-        'beaconInfo': {
-          'PB':140,
-          'NB':158,
-          'DIR':'Go straight'
-        },
-        'relatedBeacons':[140,146,158],
-        'turningPoint':true
-      },
-      {
-        'beaconID':158,
-        'beaconInfo': [{
-          'PB':146,
-          'NB':153,
-          'DIR':'Turn Right'
-        },
-        {
-          'PB':146,
-          'NB':156,
-          "DIR":'go right'
-        }],
-        'relatedBeacons':[146,153,158,156],
-        'turningPoint':false
-      },
-      {
-        'beaconID':153,
-        'beaconInfo': {
-          'PB':158,
-          'NB':'159',
-          'DIR':'Go straight'
-        },
-        'relatedBeacons':[153,158,159],
-        'turningPoint':false
-      },
-      {
-        'beaconID':156,
-        'beaconInfo': {
-          'PB':158,
-          'NB':'',
-          'DIR':'Go straight'
-        },
-        'relatedBeacons':[156,158],
-        'turningPoint':false
-      },
-      {
-        'beaconID':159,
-        'beaconInfo': {
-          'PB':153,
-          'NB':'',
-          'DIR':'Go straight'
-        },
-        'relatedBeacons':[153,159],
-        'turningPoint':false
-      }
-    ]
-  }
-    this.beaconDetails=this.beaconRelation["Beacons"];
-    this.inputDijkstra();
->>>>>>> refs/remotes/origin/Add-beacons-into-array
     this.detectBeacon();
   }
 
