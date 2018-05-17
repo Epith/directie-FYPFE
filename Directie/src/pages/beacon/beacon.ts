@@ -314,12 +314,6 @@ export class BeaconPage {
           }
       }
     }
-    else{
-      if(this.beaconDetails[index]["beaconInfo"]["PB"]==previousBeacon && this.beaconDetails[index]["beaconInfo"]["NB"]==nextBeacon){
-        this.directionToGo=this.beaconDetails[index]["beaconInfo"]["DIR"];
-        
-      }
-    }
   }//end of determineBeaconDirection
 
   determinIfTurningPoint(nextBeacon){
