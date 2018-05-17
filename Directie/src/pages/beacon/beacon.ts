@@ -63,14 +63,7 @@ export class BeaconPage {
     public apiProvider:ApiProvider,
     private tts: TextToSpeech) {
     this.getBRelation();
-    this.beaconDetails=this.beaconRelation["Beacons"];
-    this.inputDijkstra();
     this.detectBeacon();
-    //this.determineCurrentBeacon();
-    this.displayAccuracyMessage=true;
-    this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
-    this.sub2=Observable.interval(2500).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy)});
-   
   }
 
   getBRelation() {
@@ -80,10 +73,12 @@ export class BeaconPage {
     this.apiProvider.getBRelation(data)
     .then(data => {
       this.beaconRelation = data;
-      console.log(this.beaconRelation);
       this.beaconDetails = this.beaconRelation["Beacons"];
       this.inputDijkstra();
-      
+      this.displayAccuracyMessage=true;
+      this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
+      this.sub2=Observable.interval(2500).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy)});
+      console.log(this.beaconDetails);
     });
   }
   ionViewDidLoad() {
@@ -312,7 +307,7 @@ export class BeaconPage {
   determineBeaconDirection(previousBeacon,currentBeacon,nextBeacon){
     this.directionToGo='';
     let index=this.beaconDetails.findIndex(x=>x.beaconID==currentBeacon);
-    if(this.beaconDetails[index]["beaconInfo"].length>1){
+    if(this.beaconDetails[index]["beaconInfo"].length>=1){
       for(let i=0;i<this.beaconDetails[index]["beaconInfo"].length;i++){
           if(this.beaconDetails[index]["beaconInfo"][i]["PB"]==previousBeacon && this.beaconDetails[index]["beaconInfo"][i]["NB"]==nextBeacon){
             this.directionToGo=this.beaconDetails[index]["beaconInfo"][i]["DIR"];
