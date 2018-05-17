@@ -16,9 +16,9 @@
 <ion-content padding>
   <button ion-button (click)="detectBeacon()">Detect Beacon</button>
   <button ion-button (click)="stopDetectBeacon()">Stop detecting beacon</button>
-  <ion-footer *ngIf="displayMessage" no-border (tap)="readMessage()">
-    <h2>{{currentMessage}}</h2>
-    <h2 *ngIf="displayAccuracyMessage">{{accuracyMessage}}</h2>
+  <ion-footer *ngIf="displayMessage" no-border>
+    <h2 (tap)="readMessage()">{{currentMessage}}</h2>
+    <h2 *ngIf="displayAccuracyMessage" (tap)="readAccuracyMessage()">{{accuracyMessage}}</h2>
   </ion-footer>
   <ion-footer *ngIf="displayDestination" no-border>  
     <h2>{{destinationMessage}}

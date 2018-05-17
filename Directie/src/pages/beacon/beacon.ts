@@ -33,6 +33,7 @@ export class BeaconPage {
   shortestPath: any;
   beaconDetails: any;
   sub:Subscription;
+  sub2:Subscription;
   isFirstScan:boolean=true;
   displayMessage:boolean=false;
   previousBeacon:any;
@@ -146,8 +147,8 @@ export class BeaconPage {
     this.detectBeacon();
     //this.determineCurrentBeacon();
     this.displayAccuracyMessage=true;
-    this.sub=Observable.interval(300).subscribe((val)=>{this.determineCurrentBeacon()});
-    //this.sub=Observable.interval(10000).subscribe((val)=>{this.tts.speak(JSON.stringify(this.accuracyMessage))});
+    this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
+    this.sub2=Observable.interval(2500).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy)});
    
   }
 
@@ -236,13 +237,13 @@ export class BeaconPage {
                   if(this.isTurningPoint==true){
                     this.currentMessage='';
                     this.currentMessage='You are currently at beacon '+this.currentBeacon
-                    +'\n Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
-                    +'\n Please be aware that the next beacon is a turning point';
+                    +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
+                    +' Please be aware that the next beacon is a turning point';
                   }
                   else{
                     this.currentMessage='';
                     this.currentMessage='You are currently at beacon '+this.currentBeacon
-                    +'\n Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
+                    +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
                   }
               }
               this.isFirstScan=false;
@@ -274,9 +275,6 @@ export class BeaconPage {
                   this.currentAccuracyBeacon=this.getCurrenBeacons[accuracyIndex];
                   if(this.currentAccuracyBeacon!=null || this.currentAccuracyBeacon!=undefined){
                     this.currentNextBeaconAccuracy=this.currentAccuracyBeacon["accuracy"];
-                    setTimeout(()=>{
-                      this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
-                    },1000);
                   }
                   console.log(this.previousNextBeaconAccuracy);
                   console.log(this.currentNextBeaconAccuracy); 
@@ -331,13 +329,13 @@ export class BeaconPage {
                     if(this.isTurningPoint==true){
                       this.currentMessage='';
                       this.currentMessage='You are currently at beacon '+this.currentBeacon
-                      +'\n Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
-                      +'\n Please be aware that the next beacon is a turning point';
+                      +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
+                      +' Please be aware that the next beacon is a turning point';
                     }
                     else{
                       this.currentMessage='';
                       this.currentMessage='You are currently at beacon '+this.currentBeacon
-                      +'\n Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
+                      +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
                     }
                     this.displayDestination=false;
                   }
@@ -408,13 +406,12 @@ export class BeaconPage {
     if(currentAccuracy<=previousAccuracy){
       this.accuracyMessage='';
       this.accuracyMessage='You are walking in the right direction.';
-      
-        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
+      this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         //this.displayAccuracyMessage=false;
-    
     }
     else if(currentAccuracy>previousAccuracy){
       this.accuracyMessage='';
+      this.accuracyMessage='You are walking in the wrong direction, could you please make some adjustments';
       this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
         //this.displayAccuracyMessage=false;
     }
@@ -449,8 +446,12 @@ export class BeaconPage {
   }
 
   readMessage(){
-    this.tts.speak(JSON.stringify(this.currentMessage)+JSON.stringify(this.accuracyMessage));
-    //this.tts.speak(JSON.stringify(this.accuracyMessage));
+    this.tts.speak(JSON.stringify(this.currentMessage));
+    
+  }
+
+  readAccuracyMessage(){
+    this.tts.speak(JSON.stringify(this.accuracyMessage));
   }
  
 }
