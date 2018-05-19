@@ -78,7 +78,11 @@ export class BeaconPage {
       this.inputDijkstra();
       this.displayAccuracyMessage=true;
       this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
-      this.sub2=Observable.interval(2500).subscribe((val)=>{this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy)});
+      this.sub2=Observable.interval(3000).subscribe((val)=>{
+        if(this.displayAccuracyMessage==true){
+          this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
+        }
+        });
       console.log(this.beaconDetails);
     });
   }
@@ -91,7 +95,8 @@ export class BeaconPage {
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
     this.displayMessage=false;
     this.displayAccuracyMessage=false;
-    //this.sub.unsubscribe();
+    this.sub.unsubscribe();
+    this.sub2.unsubscribe();
     this.displayDestination=false;
   }
 
@@ -151,6 +156,7 @@ export class BeaconPage {
                 }
               }
               if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.arrivedDestination)){
+               this.displayAccuracyMessage=false;
                this.displayDestination=true;
                this.destinationMessage="Arrived at destination beacon "+this.currentBeacon;
                this.tts.speak(JSON.stringify(this.destinationMessage));
@@ -254,6 +260,7 @@ export class BeaconPage {
                   if(JSON.stringify(this.currentBeacon)==JSON.stringify(this.arrivedDestination)){
                       this.displayMessage=false;
                       this.displayDestination=true;
+                      this.displayAccuracyMessage=false;
                       this.accuracyMessage='';
                       this.destinationMessage="Arrived at destination beacon "+this.currentBeacon;
                       this.tts.speak(JSON.stringify(this.destinationMessage));
@@ -336,13 +343,11 @@ export class BeaconPage {
       this.accuracyMessage='';
       this.accuracyMessage='You are walking in the right direction.';
       this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
-        //this.displayAccuracyMessage=false;
     }
     else if(currentAccuracy>previousAccuracy){
       this.accuracyMessage='';
       this.accuracyMessage='You are walking in the wrong direction, could you please make some adjustments';
       this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
-        //this.displayAccuracyMessage=false;
     }
     else{
       this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
@@ -353,30 +358,20 @@ export class BeaconPage {
     if(currentAccuracy<=1){
       this.accuracyMessage='';
       this.accuracyMessage='You are at the destination';
-      setTimeout(() => {
-        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
-       // this.displayAccuracyMessage=false;
-      }, 1000);
+      this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
     }
     else if(currentAccuracy>1){
       this.accuracyMessage='';
       this.accuracyMessage='You are further from the destination';
-      setTimeout(() => {
-        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
-        //this.displayAccuracyMessage=false;
-      }, 1000);
+      this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
     }
     else{
-      setTimeout(() => {
-        this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
-        //this.displayAccuracyMessage=false;
-      }, 1000);
+      this.previousNextBeaconAccuracy=this.currentNextBeaconAccuracy;
     }
   }
 
   readMessage(){
     this.tts.speak(JSON.stringify(this.currentMessage));
-    
   }
 
   readAccuracyMessage(){
