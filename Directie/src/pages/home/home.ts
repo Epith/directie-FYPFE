@@ -37,6 +37,7 @@ export class HomePage {
         }
         else
           responseAttempt = 3; //End the loop if user spoke
+          this.goToBeacon();
       });
     }
   }
