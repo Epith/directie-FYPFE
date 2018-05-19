@@ -35,9 +35,10 @@ export class HomePage {
           if (responseAttempt == 3)
             this.speakText("Directie in standby mode. Double tap to wake up.");
         }
-        else
+        else {
           responseAttempt = 3; //End the loop if user spoke
           this.goToBeacon();
+        }
       });
     }
   }
