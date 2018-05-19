@@ -37,7 +37,7 @@ export class HomePage {
           if (responseAttempt == 3)
             this.speakText("Directie in standby mode. Double tap to wake up.");
         }
-        else
+        else if(msg=="toilet") //if the user says he want to go toilet, then it will end
         this.goToBeacon(); //if user responded, then go to beacon
           responseAttempt = 3; //End the loop if user spoke
       });
