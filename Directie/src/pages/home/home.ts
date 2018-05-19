@@ -4,7 +4,6 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import { BeaconPage } from '../beacon/beacon';
 
-declare let continuoussr: any;
 
 @Component({
   selector: 'page-home',
@@ -29,16 +28,14 @@ export class HomePage {
       else
         textMsg = "Sorry, no response detected. Your desination please?";
 
-      await this.speakText(textMsg);
-
-      await this.startSpeechRecognition().then(function (msg) {
+      await this.speakText(textMsg).then(()=>{console.log('success')});
+      await this.startSpeechRecognition().then((msg) => {
         if (msg == "") {
           responseAttempt++;
           if (responseAttempt == 3)
             this.speakText("Directie in standby mode. Double tap to wake up.");
         }
-        else if(msg=="toilet") //if the user says he want to go toilet, then it will end
-        this.goToBeacon(); //if user responded, then go to beacon
+        else
           responseAttempt = 3; //End the loop if user spoke
       });
     }
@@ -47,7 +44,7 @@ export class HomePage {
   speakText(textMsg) {
     return new Promise(resolve => {
       this.tts.speak({ text: textMsg, locale: "en-US" })
-        .then()
+        .then(()=>{resolve()})
         .catch((reason: any) => console.log(reason));
     })
   }
@@ -61,7 +58,7 @@ export class HomePage {
     return new Promise(resolve => {
       this.speechRecognition.startListening(SROptions)
         .subscribe(
-          (matches: Array<string>) => { console.log(matches); resolve(matches) },
+          (matches: Array<string>) => { console.log(matches); resolve(matches[0]) },
           (onerror) => {
             if ((onerror == "No match") || (onerror = "No speech input"))
               resolve("");
