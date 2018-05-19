@@ -19,6 +19,7 @@ import { IBeacon } from '@ionic-native/ibeacon';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiProvider } from '../providers/api/api';
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ApiProvider } from '../providers/api/api';
     GooglePlus,
     IBeacon,
     TextToSpeech,
-    ApiProvider
+    ApiProvider,
+    SpeechRecognition
   ]
 })
 export class AppModule {}
