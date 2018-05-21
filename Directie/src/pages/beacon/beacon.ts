@@ -63,8 +63,100 @@ export class BeaconPage {
     public alertCtrl:AlertController,
     public apiProvider:ApiProvider,
     private tts: TextToSpeech) {
-    this.getBRelation();
+    //this.getBRelation();
+    //this.detectBeacon();
+    this.beaconRelation={
+      "Beacons":[
+        {
+          'beaconID':139,
+          'beaconInfo':[
+            {
+              'PB':'',
+              'NB':140,
+              'DIR':'Go straight',
+            }
+          ], 
+          'relatedBeacons':[139,140],
+          'turningPoint':false
+        },
+      {
+        'beaconID':140,
+        'beaconInfo':[ 
+          {
+            'PB':139,
+            'NB':146,
+            'DIR':'Go Straight'
+          }],
+        'relatedBeacons':[139,140,146],
+        'turningPoint':false
+      },
+      {
+        'beaconID':146,
+        'beaconInfo': [{
+          'PB':140,
+          'NB':158,
+          'DIR':'Turn Left'
+        }],
+        'relatedBeacons':[140,146,158],
+        'turningPoint':true
+      },
+      {
+        'beaconID':158,
+        'beaconInfo': [{
+          'PB':146,
+          'NB':153,
+          'DIR':'Go Straight'
+        },
+        {
+          'PB':146,
+          'NB':156,
+          "DIR":'go right'
+        }],
+        'relatedBeacons':[146,153,158,156],
+        'turningPoint':false
+      },
+      {
+        'beaconID':153,
+        'beaconInfo': [{
+          'PB':158,
+          'NB':'159',
+          'DIR':'Go straight'
+        }],
+        'relatedBeacons':[153,158,159],
+        'turningPoint':false
+      },
+      {
+        'beaconID':156,
+        'beaconInfo': {
+          'PB':158,
+          'NB':'',
+          'DIR':'Go straight'
+        },
+        'relatedBeacons':[156,158],
+        'turningPoint':false
+      },
+      {
+        'beaconID':159,
+        'beaconInfo': {
+          'PB':153,
+          'NB':'',
+          'DIR':'Go straight'
+        },
+        'relatedBeacons':[153,159],
+        'turningPoint':false
+      }
+    ]
+  }
+    this.beaconDetails=this.beaconRelation["Beacons"];
+    this.inputDijkstra();
     this.detectBeacon();
+    this.displayAccuracyMessage=true;
+    this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
+    this.sub2=Observable.interval(3000).subscribe((val)=>{
+      if(this.displayAccuracyMessage==true){
+        this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
+      }
+      });
   }
 
   getBRelation() {
@@ -86,6 +178,7 @@ export class BeaconPage {
       console.log(this.beaconDetails);
     });
   }
+
   ionViewDidLoad() {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
@@ -159,7 +252,7 @@ export class BeaconPage {
                this.displayAccuracyMessage=false;
                this.displayDestination=true;
                this.destinationMessage="Arrived at destination beacon "+this.currentBeacon;
-               this.tts.speak(JSON.stringify(this.destinationMessage));
+               this.tts.speak({text:JSON.stringify(this.destinationMessage),rate:0.9});
                let accuracyIndex=this.getCurrenBeacons.findIndex(x=>x.major==this.arrivedDestination);
                   this.currentAccuracyBeacon=this.getCurrenBeacons[accuracyIndex];
                   if(this.currentAccuracyBeacon!=null||this.currentAccuracyBeacon!=undefined){
@@ -176,13 +269,13 @@ export class BeaconPage {
                     this.currentMessage='You are currently at beacon '+this.currentBeacon
                     +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
                     +' Please be aware that the next beacon is a turning point';
-                    this.tts.speak(JSON.stringify(this.currentMessage));
+                    this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                   }
                   else{
                     this.currentMessage='';
                     this.currentMessage='You are currently at beacon '+this.currentBeacon
                     +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo;
-                    this.tts.speak(JSON.stringify(this.currentMessage));
+                    this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                   }
               }
               this.isFirstScan=false;
@@ -263,7 +356,7 @@ export class BeaconPage {
                       this.displayAccuracyMessage=false;
                       this.accuracyMessage='';
                       this.destinationMessage="Arrived at destination beacon "+this.currentBeacon;
-                      this.tts.speak(JSON.stringify(this.destinationMessage));
+                      this.tts.speak({text:JSON.stringify(this.destinationMessage),rate:0.9});
                   }
                   else{
                     this.determinIfTurningPoint(this.nextBeaconToGo);
@@ -272,13 +365,13 @@ export class BeaconPage {
                       this.currentMessage='You are currently at beacon '+this.currentBeacon
                       +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
                       +' Please be aware that the next beacon is a turning point';
-                      this.tts.speak(JSON.stringify(this.currentMessage));
+                      this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                     }
                     else{
                       this.currentMessage='';
                       this.currentMessage='You are currently at beacon '+this.currentBeacon
                       +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo;
-                      this.tts.speak(JSON.stringify(this.currentMessage));
+                      this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                     }
                     this.displayDestination=false;
                   }
@@ -371,15 +464,15 @@ export class BeaconPage {
   }
 
   readMessage(){
-    this.tts.speak(JSON.stringify(this.currentMessage));
+    this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
   }
 
   readAccuracyMessage(){
-    this.tts.speak(JSON.stringify(this.accuracyMessage));
+    this.tts.speak({text:JSON.stringify(this.accuracyMessage),rate:0.9});
   }
 
   readDestinationMessage(){
-    this.tts.speak(JSON.stringify(this.destinationMessage));
+    this.tts.speak({text:JSON.stringify(this.destinationMessage),rate:0.9});
   }
  
 }
