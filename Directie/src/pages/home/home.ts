@@ -41,10 +41,12 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+    this.detectBeacon();
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
 
   ionViewWillEnter() {
+    this.detectBeacon();
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
 
@@ -53,7 +55,7 @@ export class HomePage {
     var textMsg;
     while (responseAttempt < 3) {
       if (responseAttempt == 0)
-        textMsg = "Good morning, Your current location is at Singapore Polytechnic at beacon"+this.currentBeacon+". May I know where do you want to go?";
+        textMsg = "Hello Alex, welcome to Singapore polytechni you are at T2139.Please state where you want to go after the beep.";
       else
         textMsg = "Sorry, no response detected. Your desination please?";
 
@@ -74,7 +76,7 @@ export class HomePage {
 
   speakText(textMsg) {
     return new Promise(resolve => {
-      this.tts.speak({ text: textMsg, locale: "en-US" })
+      this.tts.speak({ text: textMsg, locale: "en-US", rate:0.9 })
         .then(()=>{resolve()})
         .catch((reason: any) => console.log(reason));
     })

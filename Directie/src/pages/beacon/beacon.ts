@@ -65,8 +65,8 @@ export class BeaconPage {
     private tts: TextToSpeech) {
     //this.getBRelation();
     //this.detectBeacon();
-    this.beaconRelation={
-      "Beacons":[
+    //this.beaconRelation={
+    /*  "Beacons":[
         {
           'beaconID':139,
           'beaconInfo':[
@@ -146,17 +146,19 @@ export class BeaconPage {
         'turningPoint':false
       }
     ]
-  }
-    this.beaconDetails=this.beaconRelation["Beacons"];
-    this.inputDijkstra();
+    }*/
+    //this.beaconDetails=this.beaconRelation["Beacons"];
+    //this.inputDijkstra();
+    //this.detectBeacon();
+    //this.displayAccuracyMessage=true;
+    //this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
+    //this.sub2=Observable.interval(3000).subscribe((val)=>{
+    //  if(this.displayAccuracyMessage==true){
+    //    this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
+    //  }
+    //  });
+    this.getBRelation();
     this.detectBeacon();
-    this.displayAccuracyMessage=true;
-    this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
-    this.sub2=Observable.interval(3000).subscribe((val)=>{
-      if(this.displayAccuracyMessage==true){
-        this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy,this.currentNextBeaconAccuracy);
-      }
-      });
   }
 
   getBRelation() {
@@ -185,7 +187,7 @@ export class BeaconPage {
 
   ionViewDidLeave(){
     this.isFirstScan=true;
-    this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
+    //this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
     this.displayMessage=false;
     this.displayAccuracyMessage=false;
     this.sub.unsubscribe();
@@ -267,14 +269,14 @@ export class BeaconPage {
                   if(this.isTurningPoint==true){
                     this.currentMessage='';
                     this.currentMessage='You are currently at beacon '+this.currentBeacon
-                    +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
-                    +' Please be aware that the next beacon is a turning point';
+                    +'. Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
+                    +'. Please be aware that the next beacon is a turning point';
                     this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                   }
                   else{
                     this.currentMessage='';
                     this.currentMessage='You are currently at beacon '+this.currentBeacon
-                    +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo;
+                    +'. Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo;
                     this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                   }
               }
@@ -363,14 +365,14 @@ export class BeaconPage {
                     if(this.isTurningPoint==true){
                       this.currentMessage='';
                       this.currentMessage='You are currently at beacon '+this.currentBeacon
-                      +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
-                      +' Please be aware that the next beacon is a turning point';
+                      +'. Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo
+                      +'. Please be aware that the next beacon is a turning point';
                       this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                     }
                     else{
                       this.currentMessage='';
                       this.currentMessage='You are currently at beacon '+this.currentBeacon
-                      +' Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo;
+                      +'. Please '+this.directionToGo+' to beacon '+this.nextBeaconToGo;
                       this.tts.speak({text:JSON.stringify(this.currentMessage),rate:0.9});
                     }
                     this.displayDestination=false;
