@@ -101,4 +101,5 @@
     <allow-navigation href="http://172.22.37.16:8100" />
     <plugin name="cordova-plugin-speechrecognition" spec="^1.2.0" />
     <engine name="android" spec="7.0.0" />
+    <plugin name="cordova-plugin-device-orientation" spec="^2.0.1" />
 </widget>
