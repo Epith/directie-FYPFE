@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import { BeaconPage } from '../beacon/beacon';
+import { CompassBearingPage} from '../compass-bearing/compass-bearing';
 import { IBeacon } from '@ionic-native/ibeacon';
 import {Observable} from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
@@ -146,5 +147,9 @@ export class HomePage {
            this.currentMessage='';
            this.currentMessage='You are currently at beacon '+this.currentBeacon;
          }//end of if
+      }
+
+      goToCompass(){
+        this.navCtrl.push(CompassBearingPage);
       }
 }

@@ -9,6 +9,7 @@ import { ListPage } from '../pages/list/list';
 import { SignupPage } from '../pages/signup/signup';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { BeaconPage } from '../pages/beacon/beacon';
+import { CompassBearingPage } from '../pages/compass-bearing/compass-bearing'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,6 +21,7 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiProvider } from '../providers/api/api';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
+import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition';
     ListPage,
     SignupPage,
     ResetPasswordPage,
-    BeaconPage
+    BeaconPage,
+    CompassBearingPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition';
     ListPage,
     SignupPage,
     ResetPasswordPage,
-    BeaconPage
+    BeaconPage,
+    CompassBearingPage
   ],
   providers: [
     StatusBar,
@@ -56,7 +60,8 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition';
     IBeacon,
     TextToSpeech,
     ApiProvider,
-    SpeechRecognition
+    SpeechRecognition,
+    DeviceOrientation
   ]
 })
 export class AppModule {}
