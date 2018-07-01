@@ -9,6 +9,7 @@ import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
 import { Unsubscribe } from '@firebase/util';
+import { CompassBearingPage } from '../pages/compass-bearing/compass-bearing';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,7 +27,8 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'List', component: ListPage },
+      { title:'Compass', component: CompassBearingPage }
     ];
 
     firebase.initializeApp({

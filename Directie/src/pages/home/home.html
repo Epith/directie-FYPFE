@@ -11,7 +11,6 @@
   <button ion-button secondary menuToggle>Toggle Menu</button>
   <button ion-button (click)="goToBeacon()">Go to beacon page</button>
   <button ion-button secondary (dblclick)="welcomeMsg()">Wake up directie (use only if standby mode)</button>
-  <button ion-button (click)="goToCompass()">Test compass</button>
 </ion-content>
 <ion-footer *ngIf="displayMessage" no-border>
   <h2>{{currentMessage}}</h2>
