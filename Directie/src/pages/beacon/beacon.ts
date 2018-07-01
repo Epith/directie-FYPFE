@@ -11,6 +11,7 @@ import {Observable} from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { ApiProvider } from '../../providers/api/api';
+import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
 
 /**
  * Generated class for the BeaconPage page.
@@ -57,12 +58,15 @@ export class BeaconPage {
   testForCurrentBeacon:any;
   previousPreviousBeacon:any;
   ifGetFirstCurrentBeacons:boolean=true;
+  getBearing:any;
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     private ibeacon:IBeacon, 
     public alertCtrl:AlertController,
     public apiProvider:ApiProvider,
-    private tts: TextToSpeech) {
+    private tts: TextToSpeech,
+    private deviceOrientation: DeviceOrientation) {
+      this.getDeviceOrientation();
     //this.getBRelation();
     //this.detectBeacon();
     this.beaconRelation={
@@ -74,6 +78,7 @@ export class BeaconPage {
               'PB':'',
               'NB':140,
               'DIR':'Go straight',
+              'bearing':330
             }
           ], 
           'relatedBeacons':[139,140],
@@ -474,5 +479,18 @@ export class BeaconPage {
   readDestinationMessage(){
     this.tts.speak({text:JSON.stringify(this.destinationMessage),rate:0.9});
   }
+
+  getDeviceOrientation(){
+    // Get the device current compass heading
+    this.deviceOrientation.getCurrentHeading().then(
+     (data: DeviceOrientationCompassHeading) => console.log(data),
+     (error: any) => console.log(error)
+   );
+
+   // Watch the device compass heading change
+   var subscription = this.deviceOrientation.watchHeading().subscribe(
+     (data: DeviceOrientationCompassHeading) => this.getBearing=data.magneticHeading
+   );
+ }
  
 }

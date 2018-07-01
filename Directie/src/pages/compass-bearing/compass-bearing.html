@@ -14,5 +14,35 @@
 
 
 <ion-content padding>
+    <ion-item>
+      <ion-label stacked>Previous Beacon</ion-label>
+        <ion-select [(ngModel)]="selectedPreviousBeacon">
+          <ion-option value="None">None</ion-option>
+          <ion-option *ngFor="let beacon of beaconList" value="{{beacon}}">{{beacon}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label stacked>Current Beacon</ion-label>
+          <ion-select [(ngModel)]="selectedCurrentBeacon">
+            <ion-option value="None">None</ion-option>
+            <ion-option *ngFor="let beacon of beaconList" value="{{beacon}}">{{beacon}}</ion-option>
+          </ion-select>
+      </ion-item>
+      <ion-item>
+          <ion-label stacked>Next Beacon</ion-label>
+            <ion-select [(ngModel)]="selectedNextBeacon">
+              <ion-option value="None">None</ion-option>
+              <ion-option *ngFor="let beacon of beaconList" value="{{beacon}}">{{beacon}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Direction</ion-label>
+              <ion-select [(ngModel)]="directionToGo">
+                <ion-option value="Go Straight">Go Straight</ion-option>
+                <ion-option value="Turn Left">Turn Left</ion-option>
+                <ion-option value="Turn Right">Turn Right</ion-option>
+              </ion-select>
+          </ion-item>
   <h2>{{bearing}}</h2>
+  <button ion-button (click)="callConsole()">call console.log</button>
 </ion-content>
