@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
 
 
@@ -24,7 +24,11 @@ export class CompassBearingPage {
   selectedCurrentBeacon:any;
   selectedNextBeacon:any;
   directionToGo:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private deviceOrientation: DeviceOrientation) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    private deviceOrientation: DeviceOrientation,
+    private alertCtrl: AlertController) {
     this.beaconRelation={
       "Beacons":[
         {
@@ -139,6 +143,29 @@ export class CompassBearingPage {
     console.log(this.selectedCurrentBeacon);
     console.log(this.selectedNextBeacon);
     console.log(this.directionToGo);
+  }
+
+  sendToDatabase(){
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Data',
+      message: 'Send to the database?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            console.log('Buy clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

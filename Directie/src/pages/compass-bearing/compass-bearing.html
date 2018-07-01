@@ -43,6 +43,10 @@
                 <ion-option value="Turn Right">Turn Right</ion-option>
               </ion-select>
           </ion-item>
-  <h2>{{bearing}}</h2>
+          <ion-item>
+            <ion-label color="primary" stacked>Compass Bearing</ion-label>
+            <ion-input [(ngModel)]="bearing"></ion-input>
+          </ion-item>
+  <button ion-button (click)="sendToDatabase()">Send Compass Bearing</button>
   <button ion-button (click)="callConsole()">call console.log</button>
 </ion-content>
