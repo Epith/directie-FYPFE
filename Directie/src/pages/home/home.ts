@@ -38,15 +38,19 @@ export class HomePage {
   }
 
   goToBeacon(){
-    this.navCtrl.push(BeaconPage);
+    this.navCtrl.push(BeaconPage,{
+      data: this.currentBeacon
+    });
   }
 
   ionViewDidLoad() {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
+    this.detectBeacon();
   }
 
   ionViewWillEnter() {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
+    this.detectBeacon();
   }
 
   async welcomeMsg() {
