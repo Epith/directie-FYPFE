@@ -68,7 +68,7 @@ export class BeaconPage {
   readOnce: boolean = false;
   turningPointNextBeacon: any;
   secondFacingDirectionCheck: boolean = false;
-  compassNextBeaconToGo:any;
+  compassNextBeaconToGo: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -279,6 +279,7 @@ export class BeaconPage {
             this.currentNextBeaconAccuracy = this.currentAccuracyBeacon["accuracy"];
             this.determineIfUserAtDestination(this.currentNextBeaconAccuracy);
           }
+          this.readOnce = false;
           this.isFirstBeacon = false;
           this.previousBeacon = this.currentBeacon;
           this.previousPreviousBeacon = this.previousBeacon;
@@ -300,6 +301,13 @@ export class BeaconPage {
           }
           if (this.facingRightDirection == false) {
             this.determineIffacingRightDirection();
+            if (this.readOnce == false) {
+              this.currentMessage = '';
+              this.currentMessage = "You are currently at beacon " + this.currentBeacon +
+                " but you are facing the wrong direction to the next beacon";
+              this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
+              this.readOnce = true;
+            }
           }
           else {
             this.displayMessage = true;
@@ -313,6 +321,7 @@ export class BeaconPage {
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
               this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
+            this.readOnce = false;
             this.facingRightDirection = false;
             this.isFirstBeacon = false;
             this.previousBeacon = this.currentBeacon;
@@ -327,44 +336,28 @@ export class BeaconPage {
       }//end of if
     }
     else {
-      if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
-        let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.arrivedDestination);
-        this.currentAccuracyBeacon = this.getCurrenBeacons[accuracyIndex];
-        if (this.currentAccuracyBeacon != null || this.currentAccuracyBeacon != undefined) {
-          this.currentNextBeaconAccuracy = this.currentAccuracyBeacon["accuracy"];
-          this.determineIfUserAtDestination(this.currentNextBeaconAccuracy);
-        }
-        console.log("already at destination");
-        console.log(this.previousNextBeaconAccuracy);
-        console.log(this.currentNextBeaconAccuracy);
-        console.log(this.accuracyMessage);
-      }
-      else {
-        let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.nextBeaconToGo);
-        this.currentAccuracyBeacon = this.getCurrenBeacons[accuracyIndex];
-        if (this.currentAccuracyBeacon != null || this.currentAccuracyBeacon != undefined) {
-          this.currentNextBeaconAccuracy = this.currentAccuracyBeacon["accuracy"];
-        }
-        console.log(this.previousNextBeaconAccuracy);
-        console.log(this.currentNextBeaconAccuracy);
-      }
-      this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
-      console.log(this.beaconBearing);
-      console.log(this.getBearing);
-      if (this.getBearing >= (this.beaconBearing - 5) && this.getBearing <= (this.beaconBearing + 5)) {
-        this.facingRightDirection = true;
-      }
-      else {
-        this.facingRightDirection = false;
-      }
-      if (this.facingRightDirection == false) {
-        this.determineIffacingRightDirection();
-      }
-      else {
-        this.directionToTurn = '';
-        this.directionToTurn = "Please go straight"
-      }
       if (this.getCurrenBeacons.length > 0) {
+        if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
+          let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.arrivedDestination);
+          this.currentAccuracyBeacon = this.getCurrenBeacons[accuracyIndex];
+          if (this.currentAccuracyBeacon != null || this.currentAccuracyBeacon != undefined) {
+            this.currentNextBeaconAccuracy = this.currentAccuracyBeacon["accuracy"];
+            this.determineIfUserAtDestination(this.currentNextBeaconAccuracy);
+          }
+          console.log("already at destination");
+          console.log(this.previousNextBeaconAccuracy);
+          console.log(this.currentNextBeaconAccuracy);
+          console.log(this.accuracyMessage);
+        }
+        else {
+          let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.nextBeaconToGo);
+          this.currentAccuracyBeacon = this.getCurrenBeacons[accuracyIndex];
+          if (this.currentAccuracyBeacon != null || this.currentAccuracyBeacon != undefined) {
+            this.currentNextBeaconAccuracy = this.currentAccuracyBeacon["accuracy"];
+          }
+          console.log(this.previousNextBeaconAccuracy);
+          console.log(this.currentNextBeaconAccuracy);
+        }
         this.pBeaconAccuracy = this.getCurrenBeacons[0]["accuracy"]
         this.testForCurrentBeacon = this.getCurrenBeacons[0]["major"];
         for (let i = 1; i < this.getCurrenBeacons.length; i++) {
@@ -394,6 +387,23 @@ export class BeaconPage {
             }//end of for loop
           }
         }
+        this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
+        console.log(this.beaconBearing);
+        console.log(this.getBearing);
+        if (this.getBearing >= (this.beaconBearing - 5) && this.getBearing <= (this.beaconBearing + 5)) {
+          this.facingRightDirection = true;
+        }
+        else {
+          this.facingRightDirection = false;
+        }
+        if (this.facingRightDirection == false) {
+          this.determineIffacingRightDirection();
+        }
+        else {
+          this.directionToTurn = '';
+          this.directionToTurn = "Please go straight"
+        }
+
         if (this.currentBeacon == this.nextBeaconToGo && this.currentNextBeaconAccuracy < 0.5) {
           for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
             if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
@@ -416,8 +426,7 @@ export class BeaconPage {
                 this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
               }
             }//end of for loop
-            this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
-            this.directionToGo = "Go Straight";
+
             if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
               this.displayMessage = false;
               this.displayDestination = true;
@@ -427,6 +436,8 @@ export class BeaconPage {
               this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
             }
             else {
+              this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
+              this.directionToGo = "Go Straight";
               this.determinIfTurningPoint(this.nextBeaconToGo);
               if (this.isTurningPoint == true) {
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 1);
@@ -455,6 +466,7 @@ export class BeaconPage {
             }
           }
         }
+
       }
 
 
@@ -484,7 +496,7 @@ export class BeaconPage {
       console.dir("beaconID:" + this.beaconDetails[i]["beaconID"] + "related: " + (this.relatedBeacon));
     }
 
-    this.shortestPath = route.path('139', '153');
+    this.shortestPath = route.path('139', '158');
 
   }
 
@@ -614,7 +626,7 @@ export class BeaconPage {
 
     // Watch the device compass heading change
     var subscription = this.deviceOrientation.watchHeading().subscribe(
-      (data: DeviceOrientationCompassHeading) => this.getBearing = Math.round(data.magneticHeading)
+      (data: DeviceOrientationCompassHeading) => this.getBearing = Math.round(data.trueHeading)
     );
   }
 
