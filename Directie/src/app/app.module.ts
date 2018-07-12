@@ -9,6 +9,7 @@ import { ListPage } from '../pages/list/list';
 import { SignupPage } from '../pages/signup/signup';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { BeaconPage } from '../pages/beacon/beacon';
+import { ProfilePage } from '../pages/profile/profile';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,7 +30,8 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition';
     ListPage,
     SignupPage,
     ResetPasswordPage,
-    BeaconPage
+    BeaconPage,
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition';
     ListPage,
     SignupPage,
     ResetPasswordPage,
-    BeaconPage
+    BeaconPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,

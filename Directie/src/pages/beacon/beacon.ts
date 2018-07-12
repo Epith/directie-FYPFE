@@ -6,6 +6,7 @@ import { Alert,
   LoadingController,
   NavController,
   NavParams } from 'ionic-angular';
+import { HomePage } from '../home/home';
 import { IBeacon } from '@ionic-native/ibeacon';
 import {Observable} from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
@@ -475,4 +476,7 @@ export class BeaconPage {
     this.tts.speak({text:JSON.stringify(this.destinationMessage),rate:0.9});
   }
  
+  goToHome(): void {
+    this.navCtrl.push(HomePage);
+  }
 }

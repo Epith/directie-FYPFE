@@ -1,15 +1,36 @@
-<ion-header>
-  <ion-navbar color="primary">
-    <ion-title>Signup</ion-title>
-  </ion-navbar>
-</ion-header>
-
 <ion-content padding class="auth-page">
+  <button class="cancel" (click)="goToLogin()">
+    Cancel
+  </button>
+  
+  <button type="submit" [disabled]="!signupForm.valid" class="register">
+    Register
+  </button>
+  <div class="img">
+    <img src="../assets/imgs/img.png">
+  </div>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
+    <ion-item>
+        <ion-label stacked class="top">Name</ion-label>
+        <ion-input placeholder="Your Name" class="btm">
+        </ion-input>
+    </ion-item>
+
+    <ion-item [class.invalid]="!signupForm.controls.password.valid && signupForm.controls.password.touched"
+      [class.valid]="signupForm.controls.password.valid && signupForm.controls.password.touched">
+      <ion-label stacked class="top">Password</ion-label>
+      <ion-input formControlName="password" type="password" placeholder="Your Password" class="btm">
+      </ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid
+      && signupForm.controls.password.touched">
+      <p>Your password needs more than 6 characters.</p>
+    </ion-item>
+
     <ion-item [class.invalid]="!signupForm.controls.email.valid && signupForm.controls.email.touched"
       [class.valid]="signupForm.controls.email.valid && signupForm.controls.email.touched">
-      <ion-label stacked>Email</ion-label>
-      <ion-input formControlName="email" type="email" placeholder="Your email address">
+      <ion-label stacked class="top">Email</ion-label>
+      <ion-input formControlName="email" type="email" placeholder="Your Email" class="btm">
       </ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid &&
@@ -18,27 +39,16 @@
     </ion-item>
 
     <ion-item>
-      <ion-label stacked>Date of Birth</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob"></ion-datetime>
+      <ion-label stacked class="top">Date of Birth</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob" placeholder="01-01-1918" class="btm"></ion-datetime>
     </ion-item>
 
     <ion-item>
-      <ion-label stacked>Gender</ion-label>
-      <ion-select formControlName="gender">
-        <ion-option value="Female">Female</ion-option>
+      <ion-label stacked class="top">Gender</ion-label>
+      <ion-select formControlName="gender" placeholder="Male" class="btm">
         <ion-option value="Male">Male</ion-option>
+        <ion-option value="Female">Female</ion-option>
       </ion-select>
-    </ion-item>
-
-    <ion-item [class.invalid]="!signupForm.controls.password.valid && signupForm.controls.password.touched"
-      [class.valid]="signupForm.controls.password.valid && signupForm.controls.password.touched">
-      <ion-label stacked>Password</ion-label>
-      <ion-input formControlName="password" type="password" placeholder="Your password">
-      </ion-input>
-    </ion-item>
-    <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid
-      && signupForm.controls.password.touched">
-      <p>Your password needs more than 6 characters.</p>
     </ion-item>
 
     <button ion-button block type="submit" [disabled]="!signupForm.valid">

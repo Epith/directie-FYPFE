@@ -34,6 +34,7 @@
     "cordova-android": "7.0.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-facebook4": "git+https://github.com/amritk/cordova-plugin-facebook4.git",
+    "cordova-plugin-googleplus": "~5.3.0",
     "cordova-plugin-ibeacon": "^3.6.1",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.2.1",
@@ -48,8 +49,7 @@
     "npm": "^6.0.0",
     "rxjs": "5.5.10",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.26",
-    "cordova-plugin-googleplus": "~5.3.0"
+    "zone.js": "0.8.26"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.9",
