@@ -1,12 +1,16 @@
-<ion-content padding class="auth-page">  
-  <div class="img">
-    <img src="../assets/imgs/img.png">
-  </div>
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="auth-page">
   <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
     <ion-item [class.invalid]="!loginForm.controls.email.valid && loginForm.controls.email.touched"
       [class.valid]="loginForm.controls.email.valid && loginForm.controls.email.touched">
-      <ion-label stacked class="top">Email</ion-label>
-      <ion-input formControlName="email" type="email" placeholder="Your Email" class="btm">
+      <ion-label stacked>Email</ion-label>
+      <ion-input formControlName="email" type="email" placeholder="Your email address">
       </ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid &&
@@ -16,46 +20,40 @@
 
     <ion-item [class.invalid]="!loginForm.controls.password.valid && loginForm.controls.password.touched"
       [class.valid]="loginForm.controls.password.valid && loginForm.controls.password.touched">
-      <ion-label stacked class="top">Password</ion-label>
-      <ion-input formControlName="password" type="password" placeholder="Your password" class="btm">
+      <ion-label stacked>Password</ion-label>
+      <ion-input formControlName="password" type="password" placeholder="Your password">
       </ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid
     && loginForm.controls.password.touched">
       <p>Your password needs more than 6 characters.</p>
     </ion-item>
-    
-    <button class="pw" (click)="goToResetPassword()">
-        Forgot Password?
-    </button>
 
-    <button class="login" ion-button block type="submit" [disabled]="!loginForm.valid">
+    <button ion-button block type="submit" [disabled]="!loginForm.valid">
       Log In
     </button>
-
-    <ion-item detail-push>
-      <button class="p1" (click)="goToSignup()">
-        Don't have an account? <a class="p2">Create one now</a>
-      </button>
-    </ion-item>
   </form>
-
-  <ion-item no-lines>
-    <a class="or">or log in via</a>
-  </ion-item>
 
   <ion-grid>
     <ion-row>
       <ion-col>
-          <button class="facebook" (click)="facebookLogin()">
-              <ion-icon name="logo-facebook"><a class = "word">FACEBOOK</a></ion-icon>
+          <button ion-button block (click)="facebookLogin()">
+              <ion-icon name="logo-facebook"></ion-icon>
             </button>
       </ion-col>
       <ion-col>
-          <button class="google" (click)="googleLogin()">
-              <ion-icon name="logo-googleplus"><a class = "word">GOOGLE</a></ion-icon>
+          <button ion-button block color="danger" (click)="googleLogin()" >
+              <ion-icon name="logo-googleplus"></ion-icon>
             </button>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <button ion-button block clear (click)="goToSignup()">
+    Create a new account
+  </button>
+
+  <button ion-button block clear (click)="goToResetPassword()">
+    I forgot my password
+  </button>
 </ion-content>
