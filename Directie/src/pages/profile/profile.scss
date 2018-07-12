@@ -1,10 +1,9 @@
-//page-signup {
-//formControlName="name" type="name" 
+//page-profile {
+
 //}
 @font-face{
     font-family: firstFont;
     src: url('../assets/fonts/roboto-bold.ttf') format('ttf');
-    font-weight: bold;
     font-style: normal;
 }
 
@@ -14,35 +13,40 @@
     font-style: normal;
 }
 
-.img{
-    text-align: center;
-    width: 350px;
-    height: 80px;
-    padding-left: 17px;
-    padding-top: 60px;
-    margin-bottom: 80px;
+.bgp {
+    background-image: url(../assets/imgs/ppbg.png)
 }
 
-.cancel{
-    font-family: secondFont;
-    font-weight: normal;
-    font-size: 18px;
+.top1{
+    margin-bottom: 10px;
+}
+
+.img4{
+    margin-top: 10px;
+    padding-left: 20px;
     float: left;
-    padding-top: 20px;
-    padding-left: 15px;
-    background-color: white;
-    color: red;
 }
 
-.register{
+.save1{
     font-family: secondFont;
-    font-weight: normal;
-    font-size: 18px;
+    font-size: 23px;
+    padding-top: 10px;
+    padding-right: 20px;
     float: right;
-    padding-top: 20px;
-    padding-right: 15px;
-    background-color: white;
     color: blue;
+}
+
+.img5{
+    width: 10px;
+    height: 10px;
+    padding-left: 36px;
+}
+
+.text4{
+    font-family: firstFont;
+    font-size: 22px;
+    padding-left: 128px;
+    color: black;
 }
 
 .top{

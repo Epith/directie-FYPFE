@@ -1,16 +1,28 @@
 <ion-header>
-  <ion-navbar>
+  <ion-toolbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+    <div text-center>
+      <div class="icon">
+        <img src="../assets/imgs/icon1.png">
+      </div>
+    </div>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <button ion-button secondary menuToggle>Toggle Menu</button>
-  <button ion-button (click)="goToBeacon()">Go to beacon page</button>
-  <button ion-button secondary (dblclick)="welcomeMsg()">Wake up directie (use only if standby mode)</button>
+<ion-content text-center>
+  <div class="hometop">
+    <p>Current location:<br>
+    At T1911<br>
+    Classroom</p>
+  </div>
+  <div class="homebtm">
+    <p>Enter Destination:<br><br></p>
+  </div>
+  <button class="message" (click)="goToBeacon()">
+      Go
+  </button>
 </ion-content>
 <ion-footer *ngIf="displayMessage" no-border>
   <h2>{{currentMessage}}</h2>
