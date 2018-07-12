@@ -81,10 +81,6 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.2.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <plugin name="cordova-plugin-facebook4" spec="https://github.com/amritk/cordova-plugin-facebook4">
-        <variable name="APP_ID" value="1856434767990242" />
-        <variable name="APP_NAME" value="Directie" />
-    </plugin>
     <plugin name="com.unarin.cordova.beacon" spec="~3.6.1" />
     <allow-navigation href="http://172.22.34.234:8100" />
     <allow-navigation href="http://192.168.0.106:8100" />
@@ -99,9 +95,29 @@
     <allow-navigation href="http://172.22.35.14:8100" />
     <allow-navigation href="http://172.22.3.3:8100" />
     <allow-navigation href="http://172.22.37.16:8100" />
+<<<<<<< HEAD
+=======
+    <plugin name="cordova-plugin-speechrecognition" spec="^1.2.0" />
+<<<<<<< HEAD
+    <plugin name="cordova-plugin-device-orientation" spec="^2.0.1" />
+>>>>>>> parent of 329758c... Revert "Merge branch 'DemoPhase1' into FrontEndCSS"
     <allow-navigation href="http://192.168.0.101:8100" />
     <allow-navigation href="http://172.22.35.211:8100" />
+<<<<<<< HEAD
     <plugin name="cordova-plugin-device-orientation" spec="^2.0.1" />
     <plugin name="cordova-plugin-speechrecognition" spec="^1.2.0" />
     <engine name="android" spec="7.0.0" />
+=======
+=======
+    <plugin name="cordova-plugin-facebook4" spec="git+https://github.com/amritk/cordova-plugin-facebook4.git">
+        <variable name="APP_ID" value="1856434767990242" />
+        <variable name="APP_NAME" value="Directie" />
+    </plugin>
+    <allow-navigation href="http://172.22.42.215:8100" />
+    <allow-navigation href="http://196.169.77.114:8100" />
+    <allow-navigation href="http://169.254.106.148:8100" />
+    <engine name="android" spec="7.0.0" />
+    <allow-navigation href="http://172.22.42.188:8100" />
+>>>>>>> DemoPhase1
+>>>>>>> parent of 329758c... Revert "Merge branch 'DemoPhase1' into FrontEndCSS"
 </widget>
