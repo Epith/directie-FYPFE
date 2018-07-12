@@ -1,7 +1,16 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import {
+  Alert,
+  AlertController,
+  IonicPage,
+  Loading,
+  LoadingController,
+  NavController
+} from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
+import { EmailValidator } from '../../validators/email';
 /**
  * Generated class for the ProfilePage page.
  *
@@ -16,11 +25,28 @@ import { HomePage } from '../home/home';
 })
 export class ProfilePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+  public profileForm: FormGroup;
+  constructor(
+    public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    public authProvider: AuthProvider,
+    formBuilder: FormBuilder
+  ) {
+    this.profileForm = formBuilder.group({
+      name: [
+        '',
+        Validators.compose([null,Validators.required])
+      ],
+      gender: [
+        '',
+        Validators.compose([null,Validators.required])
+      ],
+      dob:[
+        '',
+        Validators.compose([null,Validators.required])
+      ]
+    });
   }
 
   goToHome(): void {

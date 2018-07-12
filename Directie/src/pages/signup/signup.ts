@@ -12,7 +12,6 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
 import { EmailValidator } from '../../validators/email';
 import firebase from 'firebase/app';
-
 import { LoginPage } from '../../pages/login/login';
 
 @IonicPage()
