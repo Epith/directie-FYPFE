@@ -165,11 +165,22 @@ export class CompassBearingPage {
   }
 
   sendToDatabase(){
+    var PreviousBID;
+    var NextBID;
+    var DirectID;
 
     var CurrentBID = parseInt(this.selectedCurrentBeacon);
-    var PreviousBID = parseInt(this.selectedPreviousBeacon);
-    var NextBID = parseInt(this.selectedNextBeacon);
-    var DirectID;
+    if (this.selectedPreviousBeacon == "None"){
+      PreviousBID = 0;
+    }else {
+      PreviousBID = parseInt(this.selectedPreviousBeacon);
+    }
+    if (this.selectedNextBeacon == "None"){
+      NextBID = 0;
+    }else {
+      NextBID = parseInt(this.selectedNextBeacon);
+    }
+    
     if (this.directionToGo == "Go Sraight"){
       DirectID = 1;
     }else if (this.directionToGo == "Turn Left"){
