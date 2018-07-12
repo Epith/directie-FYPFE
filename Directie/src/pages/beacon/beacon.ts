@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { ApiProvider } from '../../providers/api/api';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
+import { HomePage } from '../home/home';
 
 /**
  * Generated class for the BeaconPage page.
@@ -665,6 +666,10 @@ export class BeaconPage {
     var subscription = this.deviceOrientation.watchHeading().subscribe(
       (data: DeviceOrientationCompassHeading) => this.getBearing = Math.round(data.trueHeading)
     );
+  }
+
+  goToHome(): void {
+    this.navCtrl.push(HomePage);
   }
 
 }

@@ -4,15 +4,38 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
 
-  <ion-navbar>
-    <ion-title>profile</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
+<ion-content class="bgp">
+  <ion-item class="bgp">
+    <div class="top1">
+      <a class="img4" (click)="goToHome()"><img src="../assets/imgs/X.png"></a>
+      <a class="save1">Save</a>
+    </div><br>
+    <div>
+      <a class="img5"><img src="../assets/imgs/pp2.png"></a><br>
+      <a class="text4">Lee GiKwang</a>
+    </div>
+  </ion-item>
+<!--
+  <form [formGroup]="profileForm">
+      <ion-item>
+        <ion-label stacked class="top">Name</ion-label>
+        <ion-input placeholder="Your Name" class="btm">
+        </ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label stacked class="top">Gender</ion-label>
+        <ion-select formControlName="gender" placeholder="Male" class="btm">
+          <ion-option value="Male">Male</ion-option>
+          <ion-option value="Female">Female</ion-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+          <ion-label stacked class="top">Date of Birth</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob" placeholder="01-01-1918" class="btm"></ion-datetime>
+        </ion-item>
+  </form>
+-->
 </ion-content>
