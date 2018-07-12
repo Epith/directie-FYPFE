@@ -69,6 +69,8 @@ export class BeaconPage {
   turningPointNextBeacon: any;
   secondFacingDirectionCheck: boolean = false;
   compassNextBeaconToGo: any;
+  previousDirectionToTurn: String = "";
+  showDirectionToTurn: boolean = true;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -301,6 +303,17 @@ export class BeaconPage {
           }
           if (this.facingRightDirection == false) {
             this.determineIffacingRightDirection();
+            if (this.showDirectionToTurn == true) {
+              this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+              this.showDirectionToTurn = false;
+              this.previousDirectionToTurn = this.directionToTurn;
+            }
+            else {
+              if (this.previousDirectionToTurn != this.directionToTurn) {
+                this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+                this.previousDirectionToTurn = this.directionToTurn;
+              }
+            }
             if (this.readOnce == false) {
               this.currentMessage = '';
               this.currentMessage = "You are currently at beacon " + this.currentBeacon +
@@ -321,6 +334,7 @@ export class BeaconPage {
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
               this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
+            this.showDirectionToTurn = true;
             this.readOnce = false;
             this.facingRightDirection = false;
             this.isFirstBeacon = false;
@@ -398,10 +412,32 @@ export class BeaconPage {
         }
         if (this.facingRightDirection == false) {
           this.determineIffacingRightDirection();
+          if (this.showDirectionToTurn == true) {
+            this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+            this.showDirectionToTurn = false;
+            this.previousDirectionToTurn = this.directionToTurn;
+          }
+          else {
+            if (this.previousDirectionToTurn != this.directionToTurn) {
+              this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+              this.previousDirectionToTurn = this.directionToTurn;
+            }
+          }
         }
         else {
           this.directionToTurn = '';
           this.directionToTurn = "Please go straight"
+          if (this.showDirectionToTurn == true) {
+            this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+            this.showDirectionToTurn = false;
+            this.previousDirectionToTurn = this.directionToTurn;
+          }
+          else {
+            if (this.previousDirectionToTurn != this.directionToTurn) {
+              this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+              this.previousDirectionToTurn = this.directionToTurn;
+            }
+          }
         }
 
         if (this.currentBeacon == this.nextBeaconToGo && this.currentNextBeaconAccuracy < 0.5) {
@@ -455,6 +491,7 @@ export class BeaconPage {
             this.facingRightDirection = false;
             this.readOnce = false;
             this.secondFacingDirectionCheck = false;
+            this.showDirectionToTurn = true;
           }
           else {
             if (this.readOnce == false) {
