@@ -13,8 +13,6 @@ import { HomePage } from '../home/home';
 import { EmailValidator } from '../../validators/email';
 import firebase from 'firebase/app';
 
-import { LoginPage } from '../../pages/login/login';
-
 @IonicPage()
 @Component({
   selector: 'page-signup',
@@ -47,10 +45,6 @@ export class SignupPage {
         Validators.compose([null,Validators.required])
       ]
     });
-  }
-  
-  goToLogin(): void {
-    this.navCtrl.push(LoginPage);
   }
 
   async signupUser(): Promise<void> {

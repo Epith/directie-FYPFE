@@ -9,11 +9,7 @@ import { ListPage } from '../pages/list/list';
 import { SignupPage } from '../pages/signup/signup';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { BeaconPage } from '../pages/beacon/beacon';
-<<<<<<< HEAD
 import { CompassBearingPage } from '../pages/compass-bearing/compass-bearing'
-=======
-import { ProfilePage } from '../pages/profile/profile';
->>>>>>> DemoPhase1
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -36,11 +32,7 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
     SignupPage,
     ResetPasswordPage,
     BeaconPage,
-<<<<<<< HEAD
     CompassBearingPage
-=======
-    ProfilePage
->>>>>>> DemoPhase1
   ],
   imports: [
     BrowserModule,
@@ -56,11 +48,7 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
     SignupPage,
     ResetPasswordPage,
     BeaconPage,
-<<<<<<< HEAD
     CompassBearingPage
-=======
-    ProfilePage
->>>>>>> DemoPhase1
   ],
   providers: [
     StatusBar,
