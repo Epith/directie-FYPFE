@@ -6,8 +6,13 @@ import {
   Loading,
   LoadingController,
   NavController,
+<<<<<<< HEAD
   NavParams
 } from 'ionic-angular';
+=======
+  NavParams } from 'ionic-angular';
+import { HomePage } from '../home/home';
+>>>>>>> DemoPhase1
 import { IBeacon } from '@ionic-native/ibeacon';
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
@@ -653,6 +658,7 @@ export class BeaconPage {
   readDestinationMessage() {
     this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
   }
+<<<<<<< HEAD
 
   getDeviceOrientation() {
     // Get the device current compass heading
@@ -667,4 +673,10 @@ export class BeaconPage {
     );
   }
 
+=======
+ 
+  goToHome(): void {
+    this.navCtrl.push(HomePage);
+  }
+>>>>>>> DemoPhase1
 }
