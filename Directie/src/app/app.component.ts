@@ -9,7 +9,11 @@ import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
 import { Unsubscribe } from '@firebase/util';
+<<<<<<< HEAD
 import { CompassBearingPage } from '../pages/compass-bearing/compass-bearing';
+=======
+import { ProfilePage } from '../pages/profile/profile';
+>>>>>>> DemoPhase1
 
 @Component({
   templateUrl: 'app.html'
@@ -27,8 +31,12 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
+<<<<<<< HEAD
       { title: 'List', component: ListPage },
       { title:'Compass', component: CompassBearingPage }
+=======
+      { title: 'Edit Profile', component: ProfilePage }
+>>>>>>> DemoPhase1
     ];
 
     firebase.initializeApp({
