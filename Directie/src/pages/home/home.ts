@@ -7,6 +7,8 @@ import { CompassBearingPage} from '../compass-bearing/compass-bearing';
 import { IBeacon } from '@ionic-native/ibeacon';
 import {Observable} from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
+import { AuthProvider } from '../../providers/auth/auth';
+import firebase from 'firebase';
 
 
 @Component({
@@ -23,18 +25,22 @@ export class HomePage {
   currentBeacon: any;
   displayMessage:boolean=false;
   currentMessage:String;
+  dateTime:any;
+  counter:any; 
   constructor(
     public navCtrl: NavController, 
     private tts: TextToSpeech, 
     private speechRecognition: SpeechRecognition,
-    private ibeacon:IBeacon) 
+    private ibeacon:IBeacon,
+    private authProvider:AuthProvider)
     {
       this.detectBeacon();
       this.sub=Observable.interval(500).subscribe((val)=>{this.determineCurrentBeacon()});
       setTimeout(() => {
         this.welcomeMsg();
       }, 1600);
-      
+      this.dateTime=new Date().toLocaleString();
+      console.log(this.dateTime);
   }
 
   goToBeacon(){
@@ -46,6 +52,9 @@ export class HomePage {
   ionViewDidLoad() {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
     this.detectBeacon();
+    this.authProvider.readCounter();
+    this.authProvider.uploadTimeStamp(this.dateTime);
+
   }
 
   ionViewWillEnter() {

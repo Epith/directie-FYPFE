@@ -4,8 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import firebase from 'firebase';
 
+
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
 import { Unsubscribe } from '@firebase/util';
@@ -20,27 +20,27 @@ export class MyApp {
 
   rootPage: any;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider:AuthProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider: AuthProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
-      { title:'Compass', component: CompassBearingPage },
+      { title: 'Compass', component: CompassBearingPage },
       { title: 'Edit Profile', component: ProfilePage }
     ];
 
     firebase.initializeApp({
       apiKey: "AIzaSyAVpnGuapjU3HaCGa-CmBHidWrOGV2RSBI",
-    authDomain: "pwa-firebase-hosting.firebaseapp.com",
-    databaseURL: "https://pwa-firebase-hosting.firebaseio.com",
-    projectId: "pwa-firebase-hosting",
-    storageBucket: "pwa-firebase-hosting.appspot.com",
-    messagingSenderId: "72415286155"
+      authDomain: "pwa-firebase-hosting.firebaseapp.com",
+      databaseURL: "https://pwa-firebase-hosting.firebaseio.com",
+      projectId: "pwa-firebase-hosting",
+      storageBucket: "pwa-firebase-hosting.appspot.com",
+      messagingSenderId: "72415286155"
     });
+
 
     const unsubscribe: Unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -71,9 +71,9 @@ export class MyApp {
 
   async logOut(): Promise<void> {
     await this.authProvider.logoutUser();
-    firebase.auth().signOut().then(function() {
+    firebase.auth().signOut().then(function () {
       // Sign-out successful.
-    }).catch(function(error) {
+    }).catch(function (error) {
       // An error happened.
     });
     this.nav.setRoot(LoginPage);

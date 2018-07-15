@@ -5,7 +5,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { SignupPage } from '../pages/signup/signup';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { BeaconPage } from '../pages/beacon/beacon';
@@ -24,12 +23,20 @@ import { ApiProvider } from '../providers/api/api';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
 
+var firebaseConfig = {
+  apiKey: "AIzaSyAVpnGuapjU3HaCGa-CmBHidWrOGV2RSBI",
+  authDomain: "pwa-firebase-hosting.firebaseapp.com",
+  databaseURL: "https://pwa-firebase-hosting.firebaseio.com",
+  projectId: "pwa-firebase-hosting",
+  storageBucket: "pwa-firebase-hosting.appspot.com",
+  messagingSenderId: "72415286155"
+};
+
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     HomePage,
-    ListPage,
     SignupPage,
     ResetPasswordPage,
     BeaconPage,
@@ -39,14 +46,13 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     LoginPage,
     HomePage,
-    ListPage,
     SignupPage,
     ResetPasswordPage,
     BeaconPage,
@@ -56,7 +62,7 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthProvider,
     Facebook,
     GooglePlus,
@@ -67,4 +73,4 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
     DeviceOrientation
   ]
 })
-export class AppModule {}
+export class AppModule { }
