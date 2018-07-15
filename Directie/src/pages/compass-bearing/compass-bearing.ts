@@ -32,94 +32,6 @@ export class CompassBearingPage {
     public apiProvider: ApiProvider,
     private alertCtrl: AlertController) {
     this.getBeacon();
-    /*this.beaconRelation = {
-      "Beacons": [
-        {
-          'beaconID': 139,
-          'beaconInfo': [
-            {
-              'PB': null,
-              'NB': 140,
-              'DIR': 'Go straight',
-              'Bearing': 200
-            }
-          ],
-          'relatedBeacons': [139, 140],
-          'turningPoint': false
-        },
-        {
-          'beaconID': 140,
-          'beaconInfo': [
-            {
-              'PB': 139,
-              'NB': 146,
-              'DIR': 'Go Straight',
-              'Bearing': 250
-            }],
-          'relatedBeacons': [139, 140, 146],
-          'turningPoint': false
-        },
-        {
-          'beaconID': 146,
-          'beaconInfo': [{
-            'PB': 140,
-            'NB': 158,
-            'DIR': 'Turn Left',
-            'Bearing': 290
-          }],
-          'relatedBeacons': [140, 146, 158],
-          'turningPoint': true
-        },
-        {
-          'beaconID': 158,
-          'beaconInfo': [{
-            'PB': 146,
-            'NB': 153,
-            'DIR': 'Go Straight',
-            'Bearing': 200
-          },
-          {
-            'PB': 146,
-            'NB': 156,
-            "DIR": 'go right'
-          }],
-          'relatedBeacons': [146, 153, 158, 156],
-          'turningPoint': false
-        },
-        {
-          'beaconID': 153,
-          'beaconInfo': [{
-            'PB': 158,
-            'NB': 159,
-            'DIR': 'Go straight',
-            'Bearing': 200
-          }],
-          'relatedBeacons': [153, 158, 159],
-          'turningPoint': false
-        },
-        {
-          'beaconID': 156,
-          'beaconInfo': {
-            'PB': 158,
-            'NB': null,
-            'DIR': 'Go straight'
-          },
-          'relatedBeacons': [156, 158],
-          'turningPoint': false
-        },
-        {
-          'beaconID': 159,
-          'beaconInfo': {
-            'PB': 153,
-            'NB': null,
-            'DIR': 'Go straight'
-          },
-          'relatedBeacons': [153, 159],
-          'turningPoint': false
-        }
-      ]
-    }*/
-    //this.beaconDetails=this.beaconRelation["Beacons"];
         // Get the device current compass heading
     this.deviceOrientation.getCurrentHeading().then(
       (data: DeviceOrientationCompassHeading) => console.log(data),
@@ -143,7 +55,7 @@ export class CompassBearingPage {
       for(let i=0;i<this.beacon.length;i++){
         this.beaconList.push(this.beacon[i]["BeaconID"]);
       }
-      console.log(this.beaconList);
+      console.log(this.beacon);
     });
   }
   

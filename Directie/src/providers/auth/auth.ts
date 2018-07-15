@@ -41,24 +41,34 @@ export class AuthProvider {
     return firebase.auth().signOut();
   }
 
-  uploadTimeStamp(dateTime) {
+  uploadTimeStamp(counter,dateTime,startLocation, destination, currentLocation, user, routeComplete) {
     const ref = firebase.database().ref('/TimeStamp/');
     firebase.database()
       .ref('/TimeStamp')
+      .child(counter)
       .child(ref.push().key)
-      .set(dateTime);
+      .set({
+        TimeStamp: dateTime,
+        StartLocation: startLocation,
+        Destination: destination,
+        CurrentLocation: currentLocation,
+        User: user,
+        RouteCompleted: routeComplete
+      });
   }
 
   readCounter() {
+    //read once
     /*return firebase.database().ref('/Counter').once('value').then(snapshot=> {
       this.counter=snapshot.val();
       console.log(this.counter);
     });
     */
-    var counterRef = firebase.database().ref('/Counter');
-    counterRef.on('value', snapshot=> {
-      console.log(snapshot.val());
+    /*var counterRef = firebase.database().ref('/Counter');
+    counterRef.on('value', snapshot => {
+      return snapshot.val();
     });
+    */
   }
 
 
