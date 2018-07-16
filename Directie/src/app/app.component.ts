@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import firebase from 'firebase';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
 import { Unsubscribe } from '@firebase/util';
@@ -28,7 +27,6 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
       { title:'Compass', component: CompassBearingPage },
       { title: 'Edit Profile', component: ProfilePage }
     ];

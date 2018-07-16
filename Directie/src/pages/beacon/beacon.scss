@@ -12,7 +12,7 @@
 .img1{
     width: 112px;
     height: 112px;
-    padding-top: 84px;
+    padding-top: 30px;
     margin-left: 25px;
     float: left;
 }
@@ -20,50 +20,70 @@
 .text1{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 40px;
+    font-size: 290%;
     padding-right: 40px;
-    margin-top: 55px;
+    padding-top: 25px;
     float: right;
     text-align: left;
     color: white;
 }
 
 .hmtop{
+    padding-top: 10px;
     padding-bottom: 40px;
     background-color: #1b1464;
     width: 100%;
-    height: 40%;
+    height: 35%;
+}
+
+.current2{
+    font-family: firstFont;
+    font-size: 30px;
+    padding-left: 10px;
+    margin-right: 341px;
+    color: yellow;
 }
 
 .img2{
-    width: 40px;
-    height: 80px;
-    padding-top: 30px;
-    margin-left: 50px;
+    width: 60px;
+    height: 100px;
+    padding-top: 26px;
+    margin-left: 40px;
     float: left;
 }
 
 .text2{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 26px;
+    font-size: 24px;
     padding-right: 40px;
     float: right;
     text-align: left;
     color: white;
+    width: 65%;
 }
 
 .hmmiddle{
     padding-bottom: 20px;
+    padding-top: 10px;
     margin-top: 2px;
     background-color: #191970;
     width: 100%;
-    height: 24%;
+    height: 29%;
+}
+
+.next{
+    font-family: firstFont;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 341px;
+    color: yellow;
 }
 
 .img3{
     width: 90px;
-    padding-top: 35px;
+    margin-top: 10px;
     margin-left: 20px;
     float: left;
 }
@@ -72,6 +92,7 @@
     font-family: firstFont;
     font-weight: bold;
     font-size: 24px;
+    padding-top: 15px;
     padding-right: 138px;
     float: right;
     text-align: left;
@@ -79,9 +100,10 @@
 }
 
 .hmbtm{
+    padding-top: 10px;
     margin-top: 2px;
     background-color: #4682b4;
-    height: 22%;
+    height: 23%;
 }
 
 .msg{
@@ -89,10 +111,10 @@
     font-weight: bold;
     font-size: 33px;
     text-align: center;
-    padding-left: 130px;
-    padding-right: 130px;
-    padding-top: 22px;
-    padding-bottom: 22px;
+    padding-bottom: 18px;
+    padding-left: 180px;
+    padding-right: 180px;
+    padding-top: 21px;
     margin-top: 2px;
     background-color: red;
     color: white;

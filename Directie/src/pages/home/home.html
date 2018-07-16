@@ -13,15 +13,15 @@
 
 <ion-content text-center>
   <div class="hometop">
-    <p>Current location:<br>
+    <p><a class="current">Current location:</a><br>
     At T1911<br>
     Classroom</p>
   </div>
   <div class="homebtm">
-    <p>Enter Destination:<br><br></p>
+    <p>Destination:<br><br></p>
   </div>
   <button class="message" (click)="goToBeacon()">
-      Go
+    Start
   </button>
 </ion-content>
 <ion-footer *ngIf="displayMessage" no-border>

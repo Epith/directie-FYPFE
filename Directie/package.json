@@ -22,7 +22,7 @@
     "@angular/platform-browser": "5.2.10",
     "@angular/platform-browser-dynamic": "5.2.10",
     "@ionic-native/core": "4.7.0",
-    "@ionic-native/device-orientation": "^4.8.0",
+    "@ionic-native/device-orientation": "^4.9.1",
     "@ionic-native/facebook": "^4.7.0",
     "@ionic-native/google-plus": "^4.7.0",
     "@ionic-native/ibeacon": "^4.7.0",
