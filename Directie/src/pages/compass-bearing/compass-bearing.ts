@@ -41,7 +41,8 @@ export class CompassBearingPage {
 
     // Watch the device compass heading change
     var subscription = this.deviceOrientation.watchHeading().subscribe(
-      (data: DeviceOrientationCompassHeading) => this.bearing = Math.round(data.trueHeading)
+      (data: DeviceOrientationCompassHeading) => {this.bearing = Math.round(data.trueHeading),
+      console.log(data)}
     );
 
     //this.loadBeaconsIntoList();

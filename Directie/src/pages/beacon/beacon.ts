@@ -457,7 +457,7 @@ export class BeaconPage {
           }
         }
 
-        if (this.currentBeacon == this.nextBeaconToGo && this.currentNextBeaconAccuracy < 1) {
+        if (this.currentBeacon == this.nextBeaconToGo && this.currentNextBeaconAccuracy <= 1.5) {
           for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
             if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
               this.compassNextBeaconToGo = this.shortestPath[pathCounter + 1];
