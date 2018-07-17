@@ -16,23 +16,24 @@ import { ApiProvider } from '../../providers/api/api';
   templateUrl: 'compass-bearing.html',
 })
 export class CompassBearingPage {
-  private bearing:any;
+  private bearing: any;
   //private beaconRelation:any;
   //private beaconDetails:any;
-  private beacon:any;
-  private beaconList:any=[];
-  selectedPreviousBeacon:any;
-  selectedCurrentBeacon:any;
-  selectedNextBeacon:any;
-  directionToGo:any;
+  private beacon: any;
+  private beaconList: any = [];
+  selectedPreviousBeacon: any;
+  selectedCurrentBeacon: any;
+  selectedNextBeacon: any;
+  directionToGo: any;
+  note: String = '';
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     private deviceOrientation: DeviceOrientation,
     public apiProvider: ApiProvider,
     private alertCtrl: AlertController) {
     this.getBeacon();
-        // Get the device current compass heading
+    // Get the device current compass heading
     this.deviceOrientation.getCurrentHeading().then(
       (data: DeviceOrientationCompassHeading) => console.log(data),
       (error: any) => console.log(error)
@@ -40,25 +41,25 @@ export class CompassBearingPage {
 
     // Watch the device compass heading change
     var subscription = this.deviceOrientation.watchHeading().subscribe(
-      (data: DeviceOrientationCompassHeading) => this.bearing=Math.round(data.trueHeading)
+      (data: DeviceOrientationCompassHeading) => this.bearing = Math.round(data.trueHeading)
     );
 
     //this.loadBeaconsIntoList();
     //console.log(this.beaconList);
   }
-  getBeacon(){
+  getBeacon() {
     let data = {
     }
     this.apiProvider.getBeacon(data)
-    .then(data => {
-      this.beacon = data;
-      for(let i=0;i<this.beacon.length;i++){
-        this.beaconList.push(this.beacon[i]["BeaconID"]);
-      }
-      console.log(this.beacon);
-    });
+      .then(data => {
+        this.beacon = data;
+        for (let i = 0; i < this.beacon.length; i++) {
+          this.beaconList.push(this.beacon[i]["BeaconID"]);
+        }
+        console.log(this.beacon);
+      });
   }
-  
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad CompassBearingPage');
   }
@@ -69,35 +70,37 @@ export class CompassBearingPage {
     }
   }*/
 
-  callConsole(){
+  callConsole() {
     console.log(this.selectedPreviousBeacon);
     console.log(this.selectedCurrentBeacon);
     console.log(this.selectedNextBeacon);
     console.log(this.directionToGo);
   }
 
-  sendToDatabase(){
+  sendToDatabase() {
     var PreviousBID;
     var NextBID;
     var DirectID;
-
+    var Note = this.note;
+    
     var CurrentBID = parseInt(this.selectedCurrentBeacon);
-    if (this.selectedPreviousBeacon == "None"){
+    
+    if (this.selectedPreviousBeacon == "None") {
       PreviousBID = 0;
-    }else {
+    } else {
       PreviousBID = parseInt(this.selectedPreviousBeacon);
     }
-    if (this.selectedNextBeacon == "None"){
+    if (this.selectedNextBeacon == "None") {
       NextBID = 0;
-    }else {
+    } else {
       NextBID = parseInt(this.selectedNextBeacon);
     }
-    
-    if (this.directionToGo == "Go Sraight"){
+
+    if (this.directionToGo == "Go Straight") {
       DirectID = 1;
-    }else if (this.directionToGo == "Turn Left"){
+    } else if (this.directionToGo == "Turn Left") {
       DirectID = 2;
-    }else if (this.directionToGo == "Turn Right"){
+    } else if (this.directionToGo == "Turn Right") {
       DirectID = 3;
     }
     var Compass = this.bearing;
@@ -117,15 +120,16 @@ export class CompassBearingPage {
           text: 'Confirm',
           handler: () => {
             console.log('Buy clicked');
-            
+
 
             var data = {
-              "BeaconDirection" : {
-                "CurrentBID":CurrentBID,
-                "PreviousBID":PreviousBID,
-                "NextBID":NextBID,
-                "DirectID":DirectID,
-                "Compass":Compass
+              "BeaconDirection": {
+                "CurrentBID": CurrentBID,
+                "PreviousBID": PreviousBID,
+                "NextBID": NextBID,
+                "DirectID": DirectID,
+                "Compass": Compass,
+                "Note": Note
               }
             }
             console.log(data);
@@ -134,7 +138,7 @@ export class CompassBearingPage {
             }, (err) => {
               console.log(err);
             });
-            
+
           }
         }
       ]

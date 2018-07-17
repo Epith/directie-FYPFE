@@ -103,5 +103,5 @@
     <plugin name="cordova-plugin-device-orientation" spec="^2.0.1" />
     <allow-navigation href="http://192.168.0.101:8100" />
     <allow-navigation href="http://172.22.35.211:8100" />
-    <engine name="android" spec="7.0.0" />
+    <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
 </widget>

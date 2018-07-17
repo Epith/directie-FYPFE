@@ -11,6 +11,7 @@ import { BeaconPage } from '../pages/beacon/beacon';
 import { CompassBearingPage } from '../pages/compass-bearing/compass-bearing';
 import { ProfilePage } from '../pages/profile/profile';
 
+import { Keyboard } from '@ionic-native/keyboard';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
@@ -70,7 +71,8 @@ var firebaseConfig = {
     TextToSpeech,
     ApiProvider,
     SpeechRecognition,
-    DeviceOrientation
+    DeviceOrientation,
+    Keyboard
   ]
 })
 export class AppModule { }

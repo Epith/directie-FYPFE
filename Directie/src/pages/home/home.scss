@@ -1,13 +1,19 @@
 //page-home {
 
 //}
+
 .icon{
     padding-right: 65px;
 }
 
+.fullHeight{
+    height:100vh;
+    width:100vw;
+}
+
 @font-face{
     font-family: firstFont;
-    src: url('../assets/fonts/roboto-bold.ttf') format('ttf');
+    src: url('assets/fonts/roboto-bold.ttf') format('ttf');
     font-weight: bold;
     font-style: normal;
 }
@@ -15,28 +21,30 @@
 .hometop{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 45px;
+    font-size: 1.9em;
     padding-top: 20px;
     padding-bottom: 20px;
     background-color: #1b1464;//1b1464//32CD32//CD327F
     color: white;
+    height:43%;
 }
 
 .homebtm{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 40px;
+    font-size: 1.8em;
     padding-top: 10px;
     padding-bottom: 10px;
     margin-top: 2px;
     background-color: #6A5ACD;//6A5ACD//6A9B6A//801F50
     color: white;
+    height:43%;
 }
 
 .message{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 40px;
+    font-size: 1.8em;
     text-align: center;
     padding-left: 42.5%;
     padding-right: 50%;
@@ -45,4 +53,5 @@
     margin-top: 2px;
     background-color: #32CD32;//32CD32
     color: white;
+    height:8%;
 }

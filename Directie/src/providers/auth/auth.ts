@@ -71,5 +71,9 @@ export class AuthProvider {
     */
   }
 
+  updateCounter(counter){
+    const ref = firebase.database().ref('/Counter');
+    ref.set(counter);
+  }
 
 }

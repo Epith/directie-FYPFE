@@ -1,3 +1,7 @@
+.fullHeight{
+    height:100vh;
+    width:100vw;
+}
 
 .icon{
     padding-right: 65px;
@@ -9,94 +13,101 @@
     font-weight: bold;
     font-style: normal;
 }
-.img1{
-    width: 112px;
-    height: 112px;
-    padding-top: 84px;
-    margin-left: 25px;
-    float: left;
-}
-
-.text1{
-    font-family: firstFont;
-    font-weight: bold;
-    font-size: 40px;
-    padding-right: 40px;
-    margin-top: 55px;
-    float: right;
-    text-align: left;
-    color: white;
-}
 
 .hmtop{
-    padding-bottom: 40px;
+    //padding-bottom: 40px;
     background-color: #1b1464;
-    width: 100%;
-    height: 40%;
-}
+    height: 30%;
 
-.img2{
-    width: 40px;
-    height: 80px;
-    padding-top: 30px;
-    margin-left: 50px;
-    float: left;
-}
+    .img1{
+        width: 50px;
+        height: 50px;
+        //padding-top: 84px;
+        //margin-left: 25px;
+        //float: left;
+    }
 
-.text2{
-    font-family: firstFont;
-    font-weight: bold;
-    font-size: 26px;
-    padding-right: 40px;
-    float: right;
-    text-align: left;
-    color: white;
+    .text1{
+        font-family: firstFont;
+        font-weight: bold;
+        font-size: 1.5em;
+        //padding-right: 40px;
+        //margin-top: 55px;
+        float: right;
+        text-align: left;
+        color: white;
+    }
 }
 
 .hmmiddle{
-    padding-bottom: 20px;
+    //padding-bottom: 20px;
     margin-top: 2px;
     background-color: #191970;
     width: 100%;
-    height: 24%;
+    height: 30%;
+
+    .img2{
+        width: 40px;
+        height: 80px;
+        //padding-top: 30px;
+        //margin-left: 50px;
+        //float: left;
+    }
+    .text2{
+        font-family: firstFont;
+        font-weight: bold;
+        font-size: 1.5em;
+        //padding-right: 40px;
+        float: right;
+        text-align: left;
+        color: white;
+    }
 }
 
-.img3{
-    width: 90px;
-    padding-top: 35px;
-    margin-left: 20px;
-    float: left;
-}
 
-.text3{
-    font-family: firstFont;
-    font-weight: bold;
-    font-size: 24px;
-    padding-right: 138px;
-    float: right;
-    text-align: left;
-    color: white;
-}
+
+
 
 .hmbtm{
     margin-top: 2px;
     background-color: #4682b4;
-    height: 22%;
+    height: 30%;
+
+    .img3{
+        width: 90px;
+        //padding-top: 35px;
+        //margin-left: 20px;
+        //float: left;
+    }
+
+    .text3{
+        font-family: firstFont;
+        font-weight: bold;
+        font-size: 1.5em;
+        //padding-right: 138px;
+        float: right;
+        text-align: left;
+        color: white;
+    }
+    
 }
 
 .msg{
+    height: 10%;
+    width: 100%;
     font-family: firstFont;
     font-weight: bold;
-    font-size: 33px;
+    font-size: 1.8em;
     text-align: center;
     padding-left: 130px;
     padding-right: 130px;
-    padding-top: 22px;
-    padding-bottom: 22px;
-    margin-top: 2px;
+    //padding-top: 22px;
+    //padding-bottom: 22px;
+    //margin-top: 2px;
     background-color: red;
     color: white;
 }
+
 
 /*<ion-content padding>
   <button ion-button (click)="detectBeacon()">Detect Beacon</button>

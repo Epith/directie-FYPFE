@@ -17,24 +17,28 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content text-center>
+<ion-content text-center class="fullHeight">
   <div class="hmtop">
-    <a class="img1"><img src="assets/imgs/currentIcon.png"></a>
-    <p class="text1">Current:<br>
-    At T1911<br>
-    Classroom</p>
+    <a class="img1">
+      <img src="assets/imgs/currentIcon.png">
+    </a>
+    <p class="text1">{{currentMessage}}
+    {{beaconBearing}}
   </div>
   <div class="hmmiddle">
-    <a class="img2"><img src="assets/imgs/straight.png"></a>
-    <p class="text2">Next:<br>
-    Head straight then<br>
-    T1912 is ahead</p>
+    <a class="img2">
+      <img src="assets/imgs/straight.png">
+    </a>
+    <p class="text2">{{directionToTurn}}
   </div>
   <div class="hmbtm">
-    <a class="img3"><img src="assets/imgs/destinationIcon.png"></a>
-    <p class="text3">Destination:<br>
-    T2011<br>
-    Classroom</p>
+    <a class="img3">
+      <img src="assets/imgs/destinationIcon.png">
+    </a>
+    <p class="text3">Destination:
+      <br> T2011
+      <br> Classroom
+    </p>
   </div>
   <button class="msg" (click)="goToHome()">
     End Route

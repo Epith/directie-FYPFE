@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AuthProvider } from '../../providers/auth/auth';
 import firebase from 'firebase';
 import { ApiProvider } from '../../providers/api/api';
+import { Keyboard } from '@ionic-native/keyboard';
 
 
 @Component({
@@ -38,20 +39,18 @@ export class HomePage {
   previousFacility: any;
   currentBeaconInfo: any;
   destinationBeacon: any;
+  isRelated: boolean = false;
   constructor(
     public navCtrl: NavController,
     private tts: TextToSpeech,
     private speechRecognition: SpeechRecognition,
     private ibeacon: IBeacon,
     private authProvider: AuthProvider,
-    public apiProvider: ApiProvider) {
-    this.getBRelation();
+    public apiProvider: ApiProvider,
+    private keyboard: Keyboard) {
+    this.keyboard.disableScroll(true);
     this.detectBeacon();
-    this.sub = Observable.interval(500).subscribe((val) => { this.determineCurrentBeacon() });
-    this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndFacility() });
-    setTimeout(() => {
-      this.welcomeMsg();
-    }, 1600);
+    this.getBRelation();
   }
 
   goToBeacon() {
@@ -60,7 +59,11 @@ export class HomePage {
     this.dateTime = new Date().toLocaleString();
     this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.email, false);
     this.navCtrl.push(BeaconPage, {
-      data: this.currentBeacon
+      currentBeacon: this.currentBeacon,
+      destinationBeacon: this.destinationBeacon.toString(),
+      beaconList: this.beaconDetails,
+      counter: this.counter,
+      destinationUnit: this.destination
     });
   }
 
@@ -171,10 +174,17 @@ export class HomePage {
           this.testForCurrentBeacon = this.getCurrenBeacons[i]["major"];
         }
       }
-      this.currentBeacon = this.testForCurrentBeacon;
-      this.displayMessage = true;
-      this.currentMessage = '';
-      this.currentMessage = 'You are currently at beacon ' + this.currentBeacon;
+      this.checkIfRelated(this.testForCurrentBeacon);
+      if (this.isRelated == true) {
+        this.currentBeacon = this.testForCurrentBeacon;
+        this.displayMessage = true;
+        this.currentMessage = '';
+        this.currentMessage = 'You are currently at beacon ' + this.currentBeacon;
+        console.log("is related");
+      }
+      else {
+        console.log("not related");
+      }
     }//end of if
   }
 
@@ -190,6 +200,11 @@ export class HomePage {
       .then(data => {
         this.beaconRelation = data;
         this.beaconDetails = this.beaconRelation["Beacons"];
+        this.sub = Observable.interval(500).subscribe((val) => { this.determineCurrentBeacon() });
+        setTimeout(() => {
+          this.welcomeMsg();
+        }, 2500);
+        this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndFacility() });
         console.log(this.beaconDetails);
       });
   }
@@ -238,6 +253,17 @@ export class HomePage {
           this.destinationBeacon = this.beaconDetails[i]["beaconID"]
         }
       }
+    }
+  }
+
+  checkIfRelated(currentBeacon) {
+    let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == currentBeacon);
+    this.currentBeaconInfo = this.beaconDetails[currentBeaconIndex];
+    if (this.currentBeaconInfo == null || this.currentBeaconInfo == undefined) {
+      this.isRelated = false;
+    }
+    else {
+      this.isRelated = true;
     }
   }
 }
