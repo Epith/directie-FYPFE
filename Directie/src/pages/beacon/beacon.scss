@@ -9,83 +9,101 @@
 
 @font-face{
     font-family: firstFont;
-    src: url('../assets/fonts/roboto-bold.ttf') format('ttf');
+    src: url('assets/fonts/roboto-bold.ttf') format('ttf');
     font-weight: bold;
     font-style: normal;
 }
 
-.hmtop{
-    //padding-bottom: 40px;
-    background-color: #1b1464;
-    height: 30%;
 
-    .img1{
-        width: 50px;
-        height: 50px;
-        //padding-top: 84px;
-        //margin-left: 25px;
-        //float: left;
+
+.hmtop{
+    background-color: #1b1464;
+    height: 35%;
+    overflow: hidden; 
+    padding-top: 1%;
+
+
+    img{
+        width: 19vw;
+        height: 10vh;
+        margin-top: 14%;
+        margin-left: 10%;
+        margin-right: 4%;
+        float: left;
     }
+
+    .current2{
+        font-family: firstFont;
+        font-size: 2em;
+        color: yellow;
+      }
 
     .text1{
         font-family: firstFont;
         font-weight: bold;
-        font-size: 1.5em;
-        //padding-right: 40px;
-        //margin-top: 55px;
-        float: right;
+        font-size: 2.7em;
         text-align: left;
         color: white;
+
     }
 }
 
 .hmmiddle{
-    //padding-bottom: 20px;
     margin-top: 2px;
     background-color: #191970;
     width: 100%;
-    height: 30%;
+    height: 25%;
+    overflow: hidden;
+    padding-top: 1%;
 
-    .img2{
-        width: 40px;
-        height: 80px;
-        //padding-top: 30px;
-        //margin-left: 50px;
-        //float: left;
+    img{
+        width: 8vw;
+        height: 15vh;
+        margin-top: 8%;
+        margin-left: 13%;
+        margin-right: 4%;
+        float: left;
     }
+
+    .next{
+        font-family: firstFont;
+        font-size: 2em;
+        color: yellow;
+      }
+
     .text2{
         font-family: firstFont;
         font-weight: bold;
-        font-size: 1.5em;
-        //padding-right: 40px;
-        float: right;
+        font-size: 2.3em;
         text-align: left;
         color: white;
     }
 }
 
-
-
-
-
 .hmbtm{
     margin-top: 2px;
     background-color: #4682b4;
-    height: 30%;
+    height: 25%;
+    overflow: hidden;
+    padding-top: 1%;
 
-    .img3{
-        width: 90px;
-        //padding-top: 35px;
-        //margin-left: 20px;
-        //float: left;
+    img{
+        width: 23vw;
+        margin-top: 8%;
+        margin-left: 8%;
+        float: left;
     }
+
+    .next{
+        font-family: firstFont;
+        font-size: 2em;
+        color: yellow;
+      }
 
     .text3{
         font-family: firstFont;
         font-weight: bold;
-        font-size: 1.5em;
-        //padding-right: 138px;
-        float: right;
+        font-size: 2.3em;
         text-align: left;
         color: white;
     }
@@ -93,7 +111,7 @@
 }
 
 .msg{
-    height: 10%;
+    height: 14%;
     width: 100%;
     font-family: firstFont;
     font-weight: bold;
@@ -103,7 +121,7 @@
     padding-right: 130px;
     //padding-top: 22px;
     //padding-bottom: 22px;
-    //margin-top: 2px;
+    margin-top: 2px;
     background-color: red;
     color: white;
 }

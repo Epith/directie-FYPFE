@@ -19,28 +19,38 @@
 
 <ion-content text-center class="fullHeight">
   <div class="hmtop">
-    <a class="img1">
-      <img src="assets/imgs/currentIcon.png">
-    </a>
-    <p class="text1">{{currentMessage}}
-    {{getBearing}}
+    <img src="assets/imgs/currentIcon.png">
+    <span class="current2">
+      Current:
+    </span>
+    <br>
+    <span class="text1">
+      T1911
+      <br> Toilet
+    </span>
   </div>
   <div class="hmmiddle">
-    <a class="img2">
-      <img src="assets/imgs/straight.png">
-    </a>
-    <p class="text2">{{directionToTurn}}
+    <img src="assets/imgs/straight.png">
+    <span class="next">
+      Next:
+    </span>
+    <br>
+    <span class="text2">
+      Turn right and head towards Toilet
+    </span>
   </div>
   <div class="hmbtm">
-    <a class="img3">
-      <img src="assets/imgs/destinationIcon.png">
-    </a>
-    <p class="text3">Destination:
-      <br> T2011
-      <br> Classroom
-    </p>
+    <img src="assets/imgs/destinationIcon.png">
+    <span class="next">
+      Destination:
+    </span>
+    <br>
+    <span class="text3">
+      T2142
+      <br>Art Room
+    </span>
   </div>
   <button class="msg" (click)="goToHome()">
-    End Route
+    End
   </button>
 </ion-content>
