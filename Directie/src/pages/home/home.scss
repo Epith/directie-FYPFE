@@ -24,7 +24,7 @@
 .hometop{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 2.1em;
+    font-size: 2.8em;
     //padding-top: 20px;
     //padding-bottom: 20px;
     background-color: #1b1464;//1b1464//32CD32//CD327F
@@ -34,6 +34,11 @@
 
     div{
         padding-top: 2px;
+
+        .current{
+            font-weight: bold;
+            font-size: 0.8em;
+        }
     }
 
 }
@@ -41,7 +46,7 @@
 .homebtm{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 2.1em;
+    font-size: 2.8em;
     //padding-top: 10px;
     //padding-bottom: 10px;
     margin-top: 2px;
@@ -58,7 +63,7 @@
 .message{
     font-family: firstFont;
     font-weight: bold;
-    font-size: 2em;
+    font-size: 3.5em;
     text-align: center;
     //padding-left: 42.5%;
     //padding-right: 50%;
