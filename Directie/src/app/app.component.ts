@@ -3,6 +3,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import firebase from 'firebase';
+import { Keyboard } from '@ionic-native/keyboard';
 
 
 import { HomePage } from '../pages/home/home';
@@ -22,9 +23,10 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider: AuthProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider: AuthProvider, public keyboard: Keyboard) {
     this.initializeApp();
 
+    this.keyboard.disableScroll(true);
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
