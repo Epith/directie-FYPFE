@@ -18,16 +18,16 @@
 
 .hmtop{
     background-color: #000080;
-    height: 32%;
+    height: 35%;
     overflow: hidden; 
     padding-top: 1%;
 
 
     img{
-        width: 23vw;
-        height: 12vh;
+        width: 27vw;
+        height: 14vh;
         margin-top: 7%;
-        margin-left: 10%;
+        margin-left: 6%;
         float: left;
     }
 
@@ -43,27 +43,28 @@
         font-family: firstFont;
         font-weight: bold;
         padding-right: 2%;
-        font-size: 2.4em;
+        font-size: 2.9em;
+        //font-size: 2.4em;
         float: right;
         text-align: left;
         color: white;
 
     }
 }
-
 .hmmiddle{
-    margin-top: 2px;
-    background-color: #191970;
     width: 100%;
-    height: 30%;
+    height: 29%;
     overflow: hidden;
     padding-top: 1%;
+    margin-top: 0.5%;
+    background-color: #1b1464;
+    //margin-top: 2px;
 
     img{
         width: 18vw;
-        height: 13vh;
-        margin-top: 4%;
-        margin-left: 13%;
+        height: 11vh;
+        margin-top: 5%;
+        margin-left: 10%;
         margin-right: 4%;
         float: left;
     }
@@ -88,11 +89,12 @@
 }
 
 .hmbtm{
-    margin-top: 2px;
-    background-color: #1b1464;//#4169E1;//#4682b4;
-    height: 25%;
+    //margin-top: 2px;
+    height: 23%;
     overflow: hidden;
     padding-top: 1%;
+    margin-top: 0.5%;
+    background-color: #191970;//#4169E1;//#4682b4;191970
 
     img{
         width: 23vw;
@@ -113,7 +115,7 @@
         font-family: firstFont;
         font-weight: bold;
         font-size: 1.7em;
-        padding-top: 5%;
+        padding-top: 5.5%;
         padding-right: 2%;
         float: right;
         text-align: left;
@@ -123,19 +125,20 @@
 }
 
 .msg{
-    height: 12%;
     width: 100%;
+    height: 12%;
     font-family: firstFont;
     font-weight: bold;
-    font-size: 2.5em;
+    font-size: 2.4em;
+    margin-top: 0.5%;
     text-align: center;
-    padding-left: 130px;
-    padding-right: 130px;
-    //padding-top: 22px;
-    //padding-bottom: 22px;
-    margin-top: 2px;
     background-color: red;
     color: white;
+    /*padding-top: 22px;
+    padding-bottom: 22px;
+    padding-left: 130px;
+    padding-right: 130px;
+    margin-top: 2px;*/
 }
 
 
