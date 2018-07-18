@@ -39,6 +39,8 @@ export class HomePage {
   previousFacility: any;
   currentBeaconInfo: any;
   destinationBeacon: any;
+  destinationFacility: any;
+  destinationBeaconInfo: any;
   isRelated: boolean = false;
   constructor(
     public navCtrl: NavController,
@@ -57,13 +59,16 @@ export class HomePage {
     this.determineDestinationBeacon(this.destination);
     console.log(this.destinationBeacon);
     this.dateTime = new Date().toLocaleString();
-    this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.email, false);
+    this.determineDestinationFacility(this.destinationBeacon);
+    console.log(this.destinationFacility);
+    //this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.email, false);
     this.navCtrl.push(BeaconPage, {
       currentBeacon: this.currentBeacon,
       destinationBeacon: this.destinationBeacon.toString(),
       beaconList: this.beaconDetails,
       counter: this.counter,
-      destinationUnit: this.destination
+      destinationUnit: this.destination,
+      destinationFacility: this.destinationFacility
     });
   }
 
@@ -251,6 +256,27 @@ export class HomePage {
       for (let k = 0; k < this.beaconDetails[i]["unit"].length; k++) {
         if (destination == this.beaconDetails[i]["unit"][k]) {
           this.destinationBeacon = this.beaconDetails[i]["beaconID"]
+        }
+      }
+    }
+  }
+
+  determineDestinationFacility(destination) {
+    this.destinationFacility = '';
+    let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == destination);
+    this.destinationBeaconInfo = this.beaconDetails[currentBeaconIndex];
+    if (this.destinationBeaconInfo != null || this.destinationBeaconInfo != undefined) {
+      if (this.destinationBeaconInfo["facility"].length > 0) {
+        this.previousFacility = this.destinationBeaconInfo["facility"][0];
+        this.destinationFacility = this.destinationBeaconInfo["facility"][0];
+        for (let i = 1; i < this.destinationBeaconInfo["facility"].length; i++) {
+          if (this.previousFacility != this.destinationBeaconInfo["facility"][i]) {
+            this.destinationFacility = this.currentFacility + this.destinationBeaconInfo["facility"][i];
+            this.previousFacility = this.destinationBeaconInfo["facility"][i];
+          }
+          else {
+            this.previousFacility = this.destinationBeaconInfo["facility"][i];
+          }
         }
       }
     }

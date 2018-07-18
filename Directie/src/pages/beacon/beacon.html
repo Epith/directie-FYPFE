@@ -25,8 +25,9 @@
     </span>
     <br>
     <span class="text1">
-      T1911
-      <br> Toilet
+      {{currentUnit}}
+      <br> {{currentFacility}}
+      {{getBearing}}
     </span>
   </div>
   <div class="hmmiddle">
@@ -46,8 +47,8 @@
     </span>
     <br>
     <span class="text3">
-      T2142
-      <br>Art Room
+      {{destinationUnit}}
+      <br>{{destinationFacility}}
     </span>
   </div>
   <button class="msg" (click)="goToHome()">
