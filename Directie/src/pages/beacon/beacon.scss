@@ -17,32 +17,34 @@
 
 
 .hmtop{
-    background-color: #1b1464;
+    background-color: #000080;
     height: 32%;
     overflow: hidden; 
     padding-top: 1%;
 
 
     img{
-        width: 19vw;
-        height: 10vh;
-        margin-top: 14%;
+        width: 23vw;
+        height: 12vh;
+        margin-top: 7%;
         margin-left: 10%;
-        margin-right: 4%;
         float: left;
-        margin-bottom: 1%;
     }
 
     .current2{
         font-family: firstFont;
         font-size: 2em;
+        margin-right: 70%;
         color: yellow;
       }
 
     .text1{
+        width: 60%;
         font-family: firstFont;
         font-weight: bold;
+        padding-right: 2%;
         font-size: 2.4em;
+        float: right;
         text-align: left;
         color: white;
 
@@ -58,9 +60,9 @@
     padding-top: 1%;
 
     img{
-        width: 8vw;
-        height: 15vh;
-        margin-top: 8%;
+        width: 18vw;
+        height: 13vh;
+        margin-top: 4%;
         margin-left: 13%;
         margin-right: 4%;
         float: left;
@@ -68,14 +70,18 @@
 
     .next{
         font-family: firstFont;
-        font-size: 2em;
+        font-size: 1.8em;
+        margin-right: 78%;
         color: yellow;
       }
 
     .text2{
+        width: 60%;
         font-family: firstFont;
         font-weight: bold;
-        font-size: 2.2em;
+        font-size: 1.7em;
+        padding-right: 2%;
+        float: right;
         text-align: left;
         color: white;
     }
@@ -83,28 +89,33 @@
 
 .hmbtm{
     margin-top: 2px;
-    background-color: #4682b4;
+    background-color: #1b1464;//#4169E1;//#4682b4;
     height: 25%;
     overflow: hidden;
     padding-top: 1%;
 
     img{
         width: 23vw;
-        margin-top: 8%;
+        margin-top: 3%;
         margin-left: 8%;
         float: left;
     }
 
-    .next{
+    .destination{
         font-family: firstFont;
-        font-size: 2em;
+        font-size: 1.8em;
+        margin-right: 58%;
         color: yellow;
       }
 
     .text3{
+        width: 60%;
         font-family: firstFont;
         font-weight: bold;
-        font-size: 2.1em;
+        font-size: 1.7em;
+        padding-top: 5%;
+        padding-right: 2%;
+        float: right;
         text-align: left;
         color: white;
     }
