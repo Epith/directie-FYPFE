@@ -86,6 +86,9 @@ export class BeaconPage {
   destinationFacility: any;
   reachedDestination: boolean = false;
   textToDisplay: String = '';
+  nextUnit: String;
+  nextBeaconInfo: any;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -115,7 +118,7 @@ export class BeaconPage {
         this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy, this.currentNextBeaconAccuracy);
       }
     });
-    this.sub3 = Observable.interval(500).subscribe((val) => { this.determineUnitAndFacility() });
+    this.sub3 = Observable.interval(500).subscribe((val) => { this.determineCurrentUnitAndFacility() });
     console.log(this.beaconDetails);
     console.log(this.shortestPath);
   }
@@ -177,7 +180,7 @@ export class BeaconPage {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
 
-  determineCurrentBeacon() {
+  async determineCurrentBeacon() {
     // console.log('didRangeBeaconsInRegion: ', data)
     if (this.isFirstBeacon == true) {
       if (this.getCurrenBeacons.length > 0) {
@@ -227,19 +230,19 @@ export class BeaconPage {
               this.currentMessage = '';
               this.currentMessage = "You are currently at beacon " + this.currentBeacon +
                 " but you are facing the wrong direction to the next beacon";
-              this.speakText(this.currentMessage);
+              //await this.speakText(this.currentMessage);
               //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               this.readOnce = true;
             }
             if (this.showDirectionToTurn == true) {
-              this.speakText(this.directionToTurn);
+              //await this.speakText(this.directionToTurn);
               //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
               this.showDirectionToTurn = false;
               this.previousDirectionToTurn = this.directionToTurn;
             }
             else {
               if (this.previousDirectionToTurn != this.directionToTurn) {
-                this.speakText(this.directionToTurn);
+                //await this.speakText(this.directionToTurn);
                 //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
                 this.previousDirectionToTurn = this.directionToTurn;
               }
@@ -251,10 +254,14 @@ export class BeaconPage {
             this.determinIfTurningPoint(this.nextBeaconToGo);
             if (this.isTurningPoint == true) {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
+              this.determineNextUnit(this.nextBeaconToGo);
+              this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 1);
               this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
             else {
+              this.determineNextUnit(this.nextBeaconToGo);
+              this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
               this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
@@ -364,7 +371,7 @@ export class BeaconPage {
           if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
             if (this.reachedDestination == false) {
               this.dateTime = new Date().toLocaleString();
-              this.determineUnitAndFacility();
+              this.determineCurrentUnitAndFacility();
               this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destinationUnit, this.currentUnit, firebase.auth().currentUser.email, true);
               this.displayMessage = false;
               this.displayDestination = true;
@@ -396,15 +403,19 @@ export class BeaconPage {
               }//end of for loop
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.dateTime = new Date().toLocaleString();
-              this.determineUnitAndFacility();
+              this.determineCurrentUnitAndFacility();
               this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destinationUnit, this.currentUnit, firebase.auth().currentUser.email, false);
               this.directionToGo = "Go Straight";
               this.determinIfTurningPoint(this.nextBeaconToGo);
               if (this.isTurningPoint == true) {
+                this.determineNextUnit(this.nextBeaconToGo);
+                this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 1);
                 this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               }
               else {
+                this.determineNextUnit(this.nextBeaconToGo);
+                this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
                 this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               }
@@ -564,12 +575,24 @@ export class BeaconPage {
       this.currentMessage = '';
       this.currentMessage = 'You are currently at beacon ' + currentBeacon
         + ' Please ' + directionToGo + ' to beacon ' + nextBeaconToGo
-        + ' Please be prepared to ' + this.turningPointDirection + " at the next beacon";
+        + ' Please be prepared to ' + this.turningPointDirection + " at the next location";
     }
     else {
       this.currentMessage = '';
       this.currentMessage = 'You are currently at beacon ' + currentBeacon
         + ' Please ' + directionToGo + ' to beacon ' + nextBeaconToGo;
+    }
+  }
+
+  setTextToDisplay(directionToGo, nextBeaconToGo, version) {
+    if (version == 1) {
+      this.textToDisplay = '';
+      this.textToDisplay = directionToGo + ' to ' + nextBeaconToGo
+        + ' Please be prepared to ' + this.turningPointDirection + " at the next location";
+    }
+    else {
+      this.textToDisplay = '';
+      this.textToDisplay = directionToGo + ' to ' + nextBeaconToGo;
     }
   }
 
@@ -603,7 +626,7 @@ export class BeaconPage {
     this.authProvider.updateCounter((this.counter + 1));
   }
 
-  determineUnitAndFacility() {
+  determineCurrentUnitAndFacility() {
     this.previousUnit = '';
     this.currentUnit = '';
     this.currentFacility = '';
@@ -640,8 +663,30 @@ export class BeaconPage {
     }
   }
 
+  determineNextUnit(nextBeacon) {
+    this.previousUnit = '';
+    this.nextUnit = '';
+    let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == nextBeacon);
+    this.nextBeaconInfo = this.beaconDetails[currentBeaconIndex];
+    if (this.nextBeaconInfo != null || this.nextBeaconInfo != undefined) {
+      if (this.nextBeaconInfo["unit"].length > 0) {
+        this.previousUnit = this.nextBeaconInfo["unit"][0];
+        this.nextUnit = this.nextBeaconInfo["unit"][0];
+        for (let i = 1; i < this.nextBeaconInfo["unit"].length; i++) {
+          if (this.previousUnit != this.nextBeaconInfo["unit"][i]) {
+            this.nextUnit = this.nextUnit + "/" + this.nextBeaconInfo["unit"][i];
+            this.previousUnit = this.nextBeaconInfo["unit"][i];
+          }
+          else {
+            this.previousUnit = this.nextBeaconInfo["unit"][i];
+          }
+        }
+      }
+    }
+  }
+
   async speakText(text): Promise<any> {
-    await new Promise(resolve => {
+    return new Promise(resolve => {
       this.tts.speak({ text: JSON.stringify(text), rate: 0.9 })
         .then(() => { resolve() })
         .catch((reason: any) => console.log(reason));
