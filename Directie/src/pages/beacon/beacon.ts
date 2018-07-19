@@ -41,6 +41,7 @@ export class BeaconPage {
   sub: Subscription;
   sub2: Subscription;
   sub3: Subscription;
+  sub4: Subscription;
   isFirstBeacon: boolean = true;
   displayMessage: boolean = false;
   previousBeacon: any;
@@ -88,7 +89,8 @@ export class BeaconPage {
   textToDisplay: String = '';
   nextUnit: String;
   nextBeaconInfo: any;
-
+  readMessageCounter: any = 0;
+  readMessageList: any = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -100,6 +102,9 @@ export class BeaconPage {
     this.detectBeacon();
     this.getDeviceOrientation();
     this.getBRelation();
+    do{
+      this.speakText();
+    }while
   }
 
   getBRelation() {
@@ -131,9 +136,7 @@ export class BeaconPage {
     this.currentBeacon = this.navParams.get('currentBeacon');
     this.startingBeacon = this.navParams.get('currentBeacon');
     this.destinationBeacon = this.navParams.get('destinationBeacon');
-    console.log(this.beaconDetails);
-    console.log(this.navParams.get('currentBeacon'));
-    console.log(this.navParams.get('destinationBeacon'));
+    
   }
 
   ionViewDidLeave() {
@@ -180,7 +183,7 @@ export class BeaconPage {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
   }
 
-  async determineCurrentBeacon() {
+  determineCurrentBeacon() {
     // console.log('didRangeBeaconsInRegion: ', data)
     if (this.isFirstBeacon == true) {
       if (this.getCurrenBeacons.length > 0) {
@@ -225,24 +228,24 @@ export class BeaconPage {
           }
           if (this.facingRightDirection == false) {
             this.determineIffacingRightDirection();
-            console.log(this.directionToTurn);
+            
             if (this.readOnce == false) {
               this.readOnce = true;
               this.currentMessage = '';
               this.currentMessage = "You are currently at " + this.currentUnit +
                 " but you are facing the wrong direction to the next location";
-              this.speakText(this.currentMessage);
+              this.addTextToList(this.currentMessage);
               //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 }).then();
             }
             if (this.showDirectionToTurn == true) {
-              //this.speakText(this.directionToTurn);
+              this.addTextToList(this.directionToTurn);
               //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
               this.showDirectionToTurn = false;
               this.previousDirectionToTurn = this.directionToTurn;
             }
             else {
               if (this.previousDirectionToTurn != this.directionToTurn) {
-                //await this.speakText(this.directionToTurn);
+                this.addTextToList(this.directionToTurn);
                 //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
                 this.previousDirectionToTurn = this.directionToTurn;
               }
@@ -685,13 +688,20 @@ export class BeaconPage {
     }
   }
 
-  async speakText(text): Promise<any> {
-    return await new Promise(resolve => {
+  async speakText(): Promise<any> {
+    if(this.readMessageList.length>0){
+      return await new Promise(resolve => {
+        this.tts.speak({ text: JSON.stringify(this.readMessageList[0]), rate: 0.9 })
+          .then(() => { resolve(), this.readMessageList.shift()})
+          .catch((reason: any) => console.log(reason));
+      })
+    }
+    /*return await new Promise(resolve => {
       this.tts.speak({ text: JSON.stringify(text), rate: 0.9 })
-        .then(() => { resolve(),console.log("tts done")})
+        .then(() => { resolve(), console.log("tts done") })
         .catch((reason: any) => console.log(reason));
     })
-    
+    */
     /*try{
       await this.tts.speak({ text: JSON.stringify(text), rate: 0.9 }).then(()=>{console.log("tts done")});
     }
@@ -699,6 +709,11 @@ export class BeaconPage {
       console.log(e);
     }
     */
+  }
+
+  addTextToList(text){
+    this.readMessageList.push(text);
+    console.log(this.readMessageList);
   }
 
 
