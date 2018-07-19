@@ -52,7 +52,7 @@ export class HomePage {
     private keyboard: Keyboard) {
     this.keyboard.disableScroll(true);
     this.detectBeacon();
-    this.getBRelation();
+    this.getBRoute();
   }
 
   goToBeacon() {
@@ -197,11 +197,11 @@ export class HomePage {
     this.navCtrl.push(CompassBearingPage);
   }
 
-  getBRelation() {
+  getBRoute() {
     let data = {
       BeaconID: 'ALL'
     }
-    this.apiProvider.getBRelation(data)
+    this.apiProvider.getBRoute(data)
       .then(data => {
         this.beaconRelation = data;
         this.beaconDetails = this.beaconRelation["Beacons"];

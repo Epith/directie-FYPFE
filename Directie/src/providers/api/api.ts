@@ -13,11 +13,11 @@ export class ApiProvider {
   constructor(public http: HttpClient) {
     console.log('Hello ApiProvider Provider');
   }
-  getBRelation(data) {
+  getBRoute(data) {
     return new Promise((resolve, reject) => {
       this.http.post(this.apiUrl+'/Beacon', data, {
         headers: new HttpHeaders().set('x-api-key', 'uzpY6JS0Pk7iI027SSLoI5BgzHXNh8gL59ehRUvy'),
-        params: new HttpParams().set('action', 'getBRelation')
+        params: new HttpParams().set('action', 'getBRoute')
       })
       .subscribe(res => {
         resolve(res);

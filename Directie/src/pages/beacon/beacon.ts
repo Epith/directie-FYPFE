@@ -227,15 +227,15 @@ export class BeaconPage {
             this.determineIffacingRightDirection();
             console.log(this.directionToTurn);
             if (this.readOnce == false) {
-              this.currentMessage = '';
-              this.currentMessage = "You are currently at beacon " + this.currentBeacon +
-                " but you are facing the wrong direction to the next beacon";
-              //await this.speakText(this.currentMessage);
-              //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               this.readOnce = true;
+              this.currentMessage = '';
+              this.currentMessage = "You are currently at " + this.currentUnit +
+                " but you are facing the wrong direction to the next location";
+              this.speakText(this.currentMessage);
+              //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 }).then();
             }
             if (this.showDirectionToTurn == true) {
-              //await this.speakText(this.directionToTurn);
+              //this.speakText(this.directionToTurn);
               //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
               this.showDirectionToTurn = false;
               this.previousDirectionToTurn = this.directionToTurn;
@@ -686,13 +686,14 @@ export class BeaconPage {
   }
 
   async speakText(text): Promise<any> {
-    return new Promise(resolve => {
+    return await new Promise(resolve => {
       this.tts.speak({ text: JSON.stringify(text), rate: 0.9 })
-        .then(() => { resolve() })
+        .then(() => { resolve(),console.log("tts done")})
         .catch((reason: any) => console.log(reason));
     })
+    
     /*try{
-      await this.tts.speak({ text: JSON.stringify(text), rate: 0.9 });
+      await this.tts.speak({ text: JSON.stringify(text), rate: 0.9 }).then(()=>{console.log("tts done")});
     }
     catch(e){
       console.log(e);
