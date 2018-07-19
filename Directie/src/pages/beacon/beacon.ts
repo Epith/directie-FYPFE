@@ -89,7 +89,7 @@ export class BeaconPage {
   textToDisplay: String = '';
   nextUnit: String;
   nextBeaconInfo: any;
-  readMessageCounter: any = 0;
+  readMessageCounter: boolean = true;
   readMessageList: any = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -120,7 +120,7 @@ export class BeaconPage {
         this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy, this.currentNextBeaconAccuracy);
       }
     });
-    this.sub3 = Observable.interval(500).subscribe((val) => { this.determineCurrentUnitAndFacility() });
+    this.sub3 = Observable.interval(400).subscribe((val) => { this.determineCurrentUnitAndFacility() });
     console.log(this.beaconDetails);
     console.log(this.shortestPath);
   }
@@ -133,7 +133,7 @@ export class BeaconPage {
     this.currentBeacon = this.navParams.get('currentBeacon');
     this.startingBeacon = this.navParams.get('currentBeacon');
     this.destinationBeacon = this.navParams.get('destinationBeacon');
-    
+
   }
 
   ionViewDidLeave() {
@@ -225,7 +225,7 @@ export class BeaconPage {
           }
           if (this.facingRightDirection == false) {
             this.determineIffacingRightDirection();
-            
+
             if (this.readOnce == false) {
               this.readOnce = true;
               this.currentMessage = '';
@@ -686,16 +686,16 @@ export class BeaconPage {
   }
 
   async speakText(): Promise<any> {
-    if(this.readMessageList.length>0){
+    if (this.readMessageList.length > 0) {
       return await new Promise(resolve => {
         this.tts.speak({ text: JSON.stringify(this.readMessageList[0]), rate: 0.9 })
-          .then(() => { resolve(), this.readMessageList.shift()})
+          .then(() => { resolve(), this.readMessageList.shift() })
           .catch((reason: any) => console.log(reason));
       })
     }
   }
 
-  addTextToList(text){
+  addTextToList(text) {
     this.readMessageList.push(text);
     console.log(this.readMessageList);
   }
