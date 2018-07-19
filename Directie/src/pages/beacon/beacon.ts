@@ -102,9 +102,6 @@ export class BeaconPage {
     this.detectBeacon();
     this.getDeviceOrientation();
     this.getBRelation();
-    do{
-      this.speakText();
-    }while
   }
 
   getBRelation() {
@@ -696,19 +693,6 @@ export class BeaconPage {
           .catch((reason: any) => console.log(reason));
       })
     }
-    /*return await new Promise(resolve => {
-      this.tts.speak({ text: JSON.stringify(text), rate: 0.9 })
-        .then(() => { resolve(), console.log("tts done") })
-        .catch((reason: any) => console.log(reason));
-    })
-    */
-    /*try{
-      await this.tts.speak({ text: JSON.stringify(text), rate: 0.9 }).then(()=>{console.log("tts done")});
-    }
-    catch(e){
-      console.log(e);
-    }
-    */
   }
 
   addTextToList(text){
