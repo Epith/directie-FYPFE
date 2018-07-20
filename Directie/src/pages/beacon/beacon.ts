@@ -121,7 +121,7 @@ export class BeaconPage {
       }
     });
     this.sub3 = Observable.interval(400).subscribe((val) => { this.determineCurrentUnitAndFacility() });
-    this.sub4 = Observable.interval(100).subscribe((val) => {
+    this.sub4 = Observable.interval(0).subscribe((val) => {
       if (this.readMessageCounter == true && this.readMessageList.length > 0) {
         this.speakText()
       }
@@ -262,14 +262,14 @@ export class BeaconPage {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.determineNextUnit(this.nextBeaconToGo);
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
-              this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 1);
+              this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
               this.addTextToList(this.currentMessage);
               //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
             else {
               this.determineNextUnit(this.nextBeaconToGo);
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
-              this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
+              this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 2);
               this.addTextToList(this.currentMessage);
               //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
@@ -390,7 +390,7 @@ export class BeaconPage {
               this.displayAccuracyMessage = false;
               this.accuracyMessage = '';
               this.setTextToDisplay("", "", 3);
-              this.destinationMessage = "Arrived at destination beacon " + this.currentBeacon;
+              this.destinationMessage = "Arrived at destination " + this.destinationUnit;
               this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
               this.reachedDestination = true;
             }
@@ -423,14 +423,14 @@ export class BeaconPage {
               if (this.isTurningPoint == true) {
                 this.determineNextUnit(this.nextBeaconToGo);
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
-                this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 1);
+                this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
                 this.addTextToList(this.currentMessage);
                 //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               }
               else {
                 this.determineNextUnit(this.nextBeaconToGo);
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
-                this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
+                this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 2);
                 this.addTextToList(this.currentMessage);
                 //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               }
@@ -541,13 +541,13 @@ export class BeaconPage {
 
   determineIffacingRightDirection() {
     if (this.getBearing < (this.beaconBearing - 10)) {
-      if (((this.beaconBearing - 10) - this.getBearing) <= 180) {
-        this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction to the right";
-      }
-      else if (((this.beaconBearing - 10) - this.getBearing) <= 50) {
+      if (((this.beaconBearing - 10) - this.getBearing) <= 50) {
         this.directionToTurn = '';
         this.directionToTurn = "Please turn your facing direction slightly to the right";
+      }
+      else if (((this.beaconBearing - 10) - this.getBearing) <= 200) {
+        this.directionToTurn = '';
+        this.directionToTurn = "Please turn your facing direction to the right";
       }
       else {
         this.directionToTurn = '';
@@ -555,13 +555,13 @@ export class BeaconPage {
       }
     }
     else if (this.getBearing > (this.beaconBearing + 10)) {
-      if (((this.beaconBearing + 10) - this.getBearing) <= 180) {
-        this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction to the left";
-      }
-      else if (((this.beaconBearing + 10) - this.getBearing) <= 50) {
+      if (((this.getBearing) - this.beaconBearing + 10) <= 50) {
         this.directionToTurn = '';
         this.directionToTurn = "Please turn your facing direction slightly to the left";
+      }
+      else if (((this.getBearing) - this.beaconBearing + 10) <= 200) {
+        this.directionToTurn = '';
+        this.directionToTurn = "Please turn your facing direction to the left";
       }
       else {
         this.directionToTurn = '';
@@ -589,14 +589,14 @@ export class BeaconPage {
   setCurrentMessage(currentBeacon, directionToGo, nextBeaconToGo, version) {
     if (version == 1) {
       this.currentMessage = '';
-      this.currentMessage = 'You are currently at beacon ' + currentBeacon
-        + ' Please ' + directionToGo + ' to beacon ' + nextBeaconToGo
+      this.currentMessage = 'You are currently at ' + this.currentUnit
+        + ' Please ' + directionToGo + ' to ' + this.nextUnit
         + ' Please be prepared to ' + this.turningPointDirection + " at the next location";
     }
     else {
       this.currentMessage = '';
-      this.currentMessage = 'You are currently at beacon ' + currentBeacon
-        + ' Please ' + directionToGo + ' to beacon ' + nextBeaconToGo;
+      this.currentMessage = 'You are currently at ' + this.currentUnit
+        + ' Please ' + directionToGo + ' to ' + nextBeaconToGo;
     }
   }
 
