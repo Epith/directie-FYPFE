@@ -121,6 +121,11 @@ export class BeaconPage {
       }
     });
     this.sub3 = Observable.interval(400).subscribe((val) => { this.determineCurrentUnitAndFacility() });
+    this.sub4 = Observable.interval(100).subscribe((val) => {
+      if (this.readMessageCounter == true && this.readMessageList.length > 0) {
+        this.speakText()
+      }
+    });
     console.log(this.beaconDetails);
     console.log(this.shortestPath);
   }
@@ -197,7 +202,8 @@ export class BeaconPage {
         if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
           this.displayAccuracyMessage = false;
           this.displayDestination = true;
-          this.destinationMessage = "Arrived at destination beacon " + this.currentBeacon;
+          this.destinationMessage = "Arrived at destination " + this.destinationUnit;
+          this.setTextToDisplay("", "", 3);
           this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
           let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.arrivedDestination);
           this.currentAccuracyBeacon = this.getCurrenBeacons[accuracyIndex];
@@ -257,13 +263,15 @@ export class BeaconPage {
               this.determineNextUnit(this.nextBeaconToGo);
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 1);
-              this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
+              this.addTextToList(this.currentMessage);
+              //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
             else {
               this.determineNextUnit(this.nextBeaconToGo);
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
-              this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
+              this.addTextToList(this.currentMessage);
+              //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
             this.showDirectionToTurn = true;
             this.readOnce = false;
@@ -335,12 +343,14 @@ export class BeaconPage {
         if (this.facingRightDirection == false) {
           this.determineIffacingRightDirection();
           if (this.showDirectionToTurn == true) {
+            this.addTextToList(this.directionToTurn);
             //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
             this.showDirectionToTurn = false;
             this.previousDirectionToTurn = this.directionToTurn;
           }
           else {
             if (this.previousDirectionToTurn != this.directionToTurn) {
+              this.addTextToList(this.directionToTurn);
               //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
               this.previousDirectionToTurn = this.directionToTurn;
             }
@@ -350,12 +360,14 @@ export class BeaconPage {
           this.directionToTurn = '';
           this.directionToTurn = "Please go straight"
           if (this.showDirectionToTurn == true) {
+            this.addTextToList(this.directionToTurn);
             //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
             this.showDirectionToTurn = false;
             this.previousDirectionToTurn = this.directionToTurn;
           }
           else {
             if (this.previousDirectionToTurn != this.directionToTurn) {
+              this.addTextToList(this.directionToTurn);
               //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
               this.previousDirectionToTurn = this.directionToTurn;
             }
@@ -377,6 +389,7 @@ export class BeaconPage {
               this.displayDestination = true;
               this.displayAccuracyMessage = false;
               this.accuracyMessage = '';
+              this.setTextToDisplay("", "", 3);
               this.destinationMessage = "Arrived at destination beacon " + this.currentBeacon;
               this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
               this.reachedDestination = true;
@@ -411,13 +424,15 @@ export class BeaconPage {
                 this.determineNextUnit(this.nextBeaconToGo);
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 1);
-                this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
+                this.addTextToList(this.currentMessage);
+                //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               }
               else {
                 this.determineNextUnit(this.nextBeaconToGo);
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextBeaconToGo, 2);
-                this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
+                this.addTextToList(this.currentMessage);
+                //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               }
               this.displayDestination = false;
               this.previousBeacon = this.currentBeacon;
@@ -431,9 +446,10 @@ export class BeaconPage {
             else {
               if (this.readOnce == false) {
                 this.currentMessage = '';
-                this.currentMessage = "You are currently at beacon " + this.currentBeacon +
-                  " but you are facing the wrong direction to the next beacon";
-                this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
+                this.currentMessage = "You are currently at " + this.currentUnit +
+                  " but you are facing the wrong direction to the next location";
+                this.addTextToList(this.currentMessage);
+                //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
                 this.readOnce = true;
               }
             }
@@ -590,10 +606,15 @@ export class BeaconPage {
       this.textToDisplay = directionToGo + ' to ' + nextBeaconToGo
         + ' Please be prepared to ' + this.turningPointDirection + " at the next location";
     }
-    else {
+    else if (version == 2) {
       this.textToDisplay = '';
       this.textToDisplay = directionToGo + ' to ' + nextBeaconToGo;
     }
+    else {
+      this.textToDisplay = '';
+      this.textToDisplay = "Arrived at destination " + this.destinationUnit;
+    }
+
   }
 
   readMessage() {
@@ -686,10 +707,11 @@ export class BeaconPage {
   }
 
   async speakText(): Promise<any> {
+    this.readMessageCounter = false;
     if (this.readMessageList.length > 0) {
       return await new Promise(resolve => {
         this.tts.speak({ text: JSON.stringify(this.readMessageList[0]), rate: 0.9 })
-          .then(() => { resolve(), this.readMessageList.shift() })
+          .then(() => { resolve(), this.readMessageList.shift(), this.readMessageCounter = true })
           .catch((reason: any) => console.log(reason));
       })
     }
