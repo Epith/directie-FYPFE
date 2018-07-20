@@ -320,6 +320,9 @@ export class BeaconPage {
           if (this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
             this.currentBeacon = this.testForCurrentBeacon;
           }
+          else if (this.testForCurrentBeacon == this.destinationBeacon) {
+            this.currentBeacon = this.testForCurrentBeacon;
+          }
           else if (this.beaconDetails[previousPreviousIndex + 1]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
             this.previousBeacon = this.shortestPath[this.previousBeaconIndex + 1];
             this.currentBeacon = this.testForCurrentBeacon;
