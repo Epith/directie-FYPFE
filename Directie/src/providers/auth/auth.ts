@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { User, UserCredential } from '@firebase/auth-types';
+import {Md5} from 'ts-md5/dist/md5';
 
 @Injectable()
 export class AuthProvider {
@@ -11,7 +12,7 @@ export class AuthProvider {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
-  async signupUser(email: string, password: string, gender: string, dob: string): Promise<firebase.auth.UserCredential> {
+  async signupUser(email: string, password: string, gender: string, dob: string, name: string): Promise<firebase.auth.UserCredential> {
     try {
       const newUser: UserCredential = await firebase
         .auth()
@@ -23,9 +24,11 @@ export class AuthProvider {
         .child(firebase.auth().currentUser.uid)
         .set({
           email: email,
-          password: password,
+          password: Md5.hashStr(password),
           gender: gender,
-          dateOfBirth: dob
+          dateOfBirth: dob,
+          name: name,
+          role: 'User'
         });
       return newUser;
     } catch (error) {

@@ -2,7 +2,7 @@
   <button class="cancel" (click)="goToLogin()">
     Cancel
   </button>
-  
+
   <!--<button type="submit" [disabled]="!signupForm.valid" class="register">
     Register
   </button>-->
@@ -11,13 +11,18 @@
   </div>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
     <ion-item>
-        <ion-label stacked class="top">Name</ion-label>
-        <ion-input placeholder="Your Name" class="btm">
-        </ion-input>
+      <ion-label stacked class="top">Name</ion-label>
+      <ion-input formControlName="name" placeholder="Your Name" class="btm">
+      </ion-input>
     </ion-item>
 
-    <ion-item [class.invalid]="!signupForm.controls.password.valid && signupForm.controls.password.touched"
-      [class.valid]="signupForm.controls.password.valid && signupForm.controls.password.touched">
+    <ion-item [class.invalid]="!signupForm.controls.email.valid && signupForm.controls.email.touched" [class.valid]="signupForm.controls.email.valid && signupForm.controls.email.touched">
+      <ion-label stacked class="top">Email</ion-label>
+      <ion-input formControlName="email" type="email" placeholder="Your Email" class="btm">
+      </ion-input>
+    </ion-item>
+
+    <ion-item [class.invalid]="!signupForm.controls.password.valid && signupForm.controls.password.touched" [class.valid]="signupForm.controls.password.valid && signupForm.controls.password.touched">
       <ion-label stacked class="top">Password</ion-label>
       <ion-input formControlName="password" type="password" placeholder="Your Password" class="btm">
       </ion-input>
@@ -27,12 +32,7 @@
       <p>Your password needs more than 6 characters.</p>
     </ion-item>
 
-    <ion-item [class.invalid]="!signupForm.controls.email.valid && signupForm.controls.email.touched"
-      [class.valid]="signupForm.controls.email.valid && signupForm.controls.email.touched">
-      <ion-label stacked class="top">Email</ion-label>
-      <ion-input formControlName="email" type="email" placeholder="Your Email" class="btm">
-      </ion-input>
-    </ion-item>
+
     <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid &&
        signupForm.controls.email.touched">
       <p>Please enter a valid email address.</p>
@@ -40,12 +40,12 @@
 
     <ion-item>
       <ion-label stacked class="top">Date of Birth</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob" placeholder="01-01-1918" class="btm"></ion-datetime>
+      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob" placeholder="01-01-1960" class="btm"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label stacked class="top">Gender</ion-label>
-      <ion-select formControlName="gender" placeholder="Male" class="btm">
+      <ion-select formControlName="gender" placeholder="Gender" class="btm">
         <ion-option value="Male">Male</ion-option>
         <ion-option value="Female">Female</ion-option>
       </ion-select>

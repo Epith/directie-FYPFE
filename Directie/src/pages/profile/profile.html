@@ -16,25 +16,25 @@
   <ion-item no-lines>
     <div>
       <a class="img4"><img src="assets/imgs/pp2.png"></a><br>
-      <span class="text4">Lee GiKwang</span>
+      <span class="text4">{{name}}</span>
     </div>
   </ion-item>
 
   <form [formGroup]="profileForm" novalidate>
     <ion-item>
         <ion-label stacked class="top">Name</ion-label>
-        <ion-input placeholder="Your Name" class="btm">
+        <ion-input [(ngModel)]="name" class="btm" formControlName="name">
         </ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label stacked class="top">Date of Birth</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob" placeholder="01-01-1918" class="btm"></ion-datetime>
+      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob" [(ngModel)]="dob" class="btm"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label stacked class="top">Gender</ion-label>
-      <ion-select formControlName="gender" placeholder="Male" class="btm">
+      <ion-select formControlName="gender" [(ngModel)]="gender" class="btm">
         <ion-option value="Male">Male</ion-option>
         <ion-option value="Female">Female</ion-option>
       </ion-select>

@@ -12,6 +12,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { Unsubscribe } from '@firebase/util';
 import { CompassBearingPage } from '../pages/compass-bearing/compass-bearing';
 import { ProfilePage } from '../pages/profile/profile'
+import { FirebaseAuth } from '@firebase/auth-types';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,16 +24,14 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
 
+  profilePicURL: any;
+
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider: AuthProvider, public keyboard: Keyboard) {
     this.initializeApp();
 
     this.keyboard.disableScroll(true);
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'Compass', component: CompassBearingPage },
-      { title: 'Edit Profile', component: ProfilePage }
-    ];
+
 
     firebase.initializeApp({
       apiKey: "AIzaSyAVpnGuapjU3HaCGa-CmBHidWrOGV2RSBI",
@@ -46,14 +45,32 @@ export class MyApp {
 
     const unsubscribe: Unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        firebase.auth().fetchSignInMethodsForEmail(user.email).then(data => {
+          if (data.toString() == "facebook.com" || data.toString() == "google.com"){
+            this.profilePicURL=user.photoURL;
+          }
+          else{
+            this.profilePicURL="https://firebasestorage.googleapis.com/v0/b/pwa-firebase-hosting.appspot.com/o/images%2FProfilePicture%2Fpp.png?alt=media&token=e9fae8f6-516a-425f-9cd4-f2009cc1dd2f";
+          }
+        });
+        if (user.email == "test@gmail.com") {
+          this.pages = [
+            { title: 'Home', component: HomePage },
+            { title: 'Compass', component: CompassBearingPage },
+            { title: 'Edit Profile', component: ProfilePage }
+          ];
+        }
+        else {
+          this.pages = [
+            { title: 'Home', component: HomePage },
+            { title: 'Edit Profile', component: ProfilePage }
+          ];
+        }
         this.rootPage = HomePage;
-        unsubscribe();
       } else {
         this.rootPage = LoginPage;
-        unsubscribe();
       }
     });
-
   }
 
   initializeApp() {

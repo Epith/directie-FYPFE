@@ -12,7 +12,6 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
 import { EmailValidator } from '../../validators/email';
 import firebase from 'firebase/app';
-
 import { LoginPage } from '../../pages/login/login';
 
 @IonicPage()
@@ -30,6 +29,10 @@ export class SignupPage {
     formBuilder: FormBuilder
   ) {
     this.signupForm = formBuilder.group({
+      name: [
+        '',
+        Validators.compose([null,Validators.required])
+      ],
       email: [
         '',
         Validators.compose([Validators.required, EmailValidator.isValid])
@@ -66,6 +69,7 @@ export class SignupPage {
       const password = this.signupForm.value.password;
       const gender = this.signupForm.value.gender;
       const dob = this.signupForm.value.dob;
+      const name = this.signupForm.value.name;
 
 
       try {
@@ -73,7 +77,8 @@ export class SignupPage {
           email,
           password,
           gender,
-          dob
+          dob,
+          name
         );
         await loading.dismiss();
         this.navCtrl.setRoot(HomePage);
