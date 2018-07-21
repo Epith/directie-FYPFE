@@ -10,21 +10,23 @@
     <div class="top1">
       <img (click)="goToHome()" src="assets/imgs/X.png">
       <span class="save1">Save</span>
-    </div><br>
+    </div>
+    <br>
   </ion-item>
 
   <ion-item no-lines>
-    <div>
-      <a class="img4"><img src="assets/imgs/pp2.png"></a><br>
+    <div class="img4">
+      <img src="assets/imgs/pp2.png">
+      <br>
       <span class="text4">Lee GiKwang</span>
     </div>
   </ion-item>
 
   <form [formGroup]="profileForm" novalidate>
     <ion-item>
-        <ion-label stacked class="top">Name</ion-label>
-        <ion-input placeholder="Your Name" class="btm">
-        </ion-input>
+      <ion-label stacked class="top">Name</ion-label>
+      <ion-input placeholder="Your Name" class="btm">
+      </ion-input>
     </ion-item>
 
     <ion-item>

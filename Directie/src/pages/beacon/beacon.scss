@@ -14,8 +14,6 @@
     font-style: normal;
 }
 
-
-
 .hmtop{
     background-color: #000080;
     height: 35%;
@@ -50,6 +48,15 @@
         text-align: left;
         color: white;
 
+    }
+
+    .details{
+        top: 31%;
+        left: 73%;
+        font-size: 1.1em;
+        position: absolute;
+        background-color: #000080;
+        color: white;
     }
 }
 .hmmiddle{
@@ -87,6 +94,15 @@
         text-align: left;
         color: white;
     }
+
+    .details2{
+        top: 60%;
+        left: 73%;
+        font-size: 1.1em;
+        position: absolute;
+        background-color: #1b1464;
+        color: white;
+    }
 }
 
 .hmbtm{
@@ -122,7 +138,15 @@
         text-align: left;
         color: white;
     }
-    
+
+    .details3{
+        top: 83%;
+        left: 73%;
+        font-size: 1.1em;
+        position: absolute;
+        background-color: #191970;
+        color: white;
+    }
 }
 
 .msg{
