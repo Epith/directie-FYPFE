@@ -434,7 +434,6 @@ export class BeaconPage {
               this.directionToGo = "Go Straight";
               this.determinIfTurningPoint(this.nextBeaconToGo);
               if (this.isTurningPoint == true) {
-                this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
                 this.determineNextUnit(this.nextBeaconToGo);
                 if (this.turningPointDirection == "Turn Left") {
                   this.imageSRC = "assets/imgs/left.png";
