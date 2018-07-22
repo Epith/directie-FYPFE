@@ -201,7 +201,7 @@ export class BeaconPage {
         }//end of for
 
         if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
-          this.imageSRC="";
+          this.imageSRC = "";
           this.displayAccuracyMessage = false;
           this.displayDestination = true;
           this.destinationMessage = "Arrived at destination " + this.destinationUnit;
@@ -237,8 +237,8 @@ export class BeaconPage {
             if (this.readOnce == false) {
               this.readOnce = true;
               this.currentMessage = '';
-              this.currentMessage = "You are currently at " + this.currentUnit +
-                " but you are facing the wrong direction to the next location";
+              this.currentMessage = "Currently at " + this.currentUnit +
+                " but facing the wrong direction to the next location";
               this.addTextToList(this.currentMessage);
               //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 }).then();
             }
@@ -263,12 +263,19 @@ export class BeaconPage {
             if (this.isTurningPoint == true) {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.determineNextUnit(this.nextBeaconToGo);
+              if (this.turningPointDirection == "Turn Left") {
+                this.imageSRC = "assets/imgs/left.png";
+              }
+              else {
+                this.imageSRC = "assets/imgs/right.png";
+              }
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
               this.addTextToList(this.currentMessage);
               //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
             }
             else {
+              this.imageSRC = "assets/imgs/straight.png";
               this.determineNextUnit(this.nextBeaconToGo);
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
               this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 2);
@@ -394,6 +401,7 @@ export class BeaconPage {
               this.displayDestination = true;
               this.displayAccuracyMessage = false;
               this.accuracyMessage = '';
+              this.imageSRC = "";
               this.setTextToDisplay("", "", 3);
               this.destinationMessage = "Arrived at destination " + this.destinationUnit;
               this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
@@ -426,7 +434,14 @@ export class BeaconPage {
               this.directionToGo = "Go Straight";
               this.determinIfTurningPoint(this.nextBeaconToGo);
               if (this.isTurningPoint == true) {
+                this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
                 this.determineNextUnit(this.nextBeaconToGo);
+                if (this.turningPointDirection == "Turn Left") {
+                  this.imageSRC = "assets/imgs/left.png";
+                }
+                else {
+                  this.imageSRC = "assets/imgs/right.png";
+                }
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
                 this.addTextToList(this.currentMessage);
@@ -434,6 +449,7 @@ export class BeaconPage {
               }
               else {
                 this.determineNextUnit(this.nextBeaconToGo);
+                this.imageSRC = "assets/imgs/straight.png";
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 2);
                 this.addTextToList(this.currentMessage);
