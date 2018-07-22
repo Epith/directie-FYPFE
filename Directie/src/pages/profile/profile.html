@@ -9,49 +9,27 @@
   <ion-item no-lines>
     <div class="top1">
       <img (click)="goToHome()" src="assets/imgs/X.png">
-<<<<<<< HEAD
       <span class="save1" *ngIf="socialLogin" (click)="updateDatabase()">Save</span>
     </div><br>
-=======
-      <span class="save1">Save</span>
-    </div>
-    <br>
   </ion-item>
 
   <ion-item no-lines>
     <div>
       <div class="img4">
-        <img src="assets/imgs/pp.png">
+          <img src="{{cameraImage}}" (click)="selectImage()">
       </div>
       <a class="img5">
         <img src="assets/imgs/edit.png">
       </a>
-    </div>
->>>>>>> CSSIntegration
-  </ion-item>
-
-  <ion-item no-lines>
-    <div>
-<<<<<<< HEAD
-      <a class="img4"><img src="{{cameraImage}}" (click)="selectImage()"></a><br>
       <span class="text4">{{name}}</span>
-=======
-      <span class="text4">Lee GiKwang</span>
->>>>>>> CSSIntegration
     </div>
   </ion-item>
 
   <form [formGroup]="profileForm" novalidate>
     <ion-item>
-<<<<<<< HEAD
         <ion-label stacked class="top">Name</ion-label>
         <ion-input [(ngModel)]="name" class="btm" formControlName="name">
         </ion-input>
-=======
-      <ion-label stacked class="top">Name</ion-label>
-      <ion-input placeholder="Your Name" class="btm">
-      </ion-input>
->>>>>>> CSSIntegration
     </ion-item>
 
     <ion-item *ngIf="socialLogin">
