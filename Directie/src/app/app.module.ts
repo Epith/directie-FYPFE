@@ -10,6 +10,8 @@ import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { BeaconPage } from '../pages/beacon/beacon';
 import { CompassBearingPage } from '../pages/compass-bearing/compass-bearing';
 import { ProfilePage } from '../pages/profile/profile';
+import { DetailsPage } from '../pages/details/details';
+
 
 import { Keyboard } from '@ionic-native/keyboard';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -43,7 +45,8 @@ var firebaseConfig = {
     ResetPasswordPage,
     BeaconPage,
     CompassBearingPage,
-    ProfilePage
+    ProfilePage,
+    DetailsPage
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,8 @@ var firebaseConfig = {
     ResetPasswordPage,
     BeaconPage,
     CompassBearingPage,
-    ProfilePage
+    ProfilePage,
+    DetailsPage
   ],
   providers: [
     StatusBar,

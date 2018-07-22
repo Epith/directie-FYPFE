@@ -26,10 +26,11 @@
     <br>
     <span class="text1">
       {{currentUnit}}
-      <br> {{currentFacility}}
-      {{getBearing}}
-      {{directionToTurn}}
+      <br> {{currentFacility}} {{getBearing}} {{directionToTurn}}
     </span>
+    <button class="details" (click)="goToDetails()">
+      <u>more details</u>
+    </button>
   </div>
   <div class="hmmiddle">
     <span class="next">
@@ -40,6 +41,9 @@
     <span class="text2">
       {{textToDisplay}}
     </span>
+    <button class="details2" (click)="goToDetails()">
+      <u>more details</u>
+    </button>
   </div>
   <div class="hmbtm">
     <span class="destination">
@@ -51,6 +55,9 @@
       {{destinationUnit}}
       <br>{{destinationFacility}}
     </span>
+    <button class="details3" (click)="goToDetails()">
+      <u>more details</u>
+    </button>
   </div>
   <button class="msg" (click)="goToHome()">
     End

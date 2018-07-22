@@ -1,10 +1,9 @@
-<ion-content padding class="auth-page">  
+<ion-content padding class="auth-page fullHeight2">
   <div class="img">
     <img src="assets/imgs/img.png">
   </div>
   <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
-    <ion-item [class.invalid]="!loginForm.controls.email.valid && loginForm.controls.email.touched"
-      [class.valid]="loginForm.controls.email.valid && loginForm.controls.email.touched">
+    <ion-item [class.invalid]="!loginForm.controls.email.valid && loginForm.controls.email.touched" [class.valid]="loginForm.controls.email.valid && loginForm.controls.email.touched">
       <ion-label stacked class="top">Email</ion-label>
       <ion-input formControlName="email" type="email" placeholder="Your Email" class="btm">
       </ion-input>
@@ -14,8 +13,7 @@
       <p>Please enter a valid email address.</p>
     </ion-item>
 
-    <ion-item [class.invalid]="!loginForm.controls.password.valid && loginForm.controls.password.touched"
-      [class.valid]="loginForm.controls.password.valid && loginForm.controls.password.touched">
+    <ion-item [class.invalid]="!loginForm.controls.password.valid && loginForm.controls.password.touched" [class.valid]="loginForm.controls.password.valid && loginForm.controls.password.touched">
       <ion-label stacked class="top">Password</ion-label>
       <ion-input formControlName="password" type="password" placeholder="Your Password" class="btm">
       </ion-input>
@@ -24,9 +22,9 @@
     && loginForm.controls.password.touched">
       <p>Your password needs more than 6 characters.</p>
     </ion-item>
-    
+
     <button class="pw" (click)="goToResetPassword()">
-        Forgot Password?
+      Forgot Password?
     </button>
 
     <button class="login" ion-button block type="submit" [disabled]="!loginForm.valid">
@@ -35,7 +33,8 @@
 
     <ion-item detail-push>
       <button class="p1" (click)="goToSignup()">
-        Don't have an account? <a class="p2">Create one now</a>
+        Don't have an account?
+        <a class="p2">Create one now</a>
       </button>
     </ion-item>
   </form>
@@ -48,12 +47,16 @@
     <ion-row>
       <ion-col>
         <button class="facebook" (click)="facebookLogin()">
-          <ion-icon name="logo-facebook"><a class = "word">FACEBOOK</a></ion-icon>
+          <ion-icon name="logo-facebook">
+            <a class="word">FACEBOOK</a>
+          </ion-icon>
         </button>
       </ion-col>
       <ion-col>
         <button class="google" (click)="googleLogin()">
-          <ion-icon name="logo-googleplus"><a class = "word">GOOGLE</a></ion-icon>
+          <ion-icon name="logo-googleplus">
+            <a class="word">GOOGLE</a>
+          </ion-icon>
         </button>
       </ion-col>
     </ion-row>

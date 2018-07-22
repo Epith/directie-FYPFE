@@ -15,6 +15,7 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { ApiProvider } from '../../providers/api/api';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
 import { HomePage } from '../home/home';
+import { DetailsPage } from '../details/details';
 import { AuthProvider } from '../../providers/auth/auth';
 import firebase from 'firebase';
 /**
@@ -742,5 +743,8 @@ export class BeaconPage {
     console.log(this.readMessageList);
   }
 
+  goToDetails(): void {
+    this.navCtrl.push(DetailsPage);
+  }
 
 }
