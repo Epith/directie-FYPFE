@@ -25,6 +25,7 @@ export class MyApp {
   pages: Array<{ title: string, component: any }>;
 
   profilePicURL: any;
+  name: any;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider: AuthProvider, public keyboard: Keyboard) {
     this.initializeApp();
@@ -46,11 +47,16 @@ export class MyApp {
     const unsubscribe: Unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         firebase.auth().fetchSignInMethodsForEmail(user.email).then(data => {
-          if (data.toString() == "facebook.com" || data.toString() == "google.com"){
-            this.profilePicURL=user.photoURL;
+          if (data.toString() == "facebook.com" || data.toString() == "google.com") {
+            this.profilePicURL = user.photoURL;
+            this.name = user.displayName;
           }
-          else{
-            this.profilePicURL="https://firebasestorage.googleapis.com/v0/b/pwa-firebase-hosting.appspot.com/o/images%2FProfilePicture%2Fpp.png?alt=media&token=e9fae8f6-516a-425f-9cd4-f2009cc1dd2f";
+          else {
+            var profileRef = firebase.database().ref('/userProfile/' + user.uid);
+            profileRef.on('value', snapshot => {
+              this.profilePicURL = snapshot.val().profileURL
+              this.name = snapshot.val().name;
+            });
           }
         });
         if (user.email == "test@gmail.com") {

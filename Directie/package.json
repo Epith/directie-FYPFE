@@ -21,6 +21,7 @@
     "@angular/http": "5.2.10",
     "@angular/platform-browser": "5.2.10",
     "@angular/platform-browser-dynamic": "5.2.10",
+    "@ionic-native/camera": "^4.10.0",
     "@ionic-native/core": "4.7.0",
     "@ionic-native/device-orientation": "^4.8.0",
     "@ionic-native/facebook": "^4.7.0",
@@ -35,6 +36,7 @@
     "angularfire2": "^5.0.0-rc.11",
     "com.unarin.cordova.beacon": "^3.6.1",
     "cordova-android": "7.0.0",
+    "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-device-orientation": "^2.0.1",
     "cordova-plugin-facebook4": "git+https://github.com/amritk/cordova-plugin-facebook4.git",
@@ -80,7 +82,8 @@
       },
       "cordova-plugin-speechrecognition": {},
       "cordova-plugin-device-orientation": {},
-      "ionic-plugin-keyboard": {}
+      "ionic-plugin-keyboard": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": []
   }

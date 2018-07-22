@@ -23,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiProvider } from '../providers/api/api';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 var firebaseConfig = {
   apiKey: "AIzaSyAVpnGuapjU3HaCGa-CmBHidWrOGV2RSBI",
@@ -75,7 +76,8 @@ var firebaseConfig = {
     ApiProvider,
     SpeechRecognition,
     DeviceOrientation,
-    Keyboard
+    Keyboard,
+    Camera
   ]
 })
 export class AppModule { }

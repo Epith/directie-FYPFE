@@ -91,6 +91,7 @@ export class BeaconPage {
   nextBeaconInfo: any;
   readMessageCounter: boolean = true;
   readMessageList: any = [];
+  imageSRC: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -200,6 +201,7 @@ export class BeaconPage {
         }//end of for
 
         if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
+          this.imageSRC="";
           this.displayAccuracyMessage = false;
           this.displayDestination = true;
           this.destinationMessage = "Arrived at destination " + this.destinationUnit;
@@ -320,9 +322,6 @@ export class BeaconPage {
           if (this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
             this.currentBeacon = this.testForCurrentBeacon;
           }
-          else if (this.testForCurrentBeacon == this.destinationBeacon) {
-            this.currentBeacon = this.testForCurrentBeacon;
-          }
           else if (this.beaconDetails[previousPreviousIndex + 1]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
             this.previousBeacon = this.shortestPath[this.previousBeaconIndex + 1];
             this.currentBeacon = this.testForCurrentBeacon;
@@ -334,6 +333,9 @@ export class BeaconPage {
                 this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
               }
             }//end of for loop
+          }
+          else if (this.testForCurrentBeacon == this.destinationBeacon) {
+            this.currentBeacon = this.testForCurrentBeacon;
           }
         }
         this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
@@ -377,13 +379,13 @@ export class BeaconPage {
           }
         }
 
-        if (this.currentBeacon == this.nextBeaconToGo /*&& this.currentNextBeaconAccuracy <= 1.5*/) {
+        if (this.currentBeacon == this.nextBeaconToGo || this.currentBeacon == this.destinationBeacon/*&& this.currentNextBeaconAccuracy <= 1.5*/) {
           for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
             if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[(this.shortestPath.length - 1)])) {
               this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
             }
           }
-          if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
+          if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination) || this.currentBeacon == this.destinationBeacon) {
             if (this.reachedDestination == false) {
               this.dateTime = new Date().toLocaleString();
               this.determineCurrentUnitAndFacility();

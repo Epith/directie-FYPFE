@@ -120,7 +120,7 @@ export class CompassBearingPage {
         {
           text: 'Confirm',
           handler: () => {
-            console.log('Buy clicked');
+            console.log('Confirm clicked');
 
 
             var data = {
