@@ -13,6 +13,11 @@
     font-style: normal;
 }
 
+.fullHeight2{
+    height:100vh;
+    width:100vw;
+}
+
 .img{
     width: 86vw;
     height: 26vh;
@@ -68,18 +73,21 @@
     font-family: firstFont;
     font-weight: normal;
     font-size: 0.9em;
-    padding-left: 18%;
     background-color: white;
     color: #6f6767;
-    //font-size: 14px;
-    //padding-left: 65px;
+    top: 35%;
+    left: 14%;
+    position: absolute;
+    /*padding-left: 10%;
+    margin-left: 18%;
+    font-size: 14px;
+    padding-left: 65px;*/
 }
 
 .p2{
     font-family: firstFont;
     font-weight: normal;
     font-size: 0.9em;
-    background-color: white;
     color: blue;
     //font-size: 14px;
 }
@@ -97,11 +105,8 @@
 .facebook{
     width: 87vw;
     height: 6vh;
-    font-family: secondFont;
-    font-weight: normal;
-    font-size: 1.1em;
     border: 0.5px solid black;
-    padding-left: 19%;
+    padding-left: 18%;
     background-color: white;
     color: blue;
     /*font-size: 16px;
@@ -114,11 +119,8 @@
 .google{
     width: 87vw;
     height: 6vh;
-    font-family: secondFont;
-    font-weight: normal;
-    font-size: 1.1em;
     border: 0.5px solid black;
-    padding-left: 18%;
+    padding-left: 17%;
     margin-top: 1%;
     background-color: white;
     color: red;
@@ -133,9 +135,10 @@
 .word{
     font-family: secondFont;
     font-weight: normal;
-    font-size: 16px;
-    padding-left: 10px;
+    font-size: 0.9em;
     color: black;
+    //font-size: 16px;
+    //padding-left: 10px;
 }
 
 /*.spacing{
