@@ -91,7 +91,7 @@ export class BeaconPage {
   nextBeaconInfo: any;
   readMessageCounter: boolean = true;
   readMessageList: any = [];
-  imageSRC: any;
+  imageSRC: any = "assets/imgs/straight.png";
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -201,7 +201,7 @@ export class BeaconPage {
         }//end of for
 
         if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
-          this.imageSRC = "";
+          this.imageSRC = "assets/imgs/straight.png";
           this.displayAccuracyMessage = false;
           this.displayDestination = true;
           this.destinationMessage = "Arrived at destination " + this.destinationUnit;
@@ -401,7 +401,7 @@ export class BeaconPage {
               this.displayDestination = true;
               this.displayAccuracyMessage = false;
               this.accuracyMessage = '';
-              this.imageSRC = "";
+              this.imageSRC = "assets/imgs/straight.png";
               this.setTextToDisplay("", "", 3);
               this.destinationMessage = "Arrived at destination " + this.destinationUnit;
               this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
