@@ -208,7 +208,7 @@ export class HomePage {
         this.sub = Observable.interval(500).subscribe((val) => { this.determineCurrentBeacon() });
         setTimeout(() => {
           this.welcomeMsg();
-        }, 2500);
+        }, 3000);
         this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndFacility() });
         console.log(this.beaconDetails);
       });

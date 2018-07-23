@@ -14,7 +14,7 @@ export class AuthProvider {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
-  async signupUser(email: string, password: string, gender: string, dob: string, name: string): Promise<firebase.auth.UserCredential> {
+  async signupUser(email: string, password: string, gender: string, dob: string, name: string, login: string): Promise<firebase.auth.UserCredential> {
     try {
       const newUser: UserCredential = await firebase
         .auth()
@@ -31,6 +31,7 @@ export class AuthProvider {
           dateOfBirth: dob,
           name: name,
           role: 'User',
+          loginType: login,
           profileURL: 'https://firebasestorage.googleapis.com/v0/b/pwa-firebase-hosting.appspot.com/o/images%2FProfilePicture%2Fpp.png?alt=media&token=e9fae8f6-516a-425f-9cd4-f2009cc1dd2f'
         });
       return newUser;
@@ -61,6 +62,23 @@ export class AuthProvider {
         User: user,
         RouteCompleted: routeComplete
       });
+  }
+
+  insertSocialAccount(email: string, password: string, gender: string, dob: string, name: string, login: string){
+    firebase
+        .database()
+        .ref('/userProfile')
+        .child(firebase.auth().currentUser.uid)
+        .set({
+          email: email,
+          password: Md5.hashStr(password),
+          gender: gender,
+          dateOfBirth: dob,
+          name: name,
+          role: 'User',
+          loginType: login,
+          profileURL: 'https://firebasestorage.googleapis.com/v0/b/pwa-firebase-hosting.appspot.com/o/images%2FProfilePicture%2Fpp.png?alt=media&token=e9fae8f6-516a-425f-9cd4-f2009cc1dd2f'
+        });
   }
 
   readCounter() {
@@ -105,15 +123,15 @@ export class AuthProvider {
   }
 
   updateImageURL(imageURL) {
-    var postData ={
+    var postData = {
       profileURL: imageURL
     };
     var profileRef = firebase.database().ref('/userProfile/' + firebase.auth().currentUser.uid);
     profileRef.update(postData);
   }
 
-  updateUserAccount(name,dob,gender,imageURL){
-    var postData ={
+  updateUserAccount(name, dob, gender, imageURL) {
+    var postData = {
       name: name,
       dateOfBirth: dob,
       gender: gender,

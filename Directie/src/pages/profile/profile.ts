@@ -33,7 +33,6 @@ export class ProfilePage {
   gender: any;
   dob: any;
   imageChoosen: boolean = false;
-  socialLogin: boolean;
   public profileForm: FormGroup;
   constructor(
     public navCtrl: NavController,
@@ -62,24 +61,15 @@ export class ProfilePage {
 
   ionViewDidLoad() {
     this.uuid = firebase.auth().currentUser.uid;
-    firebase.auth().fetchSignInMethodsForEmail(firebase.auth().currentUser.email).then(data => {
-      if (data.toString() == "facebook.com" || data.toString() == "google.com") {
-        this.name = firebase.auth().currentUser.displayName;
-        this.cameraImage = firebase.auth().currentUser.photoURL;
-        this.socialLogin = false;
-      }
-      else {
-        this.socialLogin = true;
-        var profileRef = firebase.database().ref('/userProfile/' + this.uuid);
-        profileRef.on('value', snapshot => {
-          console.log(snapshot.val())
-          this.name = snapshot.val().name;
-          this.dob = snapshot.val().dateOfBirth;
-          this.gender = snapshot.val().gender;
-          this.cameraImage = snapshot.val().profileURL
-        });
-      }
+    var profileRef = firebase.database().ref('/userProfile/' + this.uuid);
+    profileRef.on('value', snapshot => {
+      console.log(snapshot.val())
+      this.name = snapshot.val().name;
+      this.dob = snapshot.val().dateOfBirth;
+      this.gender = snapshot.val().gender;
+      this.cameraImage = snapshot.val().profileURL
     });
+
   }
 
   ionViewDidLeave() {
@@ -127,40 +117,15 @@ export class ProfilePage {
           text: 'Confirm',
           handler: () => {
             console.log('Confirm clicked');
-            firebase.auth().fetchSignInMethodsForEmail(firebase.auth().currentUser.email).then(data => {
-              if (data.toString() == "facebook.com" || data.toString() == "google.com") {
-                if (this.imageChoosen == false) {
-                  var profile = {
-                    displayName: this.name,
-                    photoURL: this.cameraImage
-                  }
-                  firebase.auth().currentUser.updateProfile(profile);
-                }
-                else {
-                  this.authProvider.uploadImage(this.cameraImage).then(snapshot => {
-                    console.log(snapshot);
-                    var profile = {
-                      displayName: this.name,
-                      photoURL: snapshot.toString()
-                    }
-                    firebase.auth().currentUser.updateProfile(profile);
-                  });
-                }
-
-              }
-              else {
-                if (this.imageChoosen == false) {
-                  this.authProvider.updateUserAccount(this.name, this.dob, this.gender, this.cameraImage);
-                }
-                else {
-                  this.authProvider.uploadImage(this.cameraImage).then(snapshot => {
-                    console.log(snapshot);
-                    this.authProvider.updateUserAccount(this.name, this.dob, this.gender, snapshot.toString());
-                  });
-                }
-              }
-            });
-
+            if (this.imageChoosen == false) {
+              this.authProvider.updateUserAccount(this.name, this.dob, this.gender, this.cameraImage);
+            }
+            else {
+              this.authProvider.uploadImage(this.cameraImage).then(snapshot => {
+                console.log(snapshot);
+                this.authProvider.updateUserAccount(this.name, this.dob, this.gender, snapshot.toString());
+              });
+            }
           }
         }
       ]

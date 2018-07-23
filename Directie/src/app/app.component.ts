@@ -24,6 +24,7 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
 
+  isAdmin: any;
   profilePicURL: any;
   name: any;
 
@@ -46,33 +47,27 @@ export class MyApp {
 
     const unsubscribe: Unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        firebase.auth().fetchSignInMethodsForEmail(user.email).then(data => {
-          if (data.toString() == "facebook.com" || data.toString() == "google.com") {
-            this.profilePicURL = user.photoURL;
-            this.name = user.displayName;
+        var profileRef = firebase.database().ref('/userProfile/' + user.uid);
+        profileRef.on('value', snapshot => {
+          this.profilePicURL = snapshot.val().profileURL
+          this.name = snapshot.val().name;
+          this.isAdmin = snapshot.val().role;
+          if (this.isAdmin == "Admin") {
+            this.pages = [
+              { title: 'Home', component: HomePage },
+              { title: 'Compass', component: CompassBearingPage },
+              { title: 'Edit Profile', component: ProfilePage }
+            ];
+            this.rootPage = HomePage;
           }
           else {
-            var profileRef = firebase.database().ref('/userProfile/' + user.uid);
-            profileRef.on('value', snapshot => {
-              this.profilePicURL = snapshot.val().profileURL
-              this.name = snapshot.val().name;
-            });
+            this.pages = [
+              { title: 'Home', component: HomePage },
+              { title: 'Edit Profile', component: ProfilePage }
+            ];
+            this.rootPage = HomePage;
           }
         });
-        if (user.email == "test@gmail.com") {
-          this.pages = [
-            { title: 'Home', component: HomePage },
-            { title: 'Compass', component: CompassBearingPage },
-            { title: 'Edit Profile', component: ProfilePage }
-          ];
-        }
-        else {
-          this.pages = [
-            { title: 'Home', component: HomePage },
-            { title: 'Edit Profile', component: ProfilePage }
-          ];
-        }
-        this.rootPage = HomePage;
       } else {
         this.rootPage = LoginPage;
       }

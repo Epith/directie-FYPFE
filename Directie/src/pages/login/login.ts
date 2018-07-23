@@ -29,8 +29,8 @@ export class LoginPage {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public authProvider: AuthProvider,
-    public facebook:Facebook,
-    public googlePlus:GooglePlus,
+    public facebook: Facebook,
+    public googlePlus: GooglePlus,
     formBuilder: FormBuilder
   ) {
     this.loginForm = formBuilder.group({
@@ -84,35 +84,55 @@ export class LoginPage {
   }
   facebookLogin(): Promise<any> {
     return this.facebook.login(['email'])
-      .then( response => {
+      .then(response => {
         const facebookCredential = firebase.auth.FacebookAuthProvider
           .credential(response.authResponse.accessToken);
         const loading: Loading = this.loadingCtrl.create();
         loading.present();
         firebase.auth().signInWithCredential(facebookCredential)
-          .then( success => { 
-            console.log("Firebase success: " + JSON.stringify(success));
-            loading.dismiss();
-            this.navCtrl.setRoot(HomePage); 
+          .then(success => {
+            var profileRef = firebase.database().ref('/userProfile/' + firebase.auth().currentUser.uid);
+            profileRef.on('value', snapshot => {
+              if (snapshot.val() == null) {
+                var user = firebase.auth().currentUser;
+                this.authProvider.insertSocialAccount(user.email, '', '', '', user.displayName, "facebook");
+                loading.dismiss();
+                this.navCtrl.setRoot(HomePage);
+              } else {
+                console.log("Firebase success: " + JSON.stringify(success));
+                loading.dismiss();
+                this.navCtrl.setRoot(HomePage);
+              }
+            });
           });
-  
+
       }).catch((error) => { console.log(error) });
   }
 
-    googleLogin(): void {
-      this.googlePlus.login({
-        'webClientId': '72415286155-3qg632qen253cb9ijm57lda2h2hivaem.apps.googleusercontent.com',
-        'offline': true
-      }).then( res => {
-        const loading: Loading = this.loadingCtrl.create();
-        loading.present();
-        firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
-          .then( success => {
-            console.log("Firebase success: " + JSON.stringify(success));
-            loading.dismiss();
-            this.navCtrl.setRoot(HomePage); 
-          })
-          .catch( error => console.log("Firebase failure: " + JSON.stringify(error)));
-        }).catch(err => console.error("Error: ", err));
-    }
+  googleLogin(): void {
+    this.googlePlus.login({
+      'webClientId': '72415286155-3qg632qen253cb9ijm57lda2h2hivaem.apps.googleusercontent.com',
+      'offline': true
+    }).then(res => {
+      const loading: Loading = this.loadingCtrl.create();
+      loading.present();
+      firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
+        .then(success => {
+          var profileRef = firebase.database().ref('/userProfile/' + firebase.auth().currentUser.uid);
+            profileRef.on('value', snapshot => {
+              if (snapshot.val() == null) {
+                var user = firebase.auth().currentUser;
+                this.authProvider.insertSocialAccount(user.email, '', '', '', user.displayName, "google");
+                loading.dismiss();
+                this.navCtrl.setRoot(HomePage);
+              } else {
+                console.log("Firebase success: " + JSON.stringify(success));
+                loading.dismiss();
+                this.navCtrl.setRoot(HomePage);
+              }
+            });
+        })
+        .catch(error => console.log("Firebase failure: " + JSON.stringify(error)));
+    }).catch(err => console.error("Error: ", err));
+  }
 }

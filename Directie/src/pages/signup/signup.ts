@@ -70,6 +70,7 @@ export class SignupPage {
       const gender = this.signupForm.value.gender;
       const dob = this.signupForm.value.dob;
       const name = this.signupForm.value.name;
+      const loginType = 'email';
 
 
       try {
@@ -78,7 +79,8 @@ export class SignupPage {
           password,
           gender,
           dob,
-          name
+          name,
+          loginType
         );
         await loading.dismiss();
         this.navCtrl.setRoot(HomePage);
