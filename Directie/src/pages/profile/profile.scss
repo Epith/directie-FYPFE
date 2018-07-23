@@ -48,43 +48,26 @@
     width: 40vw;
     height: 25vh;
     margin-left: 27%;
-    float: left;
+    //float: left;
+    border-radius: 50%;
     //padding-left: 36px;
 }
 
 .img5{
     top: 68%;
     margin-left: -9%;
-    position: absolute;
+    //position: absolute;
     /*top: 75%;
     margin-left: -8%;
     position: absolute;*/
 }
 
 .text4{
-    font-family: firstFont;
+    //font-family:'roboto-bold';
     font-size: 1.3em;
     text-align: center;
-    margin-left: 32%;
-    //margin-left: 34%;
     color: black;
-    //padding-left: 34%;
-    //padding-left: 128px;
-    //font-size: 22px;
+    display:table;
+    margin:2% auto;
+    
 }
-
-/*.top{
-    font-family: firstFont;
-    font-weight: normal;
-    font-size: 0.9em;
-    color: #696969;
-    //font-size: 14px;
-}*/
-
-/*.btm{
-    font-family: firstFont;
-    font-weight: normal;
-    font-size: 1.2em;
-    color: #696969;
-    //font-size: 17px;
-}*/

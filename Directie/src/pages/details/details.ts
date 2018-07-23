@@ -23,8 +23,5 @@ export class DetailsPage {
     console.log('ionViewDidLoad DetailsPage');
   }
 
-  goToBeacon(): void {
-    this.navCtrl.push(BeaconPage);
-  }
 
 }

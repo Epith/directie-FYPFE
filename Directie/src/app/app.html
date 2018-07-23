@@ -1,15 +1,17 @@
 <ion-menu [content]="content">
   <ion-header class="color">
-    <div class="pic">
-        <img src="{{profilePicURL}}">
-    </div>
+    <img src="{{profilePicURL}}" class="pic">
     <ion-toolbar color="c1">
-      <ion-title><p class="name">{{name}}</p></ion-title>
+      <ion-title>
+        <span class="name">{{name}}</span>
+      </ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content class="color2">
-    <ion-list no-lines><br><br>
+    <ion-list no-lines>
+      <br>
+      <br>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)" class="others">
         {{p.title}}
       </button>

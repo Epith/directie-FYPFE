@@ -22,16 +22,21 @@
 }
 
 .pic{
-    width: 100px;
-    height: 100px;
-    margin-left: 103px;
-    margin-top: 25px;
+    width: 35vw;
+    height: 20vh;
+    //margin-left: 103px;
+    //margin-top: 25px;
+    border-radius: 50%;
+    display:table;
+    margin:3% auto 0% auto;
 }
 
 .name{
     font-family: firstFont;
     text-align: center;
     color: black;
+    display:table;
+    margin:0% auto;
 }
 
 .color{

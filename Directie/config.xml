@@ -106,4 +106,5 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <allow-navigation href="http://196.169.77.114:8100" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <allow-navigation href="http://172.22.38.35:8100" />
 </widget>
