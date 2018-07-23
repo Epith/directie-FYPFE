@@ -22,8 +22,8 @@
     //margin-bottom: 10px;
 
     img{
-        width: 5vw;
-        height: 3vh;
+        width: 4vw;
+        height: 2vh;
         margin-top: 3%;
         margin-left: 5%;
         float: left;
@@ -34,7 +34,7 @@
 
 .save1{
     font-family: secondFont;
-    font-size: 1.4em;
+    font-size: 1.3em;
     padding-top: 3%;
     padding-right: 5%;
     float: right;
@@ -53,8 +53,8 @@
 }
 
 .img5{
-    top: 68%;
-    margin-left: -9%;
+    top: 60%;
+    margin-left: -10%;
     position: absolute;
     /*top: 75%;
     margin-left: -8%;
@@ -64,13 +64,15 @@
 .text4{
     font-family: firstFont;
     font-size: 1.3em;
-    text-align: center;
-    margin-left: 32%;
-    //margin-left: 34%;
+    top: 83%;
+    margin-left: -35%;
+    position: absolute;
     color: black;
-    //padding-left: 34%;
-    //padding-left: 128px;
-    //font-size: 22px;
+    /*margin-left: 32%;
+    margin-left: 34%;
+    padding-left: 34%;
+    padding-left: 128px;
+    font-size: 22px;*/
 }
 
 /*.top{
@@ -79,9 +81,9 @@
     font-size: 0.9em;
     color: #696969;
     //font-size: 14px;
-}*/
+}
 
-/*.btm{
+.btm{
     font-family: firstFont;
     font-weight: normal;
     font-size: 1.2em;
