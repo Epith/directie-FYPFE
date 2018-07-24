@@ -16,11 +16,17 @@ import { BeaconPage } from '../beacon/beacon';
 })
 export class DetailsPage {
 
+  beaconDetails: any;
+  unit: any;
+  unitName: any;
+  facilityName: any;
+  facilityDesc: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DetailsPage');
+    this.beaconDetails = this.navParams.get('beaconList');
+    console.log(this.beaconDetails);
   }
 
 

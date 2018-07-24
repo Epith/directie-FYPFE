@@ -35,15 +35,15 @@
     img{
         width: 88vw;
         height: 38vh;
-        margin-top: 3%;
-        margin-left: 2%;
+        display:table;
+        margin:3% auto 0% auto;
         float: left;
         border: 1px solid black;
     }
 }
 
 .btm2{
-    width: 100%;
+    width: 95%;
     //height: 29%;
     font-family: firstFont;
     font-size: 1.2em;
@@ -58,6 +58,8 @@
     .text5{
         text-align: left;
         //display: inline-block;
+        display:table;
+        margin:3% auto 0% auto;
     }
 }
     

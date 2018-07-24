@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, } from 'ionic-angular';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import { BeaconPage } from '../beacon/beacon';
@@ -44,6 +44,7 @@ export class HomePage {
   isRelated: boolean = false;
   constructor(
     public navCtrl: NavController,
+    public alertCtrl: AlertController,
     private tts: TextToSpeech,
     private speechRecognition: SpeechRecognition,
     private ibeacon: IBeacon,
@@ -61,7 +62,7 @@ export class HomePage {
     this.dateTime = new Date().toLocaleString();
     this.determineDestinationUnitName(this.destinationBeacon);
     console.log(this.destinationUnitName);
-    //this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.email, false);
+    //this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.uid, false);
     this.navCtrl.push(BeaconPage, {
       currentBeacon: this.currentBeacon,
       destinationBeacon: this.destinationBeacon.toString(),
@@ -73,6 +74,17 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+    this.ibeacon.enableBluetooth();
+    this.ibeacon.isBluetoothEnabled().then(data => {
+      if (data == false) {
+        let alert = this.alertCtrl.create({
+          title: 'Bluetooth',
+          subTitle: 'Please turn on Bluetooth',
+          buttons: ['Ok']
+        });
+        alert.present();
+      }
+    })
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
     this.detectBeacon();
     var counterRef = firebase.database().ref('/Counter');

@@ -28,7 +28,7 @@
       {{currentUnit}}
       <br> {{currentUnitName}} {{getBearing}} {{directionToTurn}}
     </span>
-    <button class="details" (click)="goToDetails()">
+    <button class="details" (click)="goToCurrentLocationDetails()">
       <u>more details</u>
     </button>
   </div>
@@ -41,7 +41,7 @@
     <span class="text2">
       {{textToDisplay}}
     </span>
-    <button class="details2" (click)="goToDetails()">
+    <button class="details2" (click)="goToNextLocationDetails()">
       <u>more details</u>
     </button>
   </div>
@@ -55,7 +55,7 @@
       {{destinationUnit}}
       <br>{{destinationUnitName}}
     </span>
-    <button class="details3" (click)="goToDetails()">
+    <button class="details3" (click)="goToDestinationDetails()">
       <u>more details</u>
     </button>
   </div>
