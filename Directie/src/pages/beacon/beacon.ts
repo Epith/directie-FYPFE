@@ -227,7 +227,7 @@ export class BeaconPage {
         }//end of if current=destination
         else {
           this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
-          if (this.getBearing >= (this.beaconBearing - 15) && this.getBearing <= (this.beaconBearing + 15)) {
+          if (this.getBearing >= (this.beaconBearing - 20) && this.getBearing <= (this.beaconBearing + 20)) {
             this.facingRightDirection = true;
           }
           else {
@@ -348,7 +348,7 @@ export class BeaconPage {
           }
         }
         this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
-        if (this.getBearing >= (this.beaconBearing - 15) && this.getBearing <= (this.beaconBearing + 15)) {
+        if (this.getBearing >= (this.beaconBearing - 20) && this.getBearing <= (this.beaconBearing + 20)) {
           this.facingRightDirection = true;
         }
         else {
@@ -418,7 +418,7 @@ export class BeaconPage {
               }
             }//end of for loop
             this.getCompassBearing(this.currentBeacon, this.compassNextBeaconToGo);
-            if (this.getBearing >= (this.beaconBearing - 15) && this.getBearing <= (this.beaconBearing + 15)) {
+            if (this.getBearing >= (this.beaconBearing - 20) && this.getBearing <= (this.beaconBearing + 20)) {
               this.secondFacingDirectionCheck = true;
             }
             else {
