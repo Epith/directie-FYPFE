@@ -77,15 +77,15 @@ export class BeaconPage {
   showDirectionToTurn: boolean = true;
   currentUnit: any;
   previousUnit: any;
-  currentFacility: any;
-  previousFacility: any;
+  currentUnitName: any;
+  previousUnitName: any;
   currentBeaconInfo: any;
   startingBeacon: any;
   destinationBeacon: any;
   counter: any;
   dateTime: any;
   destinationUnit: any;
-  destinationFacility: any;
+  destinationUnitName: any;
   reachedDestination: boolean = false;
   textToDisplay: String = '';
   nextUnit: String;
@@ -110,7 +110,7 @@ export class BeaconPage {
     this.beaconDetails = this.navParams.get('beaconList');
     this.counter = this.navParams.get('counter');
     this.destinationUnit = this.navParams.get('destinationUnit');
-    this.destinationFacility = this.navParams.get('destinationFacility');
+    this.destinationUnitName = this.navParams.get('destinationUnitName');
     this.startingBeacon = this.navParams.get('currentBeacon');
     this.destinationBeacon = this.navParams.get('destinationBeacon');
     this.currentBeacon = this.navParams.get('currentBeacon');
@@ -122,7 +122,7 @@ export class BeaconPage {
         this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy, this.currentNextBeaconAccuracy);
       }
     });
-    this.sub3 = Observable.interval(400).subscribe((val) => { this.determineCurrentUnitAndFacility() });
+    this.sub3 = Observable.interval(400).subscribe((val) => { this.determineUnitAndUnitName() });
     this.sub4 = Observable.interval(0).subscribe((val) => {
       if (this.readMessageCounter == true && this.readMessageList.length > 0) {
         this.speakText()
@@ -136,7 +136,7 @@ export class BeaconPage {
     this.ibeacon.startRangingBeaconsInRegion(this.beaconRegion);
     this.counter = this.navParams.get('counter');
     this.destinationUnit = this.navParams.get('destinationUnit');
-    this.destinationFacility = this.navParams.get('destinationFacility');
+    this.destinationUnitName = this.navParams.get('destinationUnitName');
     this.currentBeacon = this.navParams.get('currentBeacon');
     this.startingBeacon = this.navParams.get('currentBeacon');
     this.destinationBeacon = this.navParams.get('destinationBeacon');
@@ -396,7 +396,7 @@ export class BeaconPage {
           if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination) || this.currentBeacon == this.destinationBeacon) {
             if (this.reachedDestination == false) {
               this.dateTime = new Date().toLocaleString();
-              this.determineCurrentUnitAndFacility();
+              this.determineUnitAndUnitName();
               this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destinationUnit, this.currentUnit, firebase.auth().currentUser.email, true);
               this.displayMessage = false;
               this.displayDestination = true;
@@ -430,7 +430,7 @@ export class BeaconPage {
               }//end of for loop
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.dateTime = new Date().toLocaleString();
-              this.determineCurrentUnitAndFacility();
+              this.determineUnitAndUnitName();
               this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destinationUnit, this.currentUnit, firebase.auth().currentUser.email, false);
               this.directionToGo = "Go Straight";
               this.determinIfTurningPoint(this.nextBeaconToGo);
@@ -610,13 +610,13 @@ export class BeaconPage {
   setCurrentMessage(currentBeacon, directionToGo, nextBeaconToGo, version) {
     if (version == 1) {
       this.currentMessage = '';
-      this.currentMessage = 'You are currently at ' + this.currentUnit
+      this.currentMessage = 'At ' + this.currentUnit
         + ' Please ' + directionToGo + ' to ' + this.nextUnit
         + ' Please be prepared to ' + this.turningPointDirection + " at the next location";
     }
     else {
       this.currentMessage = '';
-      this.currentMessage = 'You are currently at ' + this.currentUnit
+      this.currentMessage = 'At ' + this.currentUnit
         + ' Please ' + directionToGo + ' to ' + nextBeaconToGo;
     }
   }
@@ -625,7 +625,7 @@ export class BeaconPage {
     if (version == 1) {
       this.textToDisplay = '';
       this.textToDisplay = directionToGo + ' to ' + nextBeaconToGo
-        + ' Please be prepared to ' + this.turningPointDirection + " at the next location";
+        + ' Prepared to ' + this.turningPointDirection + " at the next location";
     }
     else if (version == 2) {
       this.textToDisplay = '';
@@ -668,11 +668,11 @@ export class BeaconPage {
     this.authProvider.updateCounter((this.counter + 1));
   }
 
-  determineCurrentUnitAndFacility() {
+  determineUnitAndUnitName() {
     this.previousUnit = '';
     this.currentUnit = '';
-    this.currentFacility = '';
-    this.previousFacility = '';
+    this.currentUnitName = '';
+    this.previousUnitName = '';
     let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == this.currentBeacon);
     this.currentBeaconInfo = this.beaconDetails[currentBeaconIndex];
     if (this.currentBeaconInfo != null || this.currentBeaconInfo != undefined) {
@@ -689,16 +689,16 @@ export class BeaconPage {
           }
         }
       }
-      if (this.currentBeaconInfo["facility"].length > 0) {
-        this.previousFacility = this.currentBeaconInfo["facility"][0];
-        this.currentFacility = this.currentBeaconInfo["facility"][0];
-        for (let i = 1; i < this.currentBeaconInfo["facility"].length; i++) {
-          if (this.previousFacility != this.currentBeaconInfo["facility"][i]) {
-            this.currentFacility = this.currentFacility + this.currentBeaconInfo["facility"][i];
-            this.previousFacility = this.currentBeaconInfo["facility"][i];
+      if (this.currentBeaconInfo["unitName"].length > 0) {
+        this.previousUnitName = this.currentBeaconInfo["unitName"][0];
+        this.currentUnitName = this.currentBeaconInfo["unitName"][0];
+        for (let i = 1; i < this.currentBeaconInfo["unitName"].length; i++) {
+          if (this.previousUnitName != this.currentBeaconInfo["unitName"][i]) {
+            this.currentUnitName = this.currentUnitName + this.currentBeaconInfo["unitName"][i];
+            this.previousUnitName = this.currentBeaconInfo["unitName"][i];
           }
           else {
-            this.previousFacility = this.currentBeaconInfo["facility"][i];
+            this.previousUnitName = this.currentBeaconInfo["unitName"][i];
           }
         }
       }

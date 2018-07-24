@@ -35,11 +35,11 @@ export class HomePage {
   destination: any;
   currentUnit: any;
   previousUnit: any;
-  currentFacility: any;
-  previousFacility: any;
+  currentUnitName: any;
+  previousUnitName: any;
   currentBeaconInfo: any;
   destinationBeacon: any;
-  destinationFacility: any;
+  destinationUnitName: any;
   destinationBeaconInfo: any;
   isRelated: boolean = false;
   constructor(
@@ -59,8 +59,8 @@ export class HomePage {
     this.determineDestinationBeacon(this.destination);
     console.log(this.destinationBeacon);
     this.dateTime = new Date().toLocaleString();
-    this.determineDestinationFacility(this.destinationBeacon);
-    console.log(this.destinationFacility);
+    this.determineDestinationUnitName(this.destinationBeacon);
+    console.log(this.destinationUnitName);
     //this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.email, false);
     this.navCtrl.push(BeaconPage, {
       currentBeacon: this.currentBeacon,
@@ -68,7 +68,7 @@ export class HomePage {
       beaconList: this.beaconDetails,
       counter: this.counter,
       destinationUnit: this.destination,
-      destinationFacility: this.destinationFacility
+      destinationUnitName: this.destinationUnitName
     });
   }
 
@@ -209,16 +209,16 @@ export class HomePage {
         setTimeout(() => {
           this.welcomeMsg();
         }, 3000);
-        this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndFacility() });
+        this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndUnitName() });
         console.log(this.beaconDetails);
       });
   }
 
-  determineUnitAndFacility() {
+  determineUnitAndUnitName() {
     this.previousUnit = '';
     this.currentUnit = '';
-    this.currentFacility = '';
-    this.previousFacility = '';
+    this.currentUnitName = '';
+    this.previousUnitName = '';
     let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == this.currentBeacon);
     this.currentBeaconInfo = this.beaconDetails[currentBeaconIndex];
     if (this.currentBeaconInfo != null || this.currentBeaconInfo != undefined) {
@@ -235,16 +235,16 @@ export class HomePage {
           }
         }
       }
-      if (this.currentBeaconInfo["facility"].length > 0) {
-        this.previousFacility = this.currentBeaconInfo["facility"][0];
-        this.currentFacility = this.currentBeaconInfo["facility"][0];
-        for (let i = 1; i < this.currentBeaconInfo["facility"].length; i++) {
-          if (this.previousFacility != this.currentBeaconInfo["facility"][i]) {
-            this.currentFacility = this.currentFacility + this.currentBeaconInfo["facility"][i];
-            this.previousFacility = this.currentBeaconInfo["facility"][i];
+      if (this.currentBeaconInfo["unitName"].length > 0) {
+        this.previousUnitName = this.currentBeaconInfo["unitName"][0];
+        this.currentUnitName = this.currentBeaconInfo["unitName"][0];
+        for (let i = 1; i < this.currentBeaconInfo["unitName"].length; i++) {
+          if (this.previousUnitName != this.currentBeaconInfo["unitName"][i]) {
+            this.currentUnitName = this.currentUnitName + this.currentBeaconInfo["unitName"][i];
+            this.previousUnitName = this.currentBeaconInfo["unitName"][i];
           }
           else {
-            this.previousFacility = this.currentBeaconInfo["facility"][i];
+            this.previousUnitName = this.currentBeaconInfo["unitName"][i];
           }
         }
       }
@@ -261,21 +261,21 @@ export class HomePage {
     }
   }
 
-  determineDestinationFacility(destination) {
-    this.destinationFacility = '';
+  determineDestinationUnitName(destination) {
+    this.destinationUnitName = '';
     let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == destination);
     this.destinationBeaconInfo = this.beaconDetails[currentBeaconIndex];
     if (this.destinationBeaconInfo != null || this.destinationBeaconInfo != undefined) {
-      if (this.destinationBeaconInfo["facility"].length > 0) {
-        this.previousFacility = this.destinationBeaconInfo["facility"][0];
-        this.destinationFacility = this.destinationBeaconInfo["facility"][0];
-        for (let i = 1; i < this.destinationBeaconInfo["facility"].length; i++) {
-          if (this.previousFacility != this.destinationBeaconInfo["facility"][i]) {
-            this.destinationFacility = this.currentFacility + this.destinationBeaconInfo["facility"][i];
-            this.previousFacility = this.destinationBeaconInfo["facility"][i];
+      if (this.destinationBeaconInfo["unitName"].length > 0) {
+        this.previousUnitName = this.destinationBeaconInfo["unitName"][0];
+        this.destinationUnitName = this.destinationBeaconInfo["unitName"][0];
+        for (let i = 1; i < this.destinationBeaconInfo["unitName"].length; i++) {
+          if (this.previousUnitName != this.destinationBeaconInfo["unitName"][i]) {
+            this.destinationUnitName = this.currentUnitName + this.destinationBeaconInfo["unitName"][i];
+            this.previousUnitName = this.destinationBeaconInfo["unitName"][i];
           }
           else {
-            this.previousFacility = this.destinationBeaconInfo["facility"][i];
+            this.previousUnitName = this.destinationBeaconInfo["unitName"][i];
           }
         }
       }
