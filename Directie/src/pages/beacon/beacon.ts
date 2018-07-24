@@ -302,7 +302,7 @@ export class BeaconPage {
     //else of(ifFirstBeacon)
     else {
       if (this.getCurrenBeacons.length > 0) {
-        if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
+        if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination) || this.currentBeacon == this.destinationBeacon) {
           let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.arrivedDestination);
           this.currentAccuracyBeacon = this.getCurrenBeacons[accuracyIndex];
           if (this.currentAccuracyBeacon != null || this.currentAccuracyBeacon != undefined) {
@@ -389,6 +389,7 @@ export class BeaconPage {
         }
 
         if (this.currentBeacon == this.nextBeaconToGo || this.currentBeacon == this.destinationBeacon/*&& this.currentNextBeaconAccuracy <= 1.5*/) {
+          this.readMessageList = [];
           for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
             if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[(this.shortestPath.length - 1)])) {
               this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];

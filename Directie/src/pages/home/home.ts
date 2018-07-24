@@ -103,7 +103,8 @@ export class HomePage {
     var textMsg;
     while (responseAttempt < 3) {
       if (responseAttempt == 0)
-        textMsg = "Good morning, Your current location is at Singapore Polytechnic at beacon" + this.currentBeacon + ". May I know where do you want to go?";
+        //textMsg = "Good morning, Your current location is at Singapore Polytechnic at beacon" + this.currentBeacon + ". May I know where do you want to go?";
+        textMsg= "Eh Directie, currently at "+ this.currentBeacon
       else
         textMsg = "Sorry, no response detected. Your desination please?";
 
