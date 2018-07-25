@@ -23,13 +23,19 @@
         {{unit}}<br>
         {{unitName}}
       </span>
-      <img src="{{facilityImg}}">
+      <ion-slides pager=true>
+          <ion-slide *ngFor="let img of facilityImg">
+            <img [src]="img">
+          </ion-slide>
+        </ion-slides>
+      
     </div>
 
-    <div class="btm2">
-      <h1>Description:</h1>
+    <div class="btm2" *ngFor="let facility of facilityDetails">
+      <h1>{{facility.facilityName}}</h1>
+      <h3>Description:</h3>
       <span class="text5">
-        {{facilityDesc}}
+        {{facility.facilityDesc}}
       </span>
       <br>
     </div>
