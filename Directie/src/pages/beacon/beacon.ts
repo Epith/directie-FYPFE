@@ -328,10 +328,7 @@ export class BeaconPage {
         if (this.shortestPath.includes(this.testForCurrentBeacon)) {
           this.previousBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == this.previousBeacon);
           let previousPreviousIndex = this.shortestPath.indexOf(this.previousPreviousBeacon);
-          if (this.testForCurrentBeacon == this.destinationBeacon) {
-            this.currentBeacon = this.testForCurrentBeacon;
-          }
-          else if (this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
+          if (this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
             this.currentBeacon = this.testForCurrentBeacon;
           }
           else if (this.beaconDetails[previousPreviousIndex + 1]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
@@ -345,6 +342,9 @@ export class BeaconPage {
                 this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
               }
             }//end of for loop
+          }
+          else if (this.testForCurrentBeacon == this.destinationBeacon) {
+            this.currentBeacon = this.testForCurrentBeacon;
           }
         }
         this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
