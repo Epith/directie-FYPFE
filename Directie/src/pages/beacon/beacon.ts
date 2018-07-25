@@ -240,7 +240,7 @@ export class BeaconPage {
               this.readOnce = true;
               this.currentMessage = '';
               this.currentMessage = "Currently at " + this.currentUnit +
-                " but facing the wrong direction to the next location";
+                " but facing the wrong direction";
               this.addTextToList(this.currentMessage);
               //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 }).then();
             }
@@ -376,7 +376,7 @@ export class BeaconPage {
         }
         else {
           this.directionToTurn = '';
-          this.directionToTurn = "Please go straight"
+          this.directionToTurn = "Go straight"
           if (this.showDirectionToTurn == true) {
             this.addTextToList(this.directionToTurn);
             //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
@@ -393,7 +393,6 @@ export class BeaconPage {
         }
 
         if (this.currentBeacon == this.nextBeaconToGo || this.currentBeacon == this.destinationBeacon/*&& this.currentNextBeaconAccuracy <= 1.5*/) {
-          this.readMessageList = [];
           for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
             if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[(this.shortestPath.length - 1)])) {
               this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
@@ -448,12 +447,16 @@ export class BeaconPage {
                 else {
                   this.imageSRC = "assets/imgs/right.png";
                 }
+                //this.readMessageList = [];
+                this.readMessageList.length = 0;
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
                 this.addTextToList(this.currentMessage);
                 //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
               }
               else {
+                this.readMessageList.length = 0;
+                //this.readMessageList = [];
                 this.determineNextUnit(this.nextBeaconToGo);
                 this.imageSRC = "assets/imgs/straight.png";
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
@@ -474,7 +477,7 @@ export class BeaconPage {
               if (this.readOnce == false) {
                 this.currentMessage = '';
                 this.currentMessage = "Currently at " + this.currentUnit +
-                  " but you are facing the wrong direction";
+                  " but facing the wrong direction";
                 this.addTextToList(this.currentMessage);
                 //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
                 this.readOnce = true;
@@ -570,29 +573,29 @@ export class BeaconPage {
     if (this.getBearing < (this.beaconBearing)) {
       if (((this.beaconBearing) - this.getBearing) <= 50) {
         this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction slightly to the right";
+        this.directionToTurn = "turn your facing direction slightly to the right";
       }
       else if (((this.beaconBearing) - this.getBearing) <= 200) {
         this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction to the right";
+        this.directionToTurn = "turn your facing direction to the right";
       }
       else {
         this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction to the left";
+        this.directionToTurn = "turn your facing direction to the left";
       }
     }
     else if (this.getBearing > (this.beaconBearing)) {
       if (((this.getBearing) - this.beaconBearing) <= 50) {
         this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction slightly to the left";
+        this.directionToTurn = "turn your facing direction slightly to the left";
       }
       else if (((this.getBearing) - this.beaconBearing) <= 200) {
         this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction to the left";
+        this.directionToTurn = "turn your facing direction to the left";
       }
       else {
         this.directionToTurn = '';
-        this.directionToTurn = "Please turn your facing direction right";
+        this.directionToTurn = "turn your facing direction right";
       }
     }
   }
@@ -617,8 +620,8 @@ export class BeaconPage {
     if (version == 1) {
       this.currentMessage = '';
       this.currentMessage = 'At ' + this.currentUnit
-        + ' Please ' + directionToGo + ' to ' + this.nextUnit
-        + ' Please be prepared to ' + this.turningPointDirection + " at the next location";
+        + directionToGo + ' to ' + this.nextUnit
+        + ' Be prepared to ' + this.turningPointDirection + " at the next location";
     }
     else {
       this.currentMessage = '';

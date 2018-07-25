@@ -25,8 +25,9 @@ export class DetailsPage {
   previousFacilityName: any;
   facilityDesc: any;
   previousFacilityDesc: any;
-  facilityImg: any;
+  facilityImg = [];
   previousFacilityImg: any;
+  facilityDetails = [];
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.beaconDetails = this.navParams.get('beaconList');
     this.determineValues();
@@ -65,9 +66,19 @@ export class DetailsPage {
       }
     }
     if (this.beaconDetails["facilityImg"].length > 0) {
-      this.facilityImg = this.beaconDetails["facilityImg"][0];
+      for (let i = 0; i < this.beaconDetails["facilityImg"].length; i++) {
+        this.facilityImg.push(this.beaconDetails["facilityImg"][i]);
+      }
     }
-    if (this.beaconDetails["facilityDesc"].length > 0) {
+    if (this.beaconDetails["facilityName"].length > 0) {
+      for (let i = 0; i < this.beaconDetails["facilityName"].length; i++) {
+        var data = {
+          facilityName: this.beaconDetails["facilityName"][i],
+          facilityDesc: this.beaconDetails["facilityDesc"][i]
+        }
+        this.facilityDetails.push(data);
+      }
+
       this.facilityDesc = this.beaconDetails["facilityDesc"][0];
       this.facilityDesc = this.beaconDetails["facilityDesc"][0];
       for (let i = 1; i < this.beaconDetails["facilityDesc"].length; i++) {
