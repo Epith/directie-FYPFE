@@ -28,16 +28,12 @@ export class DetailsPage {
   facilityImg: any;
   previousFacilityImg: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.beaconDetails = this.navParams.get('beaconList');
     this.determineValues();
   }
 
   ionViewDidLoad() {
     this.beaconDetails = this.navParams.get('beaconList');
-    this.unit = this.beaconDetails["unit"];
-    this.unitName = this.beaconDetails["unitName"];
-    this.facilityName = this.beaconDetails["facilityName"];
-    this.facilityDesc = this.beaconDetails["facilityDesc"];
-    this.facilityImg = this.beaconDetails["facilityImg"];
     console.log(this.beaconDetails);
   }
 
@@ -52,6 +48,35 @@ export class DetailsPage {
         }
         else {
           this.previousUnit = this.beaconDetails["unit"][i];
+        }
+      }
+    }
+    if (this.beaconDetails["unitName"].length > 0) {
+      this.previousUnitName = this.beaconDetails["unitName"][0];
+      this.unitName = this.beaconDetails["unitName"][0];
+      for (let i = 1; i < this.beaconDetails["unitName"].length; i++) {
+        if (this.previousUnitName != this.beaconDetails["unitName"][i]) {
+          this.unitName = this.unitName + "/" + this.beaconDetails["unitName"][i];
+          this.previousUnitName = this.beaconDetails["unitName"][i];
+        }
+        else {
+          this.previousUnitName = this.beaconDetails["unitName"][i];
+        }
+      }
+    }
+    if (this.beaconDetails["facilityImg"].length > 0) {
+      this.facilityImg = this.beaconDetails["facilityImg"][0];
+    }
+    if (this.beaconDetails["facilityDesc"].length > 0) {
+      this.facilityDesc = this.beaconDetails["facilityDesc"][0];
+      this.facilityDesc = this.beaconDetails["facilityDesc"][0];
+      for (let i = 1; i < this.beaconDetails["facilityDesc"].length; i++) {
+        if (this.facilityDesc != this.beaconDetails["facilityDesc"][i]) {
+          this.facilityDesc = this.facilityDesc + "/" + this.beaconDetails["facilityDesc"][i];
+          this.facilityDesc = this.beaconDetails["facilityDesc"][i];
+        }
+        else {
+          this.facilityDesc = this.beaconDetails["facilityDesc"][i];
         }
       }
     }

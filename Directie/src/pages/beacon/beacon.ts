@@ -357,16 +357,20 @@ export class BeaconPage {
         if (this.facingRightDirection == false) {
           this.determineIffacingRightDirection();
           if (this.showDirectionToTurn == true) {
-            this.addTextToList(this.directionToTurn);
-            //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
-            this.showDirectionToTurn = false;
-            this.previousDirectionToTurn = this.directionToTurn;
+            if (this.currentBeacon != this.destinationBeacon) {
+              this.addTextToList(this.directionToTurn);
+              //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+              this.showDirectionToTurn = false;
+              this.previousDirectionToTurn = this.directionToTurn;
+            }
           }
           else {
             if (this.previousDirectionToTurn != this.directionToTurn) {
-              this.addTextToList(this.directionToTurn);
-              //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
-              this.previousDirectionToTurn = this.directionToTurn;
+              if (this.currentBeacon != this.destinationBeacon) {
+                this.addTextToList(this.directionToTurn);
+                //this.tts.speak({ text: JSON.stringify(this.directionToTurn), rate: 0.9 });
+                this.previousDirectionToTurn = this.directionToTurn;
+              }
             }
           }
         }

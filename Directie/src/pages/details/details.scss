@@ -12,24 +12,12 @@
     width:100vw;
 }
 
-
-.top2{
-    margin-bottom: 4%;
-
-    img{
-        width: 5vw;
-        height: 3vh;
-        margin-top: 3%;
-        margin-left: 5%;
-        float: left;
-    }
-}
-
 .top3{
     font-family: firstFont;
     font-size: 2.0em;
     font-weight: bold;
     margin-bottom: 3%;
+    margin-top: 2%;
     text-align: center;
 
     img{
@@ -37,20 +25,17 @@
         height: 38vh;
         display:table;
         margin:3% auto 0% auto;
-        float: left;
-        border: 1px solid black;
+        //border: 1px solid black;
     }
 }
 
 .btm2{
     width: 95%;
-    //height: 29%;
     font-family: firstFont;
     font-size: 1.2em;
-    //margin-right: 10%;
-    //overflow: hidden;
-    border: 1px solid black;
-
+    margin:0 auto;
+    //border: 1px solid black;
+    
     h1{
         font-weight: bold;
     }
