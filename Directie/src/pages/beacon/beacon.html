@@ -25,6 +25,8 @@
     <img src="assets/imgs/currentIcon.png">
     <br>
     <span class="text1">
+      {{showAccuracy}}
+      {{pBeaconAccuracy}}
       {{currentUnit}}
       <br> {{currentUnitName}} {{getBearing}} {{directionToTurn}}
     </span>
@@ -39,6 +41,7 @@
     <img src="{{imageSRC}}">
     <br>
     <span class="text2">
+      {{currentNextBeaconAccuracy}}
       {{textToDisplay}}
     </span>
     <button class="details2" (click)="goToNextLocationDetails()">

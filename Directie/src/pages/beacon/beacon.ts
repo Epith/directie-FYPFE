@@ -94,6 +94,7 @@ export class BeaconPage {
   readMessageList: any = [];
   imageSRC: any = "assets/imgs/straight.png";
   beaconDetailsInfo: any;
+  showAccuracy: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -123,7 +124,7 @@ export class BeaconPage {
         this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy, this.currentNextBeaconAccuracy);
       }
     });
-    this.sub3 = Observable.interval(400).subscribe((val) => { this.determineUnitAndUnitName() });
+    this.sub3 = Observable.interval(500).subscribe((val) => { this.determineUnitAndUnitName() });
     this.sub4 = Observable.interval(0).subscribe((val) => {
       if (this.readMessageCounter == true && this.readMessageList.length > 0) {
         this.speakText()
@@ -265,7 +266,8 @@ export class BeaconPage {
             if (this.isTurningPoint == true) {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.determineNextUnit(this.nextBeaconToGo);
-              if (this.turningPointDirection == "Turn Left") {
+              console.log(this.turningPointDirection);
+              if (JSON.stringify(this.turningPointDirection) == "Turn Left") {
                 this.imageSRC = "assets/imgs/left.png";
               }
               else {
@@ -347,6 +349,9 @@ export class BeaconPage {
             this.currentBeacon = this.testForCurrentBeacon;
           }
         }
+        let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.currentBeacon);
+        let currentAccuracyBeacon2 = this.getCurrenBeacons[accuracyIndex];
+        this.showAccuracy = currentAccuracyBeacon2["accuracy"];
         this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
         if (this.getBearing >= (this.beaconBearing - 20) && this.getBearing <= (this.beaconBearing + 20)) {
           this.facingRightDirection = true;
@@ -441,7 +446,8 @@ export class BeaconPage {
               this.determinIfTurningPoint(this.nextBeaconToGo);
               if (this.isTurningPoint == true) {
                 this.determineNextUnit(this.nextBeaconToGo);
-                if (this.turningPointDirection == "Turn Left") {
+                console.log(this.turningPointDirection);
+                if (JSON.stringify(this.turningPointDirection) == "Turn Left") {
                   this.imageSRC = "assets/imgs/left.png";
                 }
                 else {
