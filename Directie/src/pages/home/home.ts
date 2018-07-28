@@ -62,7 +62,7 @@ export class HomePage {
     this.dateTime = new Date().toLocaleString();
     this.determineDestinationUnitName(this.destinationBeacon);
     console.log(this.destinationUnitName);
-    //this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.uid, false);
+    this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.uid, false);
     this.navCtrl.push(BeaconPage, {
       currentBeacon: this.currentBeacon,
       destinationBeacon: this.destinationBeacon.toString(),

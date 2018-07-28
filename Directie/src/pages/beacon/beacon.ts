@@ -124,7 +124,7 @@ export class BeaconPage {
         this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy, this.currentNextBeaconAccuracy);
       }
     });
-    this.sub3 = Observable.interval(500).subscribe((val) => { this.determineUnitAndUnitName() });
+    this.sub3 = Observable.interval(400).subscribe((val) => { this.determineUnitAndUnitName() });
     this.sub4 = Observable.interval(0).subscribe((val) => {
       if (this.readMessageCounter == true && this.readMessageList.length > 0) {
         this.speakText()
@@ -153,6 +153,7 @@ export class BeaconPage {
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
     this.displayDestination = false;
+    this.authProvider.updateCounter((this.counter + 1));
   }
 
   ionViewWillEnter() {
@@ -266,11 +267,12 @@ export class BeaconPage {
             if (this.isTurningPoint == true) {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.determineNextUnit(this.nextBeaconToGo);
-              console.log(this.turningPointDirection);
-              if (JSON.stringify(this.turningPointDirection) == "Turn Left") {
+              console.log(this.turningPointDirection+ "FIRST BEACON");
+              if (this.turningPointDirection == "Turn Left") {
+                console.log("is turn left");
                 this.imageSRC = "assets/imgs/left.png";
               }
-              else {
+              else if(this.turningPointDirection == "Turn Right"){
                 this.imageSRC = "assets/imgs/right.png";
               }
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
@@ -345,9 +347,10 @@ export class BeaconPage {
               }
             }//end of for loop
           }
-          else if (this.testForCurrentBeacon == this.destinationBeacon) {
+          /*else if (this.testForCurrentBeacon == this.destinationBeacon) {
             this.currentBeacon = this.testForCurrentBeacon;
           }
+          */
         }
         let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.currentBeacon);
         let currentAccuracyBeacon2 = this.getCurrenBeacons[accuracyIndex];
@@ -447,10 +450,10 @@ export class BeaconPage {
               if (this.isTurningPoint == true) {
                 this.determineNextUnit(this.nextBeaconToGo);
                 console.log(this.turningPointDirection);
-                if (JSON.stringify(this.turningPointDirection) == "Turn Left") {
+                if (this.turningPointDirection == "Turn Left") {
                   this.imageSRC = "assets/imgs/left.png";
                 }
-                else {
+                else if(this.turningPointDirection == "Turn Right"){
                   this.imageSRC = "assets/imgs/right.png";
                 }
                 //this.readMessageList = [];
@@ -755,7 +758,7 @@ export class BeaconPage {
 
   addTextToList(text) {
     this.readMessageList.push(text);
-    console.log(this.readMessageList);
+    //console.log(this.readMessageList);
   }
 
   goToCurrentLocationDetails(): void {
