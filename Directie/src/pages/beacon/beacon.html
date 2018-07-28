@@ -10,9 +10,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <div text-center>
-      <div>
-        <img src="assets/imgs/icon1.png" class="icon">
-      </div>
+      <img src="assets/imgs/icon1.png" class="icon">
     </div>
   </ion-navbar>
 </ion-header>
@@ -25,9 +23,7 @@
     <img src="assets/imgs/currentIcon.png">
     <br>
     <span class="text1">
-      {{showAccuracy}}
-      {{pBeaconAccuracy}}
-      {{currentUnit}}
+      {{showAccuracy}} {{pBeaconAccuracy}} {{currentUnit}}
       <br> {{currentUnitName}} {{getBearing}} {{directionToTurn}}
     </span>
     <button class="details" (click)="goToCurrentLocationDetails()">
@@ -41,8 +37,7 @@
     <img src="{{imageSRC}}">
     <br>
     <span class="text2">
-      {{currentNextBeaconAccuracy}}
-      {{textToDisplay}}
+      {{currentNextBeaconAccuracy}} {{textToDisplay}}
     </span>
     <button class="details2" (click)="goToNextLocationDetails()">
       <u>more details</u>

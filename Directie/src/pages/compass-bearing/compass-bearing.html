@@ -50,8 +50,7 @@
           </ion-item>
           <ion-item>
               <ion-label color="primary" stacked>Note</ion-label>
-              <ion-input [(ngModel)]="note"></ion-input>
+              <ion-textarea [(ngModel)]="note"></ion-textarea>
             </ion-item>
   <button ion-button (click)="sendToDatabase()">Send Compass Bearing</button>
-  <button ion-button (click)="callConsole()">call console.log</button>
 </ion-content>
