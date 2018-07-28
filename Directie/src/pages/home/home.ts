@@ -12,7 +12,7 @@ import firebase from 'firebase';
 import { ApiProvider } from '../../providers/api/api';
 import { Keyboard } from '@ionic-native/keyboard';
 
-
+declare var require: any;
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -42,6 +42,10 @@ export class HomePage {
   destinationUnitName: any;
   destinationBeaconInfo: any;
   isRelated: boolean = false;
+  relatedBeacon: any;
+  shortestPath: any;
+  Graph: any;
+  route: any;
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -58,19 +62,21 @@ export class HomePage {
 
   goToBeacon() {
     this.determineDestinationBeacon(this.destination);
-    console.log(this.destinationBeacon);
     this.dateTime = new Date().toLocaleString();
     this.determineDestinationUnitName(this.destinationBeacon);
-    console.log(this.destinationUnitName);
-    this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destination, this.currentUnit, firebase.auth().currentUser.uid, false);
+    this.shortestPath = this.route.path(this.currentBeacon, JSON.stringify(this.destinationBeacon));
+    this.authProvider.uploadTimeStamp(this.shortestPath,this.counter, this.dateTime, this.currentUnit+"/"+this.currentBeacon, this.destination+"/"+this.destinationBeacon, this.currentUnit+"/"+this.currentBeacon, firebase.auth().currentUser.uid, false);
     this.navCtrl.push(BeaconPage, {
       currentBeacon: this.currentBeacon,
+      currentUnit: this.currentUnit,
       destinationBeacon: this.destinationBeacon.toString(),
       beaconList: this.beaconDetails,
       counter: this.counter,
       destinationUnit: this.destination,
-      destinationUnitName: this.destinationUnitName
+      destinationUnitName: this.destinationUnitName,
+      shortestPath: this.shortestPath
     });
+
   }
 
   ionViewDidLoad() {
@@ -104,7 +110,7 @@ export class HomePage {
     while (responseAttempt < 3) {
       if (responseAttempt == 0)
         //textMsg = "Good morning, Your current location is at Singapore Polytechnic at beacon" + this.currentBeacon + ". May I know where do you want to go?";
-        textMsg= "Eh Directie, currently at "+ this.currentBeacon
+        textMsg = "Eh Directie, currently at " + this.currentBeacon
       else
         textMsg = "Sorry, no response detected. Your desination please?";
 
@@ -195,6 +201,7 @@ export class HomePage {
       this.checkIfRelated(this.testForCurrentBeacon);
       if (this.isRelated == true) {
         this.currentBeacon = this.testForCurrentBeacon;
+        this.determineUnitAndUnitName()
         this.displayMessage = true;
         this.currentMessage = '';
         this.currentMessage = 'You are currently at beacon ' + this.currentBeacon;
@@ -222,8 +229,9 @@ export class HomePage {
         setTimeout(() => {
           this.welcomeMsg();
         }, 3000);
-        this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndUnitName() });
+        //this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndUnitName() });
         console.log(this.beaconDetails);
+        this.inputDijkstra();
       });
   }
 
@@ -305,4 +313,25 @@ export class HomePage {
       this.isRelated = true;
     }
   }
+
+  inputDijkstra() {
+    //this.beaconDetails = this.navParams.get('beaconList');
+    this.Graph = require('node-dijkstra');
+    this.route = new this.Graph();
+    for (let i = 0; i < this.beaconDetails.length; i++) {
+      this.relatedBeacon = {};
+      if (this.beaconDetails[i]["relatedBeacons"].length >= 1) {
+        for (let j = 0; j < this.beaconDetails[i]["relatedBeacons"].length; j++) {
+          if (j == 0) {
+            this.relatedBeacon[this.beaconDetails[i]["relatedBeacons"][j]] = 1;
+          }
+          else {
+            this.relatedBeacon[this.beaconDetails[i]["relatedBeacons"][j]] = 1;
+          }
+        }
+      }
+      this.route.addNode(JSON.stringify(this.beaconDetails[i]["beaconID"]), this.relatedBeacon);
+    }
+  }
+
 }

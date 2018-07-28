@@ -48,12 +48,41 @@ export class AuthProvider {
     return firebase.auth().signOut();
   }
 
-  uploadTimeStamp(counter, dateTime, startLocation, destination, currentLocation, user, routeComplete) {
+  uploadTimeStamp(route,counter, dateTime, startLocation, destination, currentLocation, user, routeComplete) {
     const ref = firebase.database().ref('/TimeStamp/');
     firebase.database()
       .ref('/TimeStamp')
       .child(counter)
-      .child(ref.push().key)
+      .child("route")
+      .set({
+        TimeStarted: dateTime,
+        Route: route,
+        TimeSeries: ""
+      }).then(value => {
+        const ref2 = firebase.database().ref('/TimeStamp/' + counter + "/");
+        firebase.database()
+          .ref('/TimeStamp/' + counter + "/route/TimeSeries")
+          .child(ref.push().key)
+          .set({
+            TimeStamp: dateTime,
+            StartLocation: startLocation,
+            Destination: destination,
+            CurrentLocation: currentLocation,
+            User: user,
+            RouteCompleted: routeComplete
+          })
+      });
+  }
+
+  updateTimeStamp(counter, dateTime, startLocation, destination, currentLocation, user, routeComplete) {
+
+    const ref2 = firebase.database().ref('/TimeStamp/');
+    firebase.database()
+      .ref('/TimeStamp/')
+      .child(counter)
+      .child("route")
+      .child("TimeSeries")
+      .child(ref2.push().key)
       .set({
         TimeStamp: dateTime,
         StartLocation: startLocation,
@@ -64,21 +93,21 @@ export class AuthProvider {
       });
   }
 
-  insertSocialAccount(email: string, password: string, gender: string, dob: string, name: string, login: string){
+  insertSocialAccount(email: string, password: string, gender: string, dob: string, name: string, login: string) {
     firebase
-        .database()
-        .ref('/userProfile')
-        .child(firebase.auth().currentUser.uid)
-        .set({
-          email: email,
-          password: Md5.hashStr(password),
-          gender: gender,
-          dateOfBirth: dob,
-          name: name,
-          role: 'User',
-          loginType: login,
-          profileURL: 'https://firebasestorage.googleapis.com/v0/b/pwa-firebase-hosting.appspot.com/o/images%2FProfilePicture%2Fpp.png?alt=media&token=e9fae8f6-516a-425f-9cd4-f2009cc1dd2f'
-        });
+      .database()
+      .ref('/userProfile')
+      .child(firebase.auth().currentUser.uid)
+      .set({
+        email: email,
+        password: Md5.hashStr(password),
+        gender: gender,
+        dateOfBirth: dob,
+        name: name,
+        role: 'User',
+        loginType: login,
+        profileURL: 'https://firebasestorage.googleapis.com/v0/b/pwa-firebase-hosting.appspot.com/o/images%2FProfilePicture%2Fpp.png?alt=media&token=e9fae8f6-516a-425f-9cd4-f2009cc1dd2f'
+      });
   }
 
   readCounter() {

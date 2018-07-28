@@ -95,6 +95,7 @@ export class BeaconPage {
   imageSRC: any = "assets/imgs/straight.png";
   beaconDetailsInfo: any;
   showAccuracy: any;
+  startLocation: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -116,7 +117,8 @@ export class BeaconPage {
     this.startingBeacon = this.navParams.get('currentBeacon');
     this.destinationBeacon = this.navParams.get('destinationBeacon');
     this.currentBeacon = this.navParams.get('currentBeacon');
-    this.inputDijkstra();
+    this.shortestPath = this.navParams.get('shortestPath');
+    this.startLocation = this.navParams.get('currentUnit') + "/" + this.navParams.get('currentBeacon');
     this.displayAccuracyMessage = true;
     this.sub = Observable.interval(500).subscribe((val) => { this.determineCurrentBeacon() });
     this.sub2 = Observable.interval(3000).subscribe((val) => {
@@ -142,7 +144,7 @@ export class BeaconPage {
     this.currentBeacon = this.navParams.get('currentBeacon');
     this.startingBeacon = this.navParams.get('currentBeacon');
     this.destinationBeacon = this.navParams.get('destinationBeacon');
-
+    this.shortestPath = this.navParams.get('shortestPath');
   }
 
   ionViewDidLeave() {
@@ -267,12 +269,12 @@ export class BeaconPage {
             if (this.isTurningPoint == true) {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.determineNextUnit(this.nextBeaconToGo);
-              console.log(this.turningPointDirection+ "FIRST BEACON");
+              console.log(this.turningPointDirection + "FIRST BEACON");
               if (this.turningPointDirection == "Turn Left") {
                 console.log("is turn left");
                 this.imageSRC = "assets/imgs/left.png";
               }
-              else if(this.turningPointDirection == "Turn Right"){
+              else if (this.turningPointDirection == "Turn Right") {
                 this.imageSRC = "assets/imgs/right.png";
               }
               this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
@@ -410,7 +412,7 @@ export class BeaconPage {
             if (this.reachedDestination == false) {
               this.dateTime = new Date().toLocaleString();
               this.determineUnitAndUnitName();
-              this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destinationUnit, this.currentUnit, firebase.auth().currentUser.uid, true);
+              this.authProvider.updateTimeStamp(this.counter, this.dateTime, this.startLocation, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, true);
               this.displayMessage = false;
               this.displayDestination = true;
               this.displayAccuracyMessage = false;
@@ -444,7 +446,7 @@ export class BeaconPage {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.dateTime = new Date().toLocaleString();
               this.determineUnitAndUnitName();
-              this.authProvider.uploadTimeStamp(this.counter, this.dateTime, this.currentUnit, this.destinationUnit, this.currentUnit, firebase.auth().currentUser.uid, false);
+              this.authProvider.updateTimeStamp(this.counter, this.dateTime, this.startLocation, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false);
               this.directionToGo = "Go Straight";
               this.determinIfTurningPoint(this.nextBeaconToGo);
               if (this.isTurningPoint == true) {
@@ -453,7 +455,7 @@ export class BeaconPage {
                 if (this.turningPointDirection == "Turn Left") {
                   this.imageSRC = "assets/imgs/left.png";
                 }
-                else if(this.turningPointDirection == "Turn Right"){
+                else if (this.turningPointDirection == "Turn Right") {
                   this.imageSRC = "assets/imgs/right.png";
                 }
                 //this.readMessageList = [];
@@ -502,29 +504,6 @@ export class BeaconPage {
     this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
   }
 
-  inputDijkstra() {
-    this.beaconDetails = this.navParams.get('beaconList');
-    const Graph = require('node-dijkstra');
-    const route = new Graph();
-    for (let i = 0; i < this.beaconDetails.length; i++) {
-      this.relatedBeacon = {};
-      if (this.beaconDetails[i]["relatedBeacons"].length >= 1) {
-        for (let j = 0; j < this.beaconDetails[i]["relatedBeacons"].length; j++) {
-          if (j == 0) {
-            this.relatedBeacon[this.beaconDetails[i]["relatedBeacons"][j]] = 1;
-          }
-          else {
-            this.relatedBeacon[this.beaconDetails[i]["relatedBeacons"][j]] = 1;
-          }
-        }
-      }
-      route.addNode(JSON.stringify(this.beaconDetails[i]["beaconID"]), this.relatedBeacon);
-      console.dir("beaconID:" + this.beaconDetails[i]["beaconID"] + "related: " + (this.relatedBeacon));
-    }
-
-    this.shortestPath = route.path(this.startingBeacon, this.destinationBeacon);
-
-  }
 
   determineBeaconDirection(currentBeacon, nextBeacon) {
     for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
