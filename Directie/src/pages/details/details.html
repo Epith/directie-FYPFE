@@ -10,33 +10,31 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <div text-center>
-      <div class="icon">
-        <img src="assets/imgs/icon1.png">
-      </div>
+      <img src="assets/imgs/icon1.png" class="icon">
     </div>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="full-height1">
-    <div class="top3">
-      <span>
-        {{unit}}<br>
-        {{unitName}}
-      </span>
-      <ion-slides pager=true>
-          <ion-slide *ngFor="let img of facilityImg">
-            <img [src]="img">
-          </ion-slide>
-        </ion-slides>
-      
-    </div>
+  <div class="top3">
+    <span>
+      {{unit}}
+      <br> {{unitName}}
+    </span>
+    <ion-slides pager=true>
+      <ion-slide *ngFor="let img of facilityImg">
+        <img [src]="img">
+      </ion-slide>
+    </ion-slides>
 
-    <div class="btm2" *ngFor="let facility of facilityDetails">
-      <h1>{{facility.facilityName}}</h1>
-      <h3>Description:</h3>
-      <span class="text5">
-        {{facility.facilityDesc}}
-      </span>
-      <br>
-    </div>
+  </div>
+
+  <div class="btm2" *ngFor="let facility of facilityDetails">
+    <h1>{{facility.facilityName}}</h1>
+    <h3>Description:</h3>
+    <span class="text5">
+      {{facility.facilityDesc}}
+    </span>
+    <br>
+  </div>
 </ion-content>
