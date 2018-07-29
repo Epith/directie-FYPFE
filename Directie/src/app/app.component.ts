@@ -31,7 +31,6 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public authProvider: AuthProvider, public keyboard: Keyboard) {
     this.initializeApp();
 
-    this.keyboard.disableScroll(true);
     // used for an example of ngFor and navigation
 
 

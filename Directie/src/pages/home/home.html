@@ -23,13 +23,13 @@
       </span>
     </div>
   </div>
-  <div class="homebtm">
+  <div class="homebtm" (dblclick)="welcomeMsg()">
     <div>
       <span>
         Destination:
       </span>
     </div>
-    <ion-input [(ngModel)]="destination" autocapitalize="characters"></ion-input>
+    <ion-input [(ngModel)]="destination"></ion-input>
   </div>
   <button class="message" (click)="goToBeacon()">
     Start

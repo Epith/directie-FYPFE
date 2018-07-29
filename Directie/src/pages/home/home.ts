@@ -28,7 +28,6 @@ export class HomePage {
   testForCurrentBeacon: any;
   pBeaconAccuracy: any;
   currentBeacon: any;
-  displayMessage: boolean = false;
   currentMessage: String;
   dateTime: any;
   counter: any;
@@ -46,6 +45,10 @@ export class HomePage {
   shortestPath: any;
   Graph: any;
   route: any;
+  checkPreviousBeacon: any;
+  welcomeMsgDone: boolean = false;
+  checkDestinationExist: boolean = false;
+  previousShortestPath: any;
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -55,27 +58,35 @@ export class HomePage {
     private authProvider: AuthProvider,
     public apiProvider: ApiProvider,
     private keyboard: Keyboard) {
-    this.keyboard.disableScroll(true);
+    //this.keyboard.disableScroll(true);
     this.detectBeacon();
     this.getBRoute();
   }
 
   goToBeacon() {
-    this.determineDestinationBeacon(this.destination);
-    this.dateTime = new Date().toLocaleString();
-    this.determineDestinationUnitName(this.destinationBeacon);
-    this.shortestPath = this.route.path(this.currentBeacon, JSON.stringify(this.destinationBeacon));
-    this.authProvider.uploadTimeStamp(this.shortestPath,this.counter, this.dateTime, this.currentUnit+"/"+this.currentBeacon, this.destination+"/"+this.destinationBeacon, this.currentUnit+"/"+this.currentBeacon, firebase.auth().currentUser.uid, false);
-    this.navCtrl.push(BeaconPage, {
-      currentBeacon: this.currentBeacon,
-      currentUnit: this.currentUnit,
-      destinationBeacon: this.destinationBeacon.toString(),
-      beaconList: this.beaconDetails,
-      counter: this.counter,
-      destinationUnit: this.destination,
-      destinationUnitName: this.destinationUnitName,
-      shortestPath: this.shortestPath
-    });
+    this.checkDestinationExist = false;
+    this.destinationBeacon = null;
+    this.shortestPath = null;
+    this.determineDestinationBeacon(this.destination.toLocaleUpperCase());
+    if (this.shortestPath != null) {
+      this.dateTime = new Date().toLocaleString();
+      this.determineDestinationUnitName(this.destinationBeacon);
+      this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destination + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false);
+      this.navCtrl.push(BeaconPage, {
+        currentBeacon: this.currentBeacon,
+        currentUnit: this.currentUnit,
+        destinationBeacon: this.destinationBeacon.toString(),
+        beaconList: this.beaconDetails,
+        counter: this.counter,
+        destinationUnit: this.destination,
+        destinationUnitName: this.destinationUnitName,
+        shortestPath: this.shortestPath
+      });
+    }
+    else{
+      this.speakText("No path found");
+    }
+
 
   }
 
@@ -106,24 +117,54 @@ export class HomePage {
 
   async welcomeMsg() {
     var responseAttempt = 0;
+    var responseMsg = 0;
     var textMsg;
-    while (responseAttempt < 3) {
-      if (responseAttempt == 0)
+    var response;
+    this.checkDestinationExist = false;
+    this.destinationBeacon = null;
+    this.shortestPath = null;
+    while (this.shortestPath == null && responseAttempt < 3) {
+      if (responseMsg == 0) {
         //textMsg = "Good morning, Your current location is at Singapore Polytechnic at beacon" + this.currentBeacon + ". May I know where do you want to go?";
-        textMsg = "Currently at " + this.currentBeacon;
-      else
-        textMsg = "Sorry, no response detected. Your desination please?";
+        textMsg = "Currently at " + this.currentUnit + "state where you would like to go after the beep";
+      }
+      else if (response == false) {
+        textMsg = "Sorry, no response detected. Your destination please?";
+      }
+      else if (this.checkDestinationExist == false) {
+        textMsg = "Destination not found, state your destination again after the beep";
+      }
+      else if (this.checkDestinationExist == true) {
+        if (this.shortestPath == null) {
+          textMsg = "No path to your destination, state another destination after the beep";
+        }
+      }
 
-      await this.speakText(textMsg).then(() => { console.log('success') });
+      await this.speakText(textMsg).then(() => { console.log('success'), this.welcomeMsgDone = true; });
       await this.startSpeechRecognition().then((msg) => {
+        this.destination = msg.toLocaleString().toLocaleUpperCase();
+        this.determineDestinationBeacon(this.destination);
+        console.log(this.destinationBeacon);
+        console.log(this.checkDestinationExist);
+        console.log(this.shortestPath);
         if (msg == "") {
           responseAttempt++;
+          responseMsg++;
+          response = false;
           if (responseAttempt == 3)
             this.speakText("Directie in standby mode. Double tap to wake up.");
+            
+        }
+        else if (this.shortestPath != null) {
+          this.speakText("Path found");
+          this.determineDestinationUnitName(this.destinationBeacon);
+          //responseAttempt = 3; //End the loop if user spoke
+          //this.goToBeacon();
         }
         else {
-          responseAttempt = 3; //End the loop if user spoke
-          this.goToBeacon();
+          responseMsg++;
+          responseAttempt = 0;
+          response = true;
         }
       });
     }
@@ -201,14 +242,19 @@ export class HomePage {
       this.checkIfRelated(this.testForCurrentBeacon);
       if (this.isRelated == true) {
         this.currentBeacon = this.testForCurrentBeacon;
-        this.determineUnitAndUnitName()
-        this.displayMessage = true;
-        this.currentMessage = '';
-        this.currentMessage = 'You are currently at beacon ' + this.currentBeacon;
-        console.log("is related");
-      }
-      else {
-        console.log("not related");
+        if (this.checkPreviousBeacon != this.currentBeacon) {
+          this.determineUnitAndUnitName()
+          this.checkPreviousBeacon = this.currentBeacon;
+          var textMsg = "Currently at " + this.currentUnit;
+          if (this.welcomeMsgDone == true) {
+            this.speakText(textMsg);
+          }
+        }
+        else {
+          this.determineUnitAndUnitName();
+          this.checkPreviousBeacon = this.currentBeacon;
+        }
+
       }
     }//end of if
   }
@@ -228,7 +274,7 @@ export class HomePage {
         this.sub = Observable.interval(500).subscribe((val) => { this.determineCurrentBeacon() });
         setTimeout(() => {
           this.welcomeMsg();
-        }, 3000);
+        }, 3500);
         //this.sub2 = Observable.interval(500).subscribe((val) => { this.determineUnitAndUnitName() });
         console.log(this.beaconDetails);
         this.inputDijkstra();
@@ -275,8 +321,19 @@ export class HomePage {
   determineDestinationBeacon(destination) {
     for (let i = 0; i < this.beaconDetails.length; i++) {
       for (let k = 0; k < this.beaconDetails[i]["unit"].length; k++) {
-        if (destination == this.beaconDetails[i]["unit"][k]) {
-          this.destinationBeacon = this.beaconDetails[i]["beaconID"]
+        if (destination == this.beaconDetails[i]["unit"][k] || destination == this.beaconDetails[i]["unitName"][k]) {
+          this.destinationBeacon = this.beaconDetails[i]["beaconID"];
+          this.checkDestinationExist = true;
+          let checkShortestPath = this.route.path(this.currentBeacon, JSON.stringify(this.beaconDetails[i]["beaconID"]));
+          if (checkShortestPath != null) {
+            if (checkShortestPath.length < this.previousShortestPath || this.shortestPath == null) {
+              this.shortestPath = checkShortestPath;
+              this.previousShortestPath = checkShortestPath;
+            }
+            else {
+              this.previousShortestPath = checkShortestPath;
+            }
+          }
         }
       }
     }
