@@ -59,6 +59,12 @@ export class HomePage {
     public apiProvider: ApiProvider,
     private keyboard: Keyboard) {
     //this.keyboard.disableScroll(true);
+    this.speechRecognition.hasPermission()
+      .then((hasPermission: boolean) => {
+        if(hasPermission ==  false){
+          this.speechRecognition.requestPermission();
+        }
+      });
     this.detectBeacon();
     this.getBRoute();
   }
@@ -83,7 +89,7 @@ export class HomePage {
         shortestPath: this.shortestPath
       });
     }
-    else{
+    else {
       this.speakText("No path found");
     }
 
@@ -153,7 +159,7 @@ export class HomePage {
           response = false;
           if (responseAttempt == 3)
             this.speakText("Directie in standby mode. Double tap to wake up.");
-            
+
         }
         else if (this.shortestPath != null) {
           this.speakText("Path found");
