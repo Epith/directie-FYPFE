@@ -39,6 +39,7 @@ export class HomePage {
   currentBeaconInfo: any;
   destinationBeacon: any;
   destinationUnitName: any;
+  destinationUnit: any;
   destinationBeaconInfo: any;
   isRelated: boolean = false;
   relatedBeacon: any;
@@ -49,6 +50,7 @@ export class HomePage {
   welcomeMsgDone: boolean = false;
   checkDestinationExist: boolean = false;
   previousShortestPath: any;
+  firstShortestPath: boolean = true;
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -61,7 +63,7 @@ export class HomePage {
     //this.keyboard.disableScroll(true);
     this.speechRecognition.hasPermission()
       .then((hasPermission: boolean) => {
-        if(hasPermission ==  false){
+        if (hasPermission == false) {
           this.speechRecognition.requestPermission();
         }
       });
@@ -84,7 +86,7 @@ export class HomePage {
         destinationBeacon: this.destinationBeacon.toString(),
         beaconList: this.beaconDetails,
         counter: this.counter,
-        destinationUnit: this.destination,
+        destinationUnit: this.destinationUnit,
         destinationUnitName: this.destinationUnitName,
         shortestPath: this.shortestPath
       });
@@ -251,9 +253,10 @@ export class HomePage {
         if (this.checkPreviousBeacon != this.currentBeacon) {
           this.determineUnitAndUnitName()
           this.checkPreviousBeacon = this.currentBeacon;
-          var textMsg = "Currently at " + this.currentUnit;
           if (this.welcomeMsgDone == true) {
-            this.speakText(textMsg);
+            if (this.currentUnit != null || this.currentUnit != undefined) {
+              this.welcomeMsg();
+            }
           }
         }
         else {
@@ -332,12 +335,19 @@ export class HomePage {
           this.checkDestinationExist = true;
           let checkShortestPath = this.route.path(this.currentBeacon, JSON.stringify(this.beaconDetails[i]["beaconID"]));
           if (checkShortestPath != null) {
-            if (checkShortestPath.length < this.previousShortestPath || this.shortestPath == null) {
+            if (this.firstShortestPath == true) {
               this.shortestPath = checkShortestPath;
-              this.previousShortestPath = checkShortestPath;
+              this.previousShortestPath = this.shortestPath;
+              this.firstShortestPath = false;
             }
             else {
-              this.previousShortestPath = checkShortestPath;
+              if (checkShortestPath.length < this.previousShortestPath.length) {
+                this.shortestPath = checkShortestPath;
+                this.previousShortestPath = checkShortestPath;
+              }
+              else {
+                this.previousShortestPath = checkShortestPath;
+              }
             }
           }
         }
@@ -347,15 +357,18 @@ export class HomePage {
 
   determineDestinationUnitName(destination) {
     this.destinationUnitName = '';
+    this.destinationUnit = '';
     let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == destination);
     this.destinationBeaconInfo = this.beaconDetails[currentBeaconIndex];
     if (this.destinationBeaconInfo != null || this.destinationBeaconInfo != undefined) {
       if (this.destinationBeaconInfo["unitName"].length > 0) {
         this.previousUnitName = this.destinationBeaconInfo["unitName"][0];
         this.destinationUnitName = this.destinationBeaconInfo["unitName"][0];
+        this.destinationUnit = this.destinationBeaconInfo["unit"][0];
         for (let i = 1; i < this.destinationBeaconInfo["unitName"].length; i++) {
           if (this.previousUnitName != this.destinationBeaconInfo["unitName"][i]) {
-            this.destinationUnitName = this.currentUnitName + this.destinationBeaconInfo["unitName"][i];
+            this.destinationUnit = this.destinationUnit + "/" + this.destinationBeaconInfo["unit"][i];
+            this.destinationUnitName = this.currentUnitName +"/" + this.destinationBeaconInfo["unitName"][i];
             this.previousUnitName = this.destinationBeaconInfo["unitName"][i];
           }
           else {
