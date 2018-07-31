@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content text-center class="fullHeight">
+<ion-content text-center class="fullHeight" (dblclick)="welcomeMsg()">
   <div class="hometop">
     <div>
       <div class="current">
@@ -23,7 +23,7 @@
       </span>
     </div>
   </div>
-  <div class="homebtm" (dblclick)="welcomeMsg()">
+  <div class="homebtm">
     <div>
       <span>
         Destination:

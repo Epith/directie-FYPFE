@@ -89,6 +89,7 @@ export class BeaconPage {
   reachedDestination: boolean = false;
   textToDisplay: String = '';
   nextUnit: String;
+  nextUnitName: String;
   nextBeaconInfo: any;
   readMessageCounter: boolean = true;
   readMessageList: any = [];
@@ -356,7 +357,7 @@ export class BeaconPage {
           else if (this.testForCurrentBeacon == this.destinationBeacon) {
             this.currentBeacon = this.testForCurrentBeacon;
           }
-          
+
         }
         let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.currentBeacon);
         let currentAccuracyBeacon2 = this.getCurrenBeacons[accuracyIndex];
@@ -502,10 +503,8 @@ export class BeaconPage {
             }
             else {
               if (this.readOnce == false) {
-                this.currentMessage = '';
-                this.currentMessage = "Currently at " + this.currentUnit +
-                  " but facing the wrong direction";
-                this.addTextToList(this.currentMessage);
+                this.addTextToList("Currently at " + this.currentUnit +
+                " but facing the wrong direction");
                 //this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
                 this.readOnce = true;
               }
@@ -635,15 +634,16 @@ export class BeaconPage {
   setCurrentMessage(currentBeacon, directionToGo, nextBeaconToGo, version) {
     if (version == 1) {
       this.currentMessage = '';
-      this.currentMessage = 'At ' + this.currentUnit
-        + directionToGo + ' to ' + this.nextUnit
+      this.currentMessage = 'At ' + this.currentUnit + " " + this.currentUnitName
+        + directionToGo + ' to ' + this.nextUnit + " " + this.nextUnitName
         + ' Be prepared to ' + this.turningPointDirection + " at the next location"
         + this.note;
+        console.log(this.currentMessage);
     }
     else {
       this.currentMessage = '';
-      this.currentMessage = 'At ' + this.currentUnit
-        + ' Please ' + directionToGo + ' to ' + nextBeaconToGo
+      this.currentMessage = 'At ' + this.currentUnit + " " + this.currentUnitName
+        + ' Please ' + directionToGo + ' to ' + this.nextUnit + " " + this.nextUnitName
         + this.note;
     }
   }
@@ -652,7 +652,7 @@ export class BeaconPage {
     if (version == 1) {
       this.textToDisplay = '';
       this.textToDisplay = directionToGo + ' to ' + nextBeaconToGo
-        + ' Prepared to ' + this.turningPointDirection + " at the next location";
+        + ' Prepare to ' + this.turningPointDirection + " at the next location";
     }
     else if (version == 2) {
       this.textToDisplay = '';
@@ -666,7 +666,7 @@ export class BeaconPage {
   }
 
   readMessage() {
-    this.tts.speak({ text: JSON.stringify(this.currentMessage), rate: 0.9 });
+    this.addTextToList(this.currentMessage);
   }
 
   readAccuracyMessage() {
@@ -741,8 +741,10 @@ export class BeaconPage {
       if (this.nextBeaconInfo["unit"].length > 0) {
         this.previousUnit = this.nextBeaconInfo["unit"][0];
         this.nextUnit = this.nextBeaconInfo["unit"][0];
+        this.nextUnitName = this.nextBeaconInfo["unitName"][0];
         for (let i = 1; i < this.nextBeaconInfo["unit"].length; i++) {
           if (this.previousUnit != this.nextBeaconInfo["unit"][i]) {
+            this.nextUnitName = this.nextUnitName + "/" + this.nextBeaconInfo["unitName"][i];
             this.nextUnit = this.nextUnit + "/" + this.nextBeaconInfo["unit"][i];
             this.previousUnit = this.nextBeaconInfo["unit"][i];
           }
