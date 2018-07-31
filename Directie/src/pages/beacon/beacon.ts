@@ -42,6 +42,7 @@ export class BeaconPage {
   sub: Subscription;
   sub2: Subscription;
   sub3: Subscription;
+  sub4: Subscription;
   isFirstBeacon: boolean = true;
   displayMessage: boolean = false;
   previousBeacon: any;
@@ -110,7 +111,6 @@ export class BeaconPage {
   }
 
   getBRelation() {
-    //get details from previous page
     this.beaconDetails = this.navParams.get('beaconList');
     this.counter = this.navParams.get('counter');
     this.destinationUnit = this.navParams.get('destinationUnit');
@@ -127,7 +127,8 @@ export class BeaconPage {
         this.determineIfUserOnTheRightTrack(this.previousNextBeaconAccuracy, this.currentNextBeaconAccuracy);
       }
     });
-    this.sub3 = Observable.interval(0).subscribe((val) => {
+    //this.sub3 = Observable.interval(400).subscribe((val) => { this.determineUnitAndUnitName() });
+    this.sub4 = Observable.interval(0).subscribe((val) => {
       if (this.readMessageCounter == true && this.readMessageList.length > 0) {
         this.speakText()
       }
@@ -191,11 +192,10 @@ export class BeaconPage {
   }
 
   determineCurrentBeacon() {
-    //when user is at first beacon
+
     if (this.isFirstBeacon == true) {
       if (this.getCurrenBeacons.length > 0) {
         this.determineUnitAndUnitName();
-        // get nextBeaconToGo
         for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
           if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
             this.nextBeaconToGo = this.shortestPath[pathCounter + 1];
@@ -204,7 +204,7 @@ export class BeaconPage {
             this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
           }
         }//end of for
-        //if user arrives at destination
+
         if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination)) {
           this.imageSRC = "assets/imgs/straight.png";
           this.destinationMessage = "Arrived at destination " + this.destinationUnit;
@@ -227,7 +227,6 @@ export class BeaconPage {
           }
         }//end of if current=destination
         else {
-          //get compassBearing
           this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
           if (this.getBearing >= (this.beaconBearing - 20) && this.getBearing <= (this.beaconBearing + 20)) {
             this.facingRightDirection = true;
@@ -237,7 +236,7 @@ export class BeaconPage {
           }
           if (this.facingRightDirection == false) {
             this.determineIffacingRightDirection();
-            //for when user faces the wrong direction
+
             if (this.readOnce == false) {
               this.readOnce = true;
               this.currentMessage = '';
@@ -260,7 +259,6 @@ export class BeaconPage {
               }
             }
           }
-          //when user faces the right directions
           else {
             this.displayMessage = true;
             this.directionToGo = "Go Straight";
@@ -324,7 +322,6 @@ export class BeaconPage {
             this.currentNextBeaconAccuracy = this.currentAccuracyBeacon["accuracy"];
           }
         }
-        //check for which beacon has the lowest accuracy and if it is in the path
         this.pBeaconAccuracy = this.getCurrenBeacons[0]["accuracy"]
         this.testForCurrentBeacon = this.getCurrenBeacons[0]["major"];
         for (let i = 1; i < this.getCurrenBeacons.length; i++) {
