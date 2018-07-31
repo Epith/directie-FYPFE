@@ -48,7 +48,7 @@ export class HomePage {
   checkPreviousBeacon: any;
   welcomeMsgDone: boolean = false;
   checkDestinationExist: boolean = false;
-  previousShortestPath: any;
+  previousShortestPath = [];
   destinationUnit: any;
   nextUnit: any;
   nextBeaconInfo: any;
@@ -94,7 +94,7 @@ export class HomePage {
         TimeStamp: this.dateTime,
       }
       this.TimeStampArray.push(data);
-      this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false, this.TimeStampArray);
+      //this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false, this.TimeStampArray);
       this.navCtrl.push(BeaconPage, {
         currentBeacon: this.currentBeacon,
         currentUnit: this.currentUnit,
@@ -174,6 +174,7 @@ export class HomePage {
           responseAttempt++;
           responseMsg++;
           response = false;
+          this.destinationUnit='';
           if (responseAttempt == 3)
             this.speakText("Directie in standby mode. Double tap to wake up.");
 
@@ -347,11 +348,11 @@ export class HomePage {
     for (let i = 0; i < this.beaconDetails.length; i++) {
       for (let k = 0; k < this.beaconDetails[i]["unit"].length; k++) {
         if (destination == this.beaconDetails[i]["unit"][k] || destination == this.beaconDetails[i]["unitName"][k]) {
-          this.destinationBeacon = this.beaconDetails[i]["beaconID"];
           this.checkDestinationExist = true;
           let checkShortestPath = this.route.path(this.currentBeacon, JSON.stringify(this.beaconDetails[i]["beaconID"]));
           if (checkShortestPath != null) {
-            if (checkShortestPath.length < this.previousShortestPath || this.shortestPath == null) {
+            if (checkShortestPath.length < this.previousShortestPath.length || this.shortestPath == null) {
+              this.destinationBeacon = this.beaconDetails[i]["beaconID"];
               this.shortestPath = checkShortestPath;
               this.previousShortestPath = checkShortestPath;
             }
