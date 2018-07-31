@@ -48,49 +48,45 @@ export class AuthProvider {
     return firebase.auth().signOut();
   }
 
-  uploadTimeStamp(route,counter, dateTime, startLocation, destination, currentLocation, user, routeComplete) {
-    const ref = firebase.database().ref('/TimeStamp/');
+  uploadTimeStamp(route, counter, dateTime, startLocation, destination, currentLocation, user, routeComplete, data) {
     firebase.database()
       .ref('/TimeStamp')
       .child(counter)
-      .child("route")
       .set({
-        TimeStarted: dateTime,
-        Route: route,
-        TimeSeries: ""
+        Beacons: route,
+        startTime: dateTime,
+        endTime: "",
+        Origin: currentLocation,
+        Destination: destination,
+        routeCompleted: routeComplete,
+        User: user
       }).then(value => {
         const ref2 = firebase.database().ref('/TimeStamp/' + counter + "/");
         firebase.database()
-          .ref('/TimeStamp/' + counter + "/route/TimeSeries")
-          .child(ref.push().key)
-          .set({
-            TimeStamp: dateTime,
-            StartLocation: startLocation,
-            Destination: destination,
-            CurrentLocation: currentLocation,
-            User: user,
-            RouteCompleted: routeComplete
-          })
+          .ref('/TimeStamp/' + counter)
+          .child("Nodes")
+          .set(data)
       });
   }
 
-  updateTimeStamp(counter, dateTime, startLocation, destination, currentLocation, user, routeComplete) {
-
-    const ref2 = firebase.database().ref('/TimeStamp/');
+  updateTimeStamp(counter, data) {
     firebase.database()
       .ref('/TimeStamp/')
       .child(counter)
-      .child("route")
-      .child("TimeSeries")
-      .child(ref2.push().key)
-      .set({
-        TimeStamp: dateTime,
-        StartLocation: startLocation,
-        Destination: destination,
-        CurrentLocation: currentLocation,
-        User: user,
-        RouteCompleted: routeComplete
-      });
+      .child("Nodes")
+      .set(data);
+  }
+
+  updateTimeStampDestination(counter,dateTime,data,routeComplete) {
+    var postData={
+      Nodes: data,
+      endTime: dateTime,
+      routeCompleted: routeComplete
+    };
+    firebase.database()
+      .ref('/TimeStamp/')
+      .child(counter)
+      .update(postData);
   }
 
   insertSocialAccount(email: string, password: string, gender: string, dob: string, name: string, login: string) {

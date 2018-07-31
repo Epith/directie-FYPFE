@@ -50,6 +50,10 @@ export class HomePage {
   checkDestinationExist: boolean = false;
   previousShortestPath: any;
   destinationUnit: any;
+  nextUnit: any;
+  nextBeaconInfo: any;
+  nextBeaconToGo: any;
+  TimeStampArray = [];
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -76,16 +80,28 @@ export class HomePage {
     this.shortestPath = null;
     this.determineDestinationBeacon(this.destination.toLocaleUpperCase());
     if (this.shortestPath != null) {
+      for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
+        if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
+          this.nextBeaconToGo = this.shortestPath[pathCounter + 1];
+        }
+      }
+      this.determineNextUnit(this.nextBeaconToGo);
       this.dateTime = new Date().toLocaleString();
       this.determineDestinationUnitName(this.destinationBeacon);
-      this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destination + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false);
+      var data = {
+        CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
+        NextLocation: this.nextUnit + "/" + this.nextBeaconToGo,
+        TimeStamp: this.dateTime,
+      }
+      this.TimeStampArray.push(data);
+      this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false, this.TimeStampArray);
       this.navCtrl.push(BeaconPage, {
         currentBeacon: this.currentBeacon,
         currentUnit: this.currentUnit,
         destinationBeacon: this.destinationBeacon.toString(),
         beaconList: this.beaconDetails,
         counter: this.counter,
-        destinationUnit: this.destination,
+        destinationUnit: this.destinationUnit,
         destinationUnitName: this.destinationUnitName,
         shortestPath: this.shortestPath
       });
@@ -400,6 +416,28 @@ export class HomePage {
         }
       }
       this.route.addNode(JSON.stringify(this.beaconDetails[i]["beaconID"]), this.relatedBeacon);
+    }
+  }
+
+  determineNextUnit(nextBeacon) {
+    this.previousUnit = '';
+    this.nextUnit = '';
+    let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == nextBeacon);
+    this.nextBeaconInfo = this.beaconDetails[currentBeaconIndex];
+    if (this.nextBeaconInfo != null || this.nextBeaconInfo != undefined) {
+      if (this.nextBeaconInfo["unit"].length > 0) {
+        this.previousUnit = this.nextBeaconInfo["unit"][0];
+        this.nextUnit = this.nextBeaconInfo["unit"][0];
+        for (let i = 1; i < this.nextBeaconInfo["unit"].length; i++) {
+          if (this.previousUnit != this.nextBeaconInfo["unit"][i]) {
+            this.nextUnit = this.nextUnit + "/" + this.nextBeaconInfo["unit"][i];
+            this.previousUnit = this.nextBeaconInfo["unit"][i];
+          }
+          else {
+            this.previousUnit = this.nextBeaconInfo["unit"][i];
+          }
+        }
+      }
     }
   }
 

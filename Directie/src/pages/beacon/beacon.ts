@@ -97,6 +97,7 @@ export class BeaconPage {
   showAccuracy: any;
   startLocation: any;
   note: any;
+  nodeArray = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -146,6 +147,10 @@ export class BeaconPage {
     this.startingBeacon = this.navParams.get('currentBeacon');
     this.destinationBeacon = this.navParams.get('destinationBeacon');
     this.shortestPath = this.navParams.get('shortestPath');
+    var nodesRef = firebase.database().ref('/TimeStamp/' + this.counter + "/Nodes");
+    nodesRef.on('value', snapshot => {
+      this.nodeArray = snapshot.val();
+    });
   }
 
   ionViewDidLeave() {
@@ -263,7 +268,7 @@ export class BeaconPage {
             this.displayMessage = true;
             this.directionToGo = "Go Straight";
             this.determineIfTurningPoint(this.nextBeaconToGo);
-            this.determineNote(this.currentBeacon,this.nextBeaconToGo);
+            this.determineNote(this.currentBeacon, this.nextBeaconToGo);
             if (this.isTurningPoint == true) {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.determineNextUnit(this.nextBeaconToGo);
@@ -348,10 +353,10 @@ export class BeaconPage {
               }
             }//end of for loop
           }
-          /*else if (this.testForCurrentBeacon == this.destinationBeacon) {
+          else if (this.testForCurrentBeacon == this.destinationBeacon) {
             this.currentBeacon = this.testForCurrentBeacon;
           }
-          */
+          
         }
         let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.currentBeacon);
         let currentAccuracyBeacon2 = this.getCurrenBeacons[accuracyIndex];
@@ -411,7 +416,13 @@ export class BeaconPage {
             if (this.reachedDestination == false) {
               this.dateTime = new Date().toLocaleString();
               this.determineUnitAndUnitName();
-              this.authProvider.updateTimeStamp(this.counter, this.dateTime, this.startLocation, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, true);
+              var data = {
+                CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
+                NextLocation: this.currentUnit + "/" + this.currentBeacon,
+                TimeStamp: this.dateTime,
+              }
+              this.nodeArray.push(data);
+              this.authProvider.updateTimeStampDestination(this.counter, this.dateTime, this.nodeArray, true);
               this.displayMessage = false;
               this.accuracyMessage = '';
               this.imageSRC = "assets/imgs/straight.png";
@@ -443,10 +454,16 @@ export class BeaconPage {
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
               this.dateTime = new Date().toLocaleString();
               this.determineUnitAndUnitName();
-              this.authProvider.updateTimeStamp(this.counter, this.dateTime, this.startLocation, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false);
+              var data = {
+                CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
+                NextLocation: this.nextUnit + "/" + this.nextBeaconToGo,
+                TimeStamp: this.dateTime,
+              }
+              this.nodeArray.push(data);
+              this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
               this.directionToGo = "Go Straight";
               this.determineIfTurningPoint(this.nextBeaconToGo);
-              this.determineNote(this.currentBeacon,this.nextBeaconToGo);
+              this.determineNote(this.currentBeacon, this.nextBeaconToGo);
               if (this.isTurningPoint == true) {
                 this.determineNextUnit(this.nextBeaconToGo);
                 console.log(this.turningPointDirection);
@@ -529,7 +546,7 @@ export class BeaconPage {
     }
   }
 
-  determineNote(currentBeacon,nextBeacon) {
+  determineNote(currentBeacon, nextBeacon) {
     let index = this.beaconDetails.findIndex(x => x.beaconID == currentBeacon);
     if (this.beaconDetails[index]["beaconInfo"].length >= 1) {
       for (let i = 0; i < this.beaconDetails[index]["beaconInfo"].length; i++) {
