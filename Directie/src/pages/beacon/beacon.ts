@@ -160,6 +160,7 @@ export class BeaconPage {
     this.displayMessage = false;
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
+    this.authProvider.updateEndTime(this.counter, this.dateTime);
     this.authProvider.updateCounter((this.counter + 1));
   }
 
@@ -692,6 +693,7 @@ export class BeaconPage {
 
   goToHome(): void {
     this.navCtrl.push(HomePage);
+    this.authProvider.updateEndTime(this.counter, this.dateTime);
     this.authProvider.updateCounter((this.counter + 1));
   }
 

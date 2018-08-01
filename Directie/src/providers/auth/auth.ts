@@ -77,6 +77,15 @@ export class AuthProvider {
       .set(data);
   }
 
+  updateEndTime(counter, dateTime) {
+    firebase.database()
+      .ref('/TimeStamp/')
+      .child(counter)
+      .update({
+        endTime: dateTime
+      });
+  }
+
   updateTimeStampDestination(counter,dateTime,data,routeComplete) {
     var postData={
       Nodes: data,

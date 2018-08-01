@@ -94,7 +94,7 @@ export class HomePage {
         TimeStamp: this.dateTime,
       }
       this.TimeStampArray.push(data);
-      //this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false, this.TimeStampArray);
+      this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false, this.TimeStampArray);
       this.navCtrl.push(BeaconPage, {
         currentBeacon: this.currentBeacon,
         currentUnit: this.currentUnit,
