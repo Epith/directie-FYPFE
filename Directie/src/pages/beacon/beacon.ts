@@ -160,6 +160,7 @@ export class BeaconPage {
     this.displayMessage = false;
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
+    this.dateTime = new Date().toISOString();
     this.authProvider.updateEndTime(this.counter, this.dateTime);
     this.authProvider.updateCounter((this.counter + 1));
   }
@@ -355,14 +356,11 @@ export class BeaconPage {
               }
             }//end of for loop
           }
-          else if (this.testForCurrentBeacon == this.destinationBeacon) {
+          /*else if (this.testForCurrentBeacon == this.destinationBeacon) {
             this.currentBeacon = this.testForCurrentBeacon;
           }
-
+            */
         }
-        let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.currentBeacon);
-        let currentAccuracyBeacon2 = this.getCurrenBeacons[accuracyIndex];
-        this.showAccuracy = currentAccuracyBeacon2["accuracy"];
         this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
         if (this.getBearing >= (this.beaconBearing - 20) && this.getBearing <= (this.beaconBearing + 20)) {
           this.facingRightDirection = true;
@@ -416,7 +414,7 @@ export class BeaconPage {
           }
           if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination) || this.currentBeacon == this.destinationBeacon) {
             if (this.reachedDestination == false) {
-              this.dateTime = new Date().toLocaleString();
+              this.dateTime = new Date().toISOString();
               this.determineUnitAndUnitName();
               var data = {
                 CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
@@ -454,7 +452,7 @@ export class BeaconPage {
                 }
               }//end of for loop
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
-              this.dateTime = new Date().toLocaleString();
+              this.dateTime = new Date().toISOString();
               this.determineUnitAndUnitName();
               var data = {
                 CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
@@ -693,6 +691,7 @@ export class BeaconPage {
 
   goToHome(): void {
     this.navCtrl.push(HomePage);
+    this.dateTime = new Date().toISOString();
     this.authProvider.updateEndTime(this.counter, this.dateTime);
     this.authProvider.updateCounter((this.counter + 1));
   }

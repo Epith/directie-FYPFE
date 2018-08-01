@@ -54,6 +54,7 @@ export class HomePage {
   nextBeaconInfo: any;
   nextBeaconToGo: any;
   TimeStampArray = [];
+  checkSpeechArray: any;
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -86,7 +87,7 @@ export class HomePage {
         }
       }
       this.determineNextUnit(this.nextBeaconToGo);
-      this.dateTime = new Date().toLocaleString();
+      this.dateTime = new Date().toISOString();
       this.determineDestinationUnitName(this.destinationBeacon);
       var data = {
         CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
@@ -155,6 +156,8 @@ export class HomePage {
         textMsg = "Sorry, no response detected. Your destination please?";
       }
       else if (this.checkDestinationExist == false) {
+        this.destination = '';
+        this.destinationUnit = '';
         textMsg = "Destination not found, state your destination again after the beep";
       }
       else if (this.checkDestinationExist == true) {
@@ -165,30 +168,28 @@ export class HomePage {
 
       await this.speakText(textMsg).then(() => { console.log('success'), this.welcomeMsgDone = true; });
       await this.startSpeechRecognition().then((msg) => {
-        this.destination = msg.toLocaleString().toLocaleUpperCase();
-        this.determineDestinationBeacon(this.destination);
-        console.log(this.destinationBeacon);
-        console.log(this.checkDestinationExist);
-        console.log(this.shortestPath);
+        this.checkSpeechArray = msg;
         if (msg == "") {
           responseAttempt++;
           responseMsg++;
           response = false;
-          this.destinationUnit='';
+          this.destinationUnit = '';
+          this.destination = '';
           if (responseAttempt == 3)
             this.speakText("Directie in standby mode. Double tap to wake up.");
 
-        }
-        else if (this.shortestPath != null) {
-          this.speakText("Path found");
-          this.determineDestinationUnitName(this.destinationBeacon);
-          //responseAttempt = 3; //End the loop if user spoke
-          //this.goToBeacon();
         }
         else {
           responseMsg++;
           responseAttempt = 0;
           response = true;
+          for (let i = 0; i < this.checkSpeechArray.length; i++) {
+            this.determineDestinationBeacon(this.checkSpeechArray[i].toLocaleString().toLocaleUpperCase());
+          }
+          if (this.shortestPath != null) {
+            this.speakText("Path found");
+            this.determineDestinationUnitName(this.destinationBeacon);
+          }
         }
       });
     }
@@ -211,7 +212,7 @@ export class HomePage {
     return new Promise(resolve => {
       this.speechRecognition.startListening(SROptions)
         .subscribe(
-          (matches: Array<string>) => { console.log(matches); resolve(matches[0]) },
+          (matches: Array<string>) => { console.log(matches); resolve(matches) },
           (onerror) => {
             if ((onerror == "No match") || (onerror = "No speech input"))
               resolve("");
@@ -348,6 +349,7 @@ export class HomePage {
     for (let i = 0; i < this.beaconDetails.length; i++) {
       for (let k = 0; k < this.beaconDetails[i]["unit"].length; k++) {
         if (destination == this.beaconDetails[i]["unit"][k] || destination == this.beaconDetails[i]["unitName"][k]) {
+          this.destination = destination;
           this.checkDestinationExist = true;
           let checkShortestPath = this.route.path(this.currentBeacon, JSON.stringify(this.beaconDetails[i]["beaconID"]));
           if (checkShortestPath != null) {
