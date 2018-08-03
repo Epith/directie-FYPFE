@@ -215,11 +215,7 @@ export class BeaconPage {
           if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
             this.nextBeaconToGo = this.shortestPath[pathCounter + 1];
           }
-          else if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[this.shortestPath.length - 1])) {
-            this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
-          }
         }//end of for
-
         //get the compass bearing to determine if user facing the right direction
         this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
         if (this.getBearing >= (this.beaconBearing - 20) && this.getBearing <= (this.beaconBearing + 20)) {
@@ -284,11 +280,12 @@ export class BeaconPage {
           this.isFirstBeacon = false;
           this.previousBeacon = this.currentBeacon;
           this.previousPreviousBeacon = this.previousBeacon;
-          let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.nextBeaconToGo);
+          /*let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.nextBeaconToGo);
           this.previousAccuracyBeacon = this.getCurrenBeacons[accuracyIndex];
           if (this.previousAccuracyBeacon != null || this.previousAccuracyBeacon != undefined) {
             this.previousNextBeaconAccuracy = this.previousAccuracyBeacon["accuracy"];
           }
+          */
         }
         this.getCurrenBeacons = [];
         this.checkPreviousCodeDone = true;
@@ -337,9 +334,6 @@ export class BeaconPage {
             for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
               if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
                 this.nextBeaconToGo = this.shortestPath[pathCounter];
-              }
-              else if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[(this.shortestPath.length - 1)])) {
-                this.arrivedDestination = this.shortestPath[this.shortestPath.length - 1];
               }
             }//end of for loop
           }
@@ -493,10 +487,10 @@ export class BeaconPage {
               }
             }
           }
+          this.getCurrenBeacons = [];
+          this.checkPreviousCodeDone = true;
         }
       }
-      this.getCurrenBeacons = [];
-      this.checkPreviousCodeDone = true;
     }//end of else
   }
 
