@@ -294,7 +294,7 @@ export class BeaconPage {
           }
           */
         }
-        this.getCurrenBeacons = [];
+        //this.getCurrenBeacons = [];
         this.checkPreviousCodeDone = true;
       }//end of if(ifFirstBeacon)
     }
@@ -494,7 +494,7 @@ export class BeaconPage {
               }
             }
           }
-          this.getCurrenBeacons = [];
+          //this.getCurrenBeacons = [];
           this.checkPreviousCodeDone = true;
         }
       }
