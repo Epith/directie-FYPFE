@@ -213,9 +213,9 @@ export class BeaconPage {
   }
 
   determineCurrentBeacon() {
-    this.checkPreviousCodeDone = false;
     if (this.isFirstBeacon == true) {
       if (this.getCurrenBeacons.length > 0) {
+        this.checkPreviousCodeDone = false;
         this.determineUnitAndUnitName();
         //determine next beacon to go
         for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
@@ -294,13 +294,14 @@ export class BeaconPage {
           }
           */
         }
-        //this.getCurrenBeacons = [];
+        this.getCurrenBeacons = [];
         this.checkPreviousCodeDone = true;
       }//end of if(ifFirstBeacon)
     }
     //else of(ifFirstBeacon)
     else {
       if (this.getCurrenBeacons.length > 0) {
+        this.checkPreviousCodeDone = false;
         //check for user reached destination
         /*if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.arrivedDestination) || this.currentBeacon == this.destinationBeacon) {
           let accuracyIndex = this.getCurrenBeacons.findIndex(x => x.major == this.arrivedDestination);
@@ -411,7 +412,7 @@ export class BeaconPage {
                 TimeStamp: this.dateTime,
               }
               this.nodeArray.push(data);
-              this.authProvider.updateTimeStampDestination(this.counter, this.dateTime, this.nodeArray, true);
+              //this.authProvider.updateTimeStampDestination(this.counter, this.dateTime, this.nodeArray, true);
               //this.displayMessage = false;
               //this.accuracyMessage = '';
               this.imageSRC = "assets/imgs/straight.png";
@@ -454,7 +455,7 @@ export class BeaconPage {
                 TimeStamp: this.dateTime,
               }
               this.nodeArray.push(data);
-              this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
+              //this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
               this.directionToGo = "Go Straight";
               this.determineIfTurningPoint(this.nextBeaconToGo);
               this.determineNote(this.currentBeacon, this.nextBeaconToGo);
@@ -494,9 +495,10 @@ export class BeaconPage {
               }
             }
           }
-          //this.getCurrenBeacons = [];
-          this.checkPreviousCodeDone = true;
+          this.getCurrenBeacons = [];
+
         }
+        this.checkPreviousCodeDone = true;
       }
     }//end of else
   }
