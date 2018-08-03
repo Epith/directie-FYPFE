@@ -196,7 +196,6 @@ export class HomePage {
             }
             this.determineNextUnit(this.nextBeaconToGo);
             this.dateTime = new Date().toISOString();
-            this.determineDestinationUnitName(this.destinationBeacon);
             var data = {
               CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
               NextLocation: this.nextUnit + "/" + this.nextBeaconToGo,
