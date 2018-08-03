@@ -161,7 +161,7 @@ export class BeaconPage {
     this.displayMessage = false;
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
-    /*if (this.reachedDestination == true) {
+    if (this.reachedDestination == true) {
       this.authProvider.updateCounter((this.counter + 1));
       this.navCtrl.push(HomePage);
     }
@@ -171,7 +171,6 @@ export class BeaconPage {
       this.authProvider.updateCounter((this.counter + 1));
       this.navCtrl.push(HomePage);
     }
-    */
   }
 
   ionViewWillEnter() {
@@ -434,7 +433,7 @@ export class BeaconPage {
                 TimeStamp: this.dateTime,
               }
               this.nodeArray.push(data);
-              //this.authProvider.updateTimeStampDestination(this.counter, this.dateTime, this.nodeArray, true);
+              this.authProvider.updateTimeStampDestination(this.counter, this.dateTime, this.nodeArray, true);
               //this.displayMessage = false;
               //this.accuracyMessage = '';
               this.imageSRC = "assets/imgs/straight.png";
@@ -477,7 +476,7 @@ export class BeaconPage {
                 TimeStamp: this.dateTime,
               }
               this.nodeArray.push(data);
-              //this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
+              this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
               this.directionToGo = "Go Straight";
               this.determineIfTurningPoint(this.nextBeaconToGo);
               this.determineNote(this.currentBeacon, this.nextBeaconToGo);
@@ -699,7 +698,7 @@ export class BeaconPage {
   }
 
   goToHome(): void {
-    /*if (this.reachedDestination == true) {
+    if (this.reachedDestination == true) {
       this.authProvider.updateCounter((this.counter + 1));
       this.navCtrl.push(HomePage);
     }
@@ -707,9 +706,9 @@ export class BeaconPage {
       this.dateTime = new Date().toISOString();
       this.authProvider.updateEndTime(this.counter, this.dateTime);
       this.authProvider.updateCounter((this.counter + 1));
-      
-    }*/
-    this.navCtrl.push(HomePage);
+      this.navCtrl.push(HomePage);
+    }
+
   }
 
   determineUnitAndUnitName() {
