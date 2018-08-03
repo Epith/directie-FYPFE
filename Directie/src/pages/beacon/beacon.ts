@@ -166,9 +166,16 @@ export class BeaconPage {
     this.displayMessage = false;
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
-    this.dateTime = new Date().toISOString();
-    this.authProvider.updateEndTime(this.counter, this.dateTime);
-    this.authProvider.updateCounter((this.counter + 1));
+    if (this.reachedDestination == true) {
+      this.authProvider.updateCounter((this.counter + 1));
+      this.navCtrl.push(HomePage);
+    }
+    else {
+      this.dateTime = new Date().toISOString();
+      this.authProvider.updateEndTime(this.counter, this.dateTime);
+      this.authProvider.updateCounter((this.counter + 1));
+      this.navCtrl.push(HomePage);
+    }
   }
 
   ionViewWillEnter() {
@@ -670,10 +677,17 @@ export class BeaconPage {
   }
 
   goToHome(): void {
-    this.navCtrl.push(HomePage);
-    this.dateTime = new Date().toISOString();
-    this.authProvider.updateEndTime(this.counter, this.dateTime);
-    this.authProvider.updateCounter((this.counter + 1));
+    if (this.reachedDestination == true) {
+      this.authProvider.updateCounter((this.counter + 1));
+      this.navCtrl.push(HomePage);
+    }
+    else {
+      this.dateTime = new Date().toISOString();
+      this.authProvider.updateEndTime(this.counter, this.dateTime);
+      this.authProvider.updateCounter((this.counter + 1));
+      this.navCtrl.push(HomePage);
+    }
+
   }
 
   determineUnitAndUnitName() {

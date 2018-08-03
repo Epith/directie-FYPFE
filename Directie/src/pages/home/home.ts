@@ -187,8 +187,33 @@ export class HomePage {
             this.determineDestinationBeacon(this.checkSpeechArray[i].toLocaleString().toLocaleUpperCase());
           }
           if (this.shortestPath != null) {
-            this.speakText("Path found");
             this.determineDestinationUnitName(this.destinationBeacon);
+            this.speakText("Get ready to walk").then(() => {
+              for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
+                if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
+                  this.nextBeaconToGo = this.shortestPath[pathCounter + 1];
+                }
+              }
+              this.determineNextUnit(this.nextBeaconToGo);
+              this.dateTime = new Date().toISOString();
+              var data = {
+                CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
+                NextLocation: this.nextUnit + "/" + this.nextBeaconToGo,
+                TimeStamp: this.dateTime,
+              }
+              this.TimeStampArray.push(data);
+              //this.authProvider.uploadTimeStamp(this.shortestPath, this.counter, this.dateTime, this.currentUnit + "/" + this.currentBeacon, this.destinationUnit + "/" + this.destinationBeacon, this.currentUnit + "/" + this.currentBeacon, firebase.auth().currentUser.uid, false, this.TimeStampArray);
+              this.navCtrl.push(BeaconPage, {
+                currentBeacon: this.currentBeacon,
+                currentUnit: this.currentUnit,
+                destinationBeacon: this.destinationBeacon.toString(),
+                beaconList: this.beaconDetails,
+                counter: this.counter,
+                destinationUnit: this.destinationUnit,
+                destinationUnitName: this.destinationUnitName,
+                shortestPath: this.shortestPath
+              });
+            });
           }
         }
       });
