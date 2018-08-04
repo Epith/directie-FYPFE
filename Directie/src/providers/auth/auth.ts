@@ -86,16 +86,14 @@ export class AuthProvider {
       });
   }
 
-  updateTimeStampDestination(counter,dateTime,data,routeComplete) {
-    var postData={
-      Nodes: data,
-      endTime: dateTime,
-      routeCompleted: routeComplete
-    };
+  updateTimeStampDestination(counter,dateTime) {
     firebase.database()
       .ref('/TimeStamp/')
       .child(counter)
-      .update(postData);
+      .update({
+        endTime: dateTime,
+        routeCompleted: true
+      });
   }
 
   insertSocialAccount(email: string, password: string, gender: string, dob: string, name: string, login: string) {
