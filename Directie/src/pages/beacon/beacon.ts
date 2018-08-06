@@ -103,6 +103,8 @@ export class BeaconPage {
   nodeArray = [];
   checkPreviousCodeDone: boolean = true;
   checkPreviousCurrent: any;
+  readCurrentMessageDone: boolean = true;
+  readStraightMessageDone: boolean = true;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -362,7 +364,8 @@ export class BeaconPage {
             }
             //if facing the right direction get the next beacon to go
             if (this.secondFacingDirectionCheck == true) {
-              //this.readMessageList.length = 0;
+              this.readMessageList.length = 0;
+              this.readCurrentMessageDone = false;
               for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
                 if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
                   this.nextBeaconToGo = this.shortestPath[pathCounter + 1];
@@ -391,7 +394,18 @@ export class BeaconPage {
                   //this.readMessageList.length = 0;
                   this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
                   console.log(this.currentMessage);
-                  this.addTextToList(this.currentMessage);
+                  //this.addTextToList(this.currentMessage);
+                  this.tts.speak(this.currentMessage).then(() => {
+                    this.previousBeacon = this.currentBeacon;
+                    this.previousPreviousBeacon = this.previousBeacon;
+                    this.facingRightDirection = false;
+                    this.readOnce = false;
+                    this.secondFacingDirectionCheck = false;
+                    this.showDirectionToTurn = true;
+                    this.readCurrentMessageDone = true;
+                    this.readMessageCounter = true;
+                    this.checkPreviousCodeDone = true;
+                  });
                   this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
                 }
                 else if (this.turningPointDirection == "Turn Right") {
@@ -402,7 +416,18 @@ export class BeaconPage {
                   //this.readMessageList.length = 0;
                   this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
                   console.log(this.currentMessage);
-                  this.addTextToList(this.currentMessage);
+                  //this.addTextToList(this.currentMessage);
+                  this.tts.speak(this.currentMessage).then(() => {
+                    this.previousBeacon = this.currentBeacon;
+                    this.previousPreviousBeacon = this.previousBeacon;
+                    this.facingRightDirection = false;
+                    this.readOnce = false;
+                    this.secondFacingDirectionCheck = false;
+                    this.showDirectionToTurn = true;
+                    this.readCurrentMessageDone = true;
+                    this.readMessageCounter = true;
+                    this.checkPreviousCodeDone = true;
+                  });
                   this.setTextToDisplay(this.directionToGo, this.nextUnit, 1);
                 }
               }
@@ -414,15 +439,20 @@ export class BeaconPage {
                 this.imageSRC = "assets/imgs/straight.png";
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 2);
                 console.log(this.currentMessage);
-                this.addTextToList(this.currentMessage);
+                //this.addTextToList(this.currentMessage);
+                this.tts.speak(this.currentMessage).then(() => {
+                  this.previousBeacon = this.currentBeacon;
+                  this.previousPreviousBeacon = this.previousBeacon;
+                  this.facingRightDirection = false;
+                  this.readOnce = false;
+                  this.secondFacingDirectionCheck = false;
+                  this.showDirectionToTurn = true;
+                  this.readCurrentMessageDone = true;
+                  this.readMessageCounter = true;
+                  this.checkPreviousCodeDone = true;
+                });
                 this.setTextToDisplay(this.directionToGo, this.nextUnit, 2);
               }
-              this.previousBeacon = this.currentBeacon;
-              this.previousPreviousBeacon = this.previousBeacon;
-              this.facingRightDirection = false;
-              this.readOnce = false;
-              this.secondFacingDirectionCheck = false;
-              this.showDirectionToTurn = true;
             }
             else {
               if (this.readOnce == false) {
@@ -449,7 +479,10 @@ export class BeaconPage {
             }
           }
           //this.getCurrenBeacons = [];
-          this.checkPreviousCodeDone = true;
+          if (this.readCurrentMessageDone == true) {
+            this.checkPreviousCodeDone = true;
+          }
+
         }
         else if ((JSON.stringify(this.currentBeacon) != JSON.stringify(this.nextBeaconToGo)) || (JSON.stringify(this.currentBeacon) != JSON.stringify(this.destinationBeacon))) {
           console.log("!= executed");
@@ -522,23 +555,37 @@ export class BeaconPage {
           }
           //when user faces the right direction
           else {
-            //this.readMessageList.length = 0;
+            this.readMessageList.length = 0;
+            this.readStraightMessageDone = false;
             this.directionToTurn = '';
             this.directionToTurn = "Go straight"
             if (this.showDirectionToTurn == true) {
-              this.addTextToList(this.directionToTurn);
-              this.showDirectionToTurn = false;
-              this.previousDirectionToTurn = this.directionToTurn;
+              //this.addTextToList(this.directionToTurn);
+              this.tts.speak(JSON.stringify(this.directionToTurn)).then(() => {
+                this.showDirectionToTurn = false;
+                this.previousDirectionToTurn = this.directionToTurn;
+                this.readMessageCounter = true;
+                this.readStraightMessageDone = true;
+                this.checkPreviousCodeDone = true;
+              });
             }
             else {
               if (this.previousDirectionToTurn != this.directionToTurn) {
-                this.addTextToList(this.directionToTurn);
-                this.previousDirectionToTurn = this.directionToTurn;
+                //this.addTextToList(this.directionToTurn);
+                this.tts.speak(JSON.stringify(this.directionToTurn)).then(() => {
+                  this.previousDirectionToTurn = this.directionToTurn;
+                  this.readMessageCounter = true;
+                  this.readStraightMessageDone = true;
+                  this.checkPreviousCodeDone = true;
+                });
               }
             }
           }
           console.log("checkPrevious code = true");
-          this.checkPreviousCodeDone = true;
+          if (this.readStraightMessageDone == true) {
+            this.checkPreviousCodeDone = true;
+          }
+
         }
       }
     }//end of else
