@@ -339,7 +339,7 @@ export class BeaconPage {
               this.imageSRC = "assets/imgs/straight.png";
               this.setTextToDisplay("", "", 3);
               this.destinationMessage = "Arrived at destination " + this.destinationUnit + " " + this.destinationUnitName;
-              this.tts.speak({ text: JSON.stringify(this.destinationMessage), rate: 0.9 });
+              this.addTextToList(this.destinationMessage);
               this.reachedDestination = true;
             }
           }
