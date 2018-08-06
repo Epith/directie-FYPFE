@@ -168,15 +168,17 @@ export class BeaconPage {
     //this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
     this.displayMessage = false;
     this.sub.unsubscribe();
-    if (this.reachedDestination == true) {
-      this.authProvider.updateCounter((this.counter + 1));
-      this.navCtrl.push(HomePage);
-    }
-    else {
-      this.dateTime = new Date().toISOString();
-      this.authProvider.updateEndTime(this.counter, this.dateTime);
-      this.authProvider.updateCounter((this.counter + 1));
-      this.navCtrl.push(HomePage);
+    if (this.authProvider.goToDetails != true) {
+      if (this.reachedDestination == true) {
+        this.authProvider.updateCounter((this.counter + 1));
+        this.navCtrl.push(HomePage);
+      }
+      else {
+        this.dateTime = new Date().toISOString();
+        this.authProvider.updateEndTime(this.counter, this.dateTime);
+        this.authProvider.updateCounter((this.counter + 1));
+        this.navCtrl.push(HomePage);
+      }
     }
   }
 
@@ -808,6 +810,7 @@ export class BeaconPage {
   }
 
   goToCurrentLocationDetails(): void {
+    this.authProvider.goToDetails = true;
     let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == this.currentBeacon);
     this.beaconDetailsInfo = this.beaconDetails[currentBeaconIndex];
     this.navCtrl.push(DetailsPage, {
@@ -816,6 +819,7 @@ export class BeaconPage {
   }
 
   goToNextLocationDetails(): void {
+    this.authProvider.goToDetails = true;
     let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == this.nextBeaconToGo);
     this.beaconDetailsInfo = this.beaconDetails[currentBeaconIndex];
     this.navCtrl.push(DetailsPage, {
@@ -824,6 +828,7 @@ export class BeaconPage {
   }
 
   goToDestinationDetails(): void {
+    this.authProvider.goToDetails = true;
     let currentBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == this.destinationBeacon);
     this.beaconDetailsInfo = this.beaconDetails[currentBeaconIndex];
     this.navCtrl.push(DetailsPage, {

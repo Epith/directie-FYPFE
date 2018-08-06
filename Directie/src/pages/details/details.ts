@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { BeaconPage } from '../beacon/beacon';
-
+import { AuthProvider } from '../../providers/auth/auth';
 /**
  * Generated class for the DetailsPage page.
  *
@@ -28,7 +28,7 @@ export class DetailsPage {
   facilityImg = [];
   previousFacilityImg: any;
   facilityDetails = [];
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
     this.beaconDetails = this.navParams.get('beaconList');
     this.determineValues();
   }
@@ -36,6 +36,10 @@ export class DetailsPage {
   ionViewDidLoad() {
     this.beaconDetails = this.navParams.get('beaconList');
     console.log(this.beaconDetails);
+  }
+
+  ionViewDidLeave() {
+    this.authProvider.goToDetails = false;
   }
 
   determineValues() {

@@ -8,6 +8,7 @@ export class AuthProvider {
   private counter: any;
   public cameraImage: String;
   profileURL: any;
+  goToDetails: boolean;
   constructor() { }
 
   loginUser(email: string, password: string): Promise<firebase.auth.UserCredential> {
@@ -86,7 +87,7 @@ export class AuthProvider {
       });
   }
 
-  updateTimeStampDestination(counter,dateTime) {
+  updateTimeStampDestination(counter, dateTime) {
     firebase.database()
       .ref('/TimeStamp/')
       .child(counter)
