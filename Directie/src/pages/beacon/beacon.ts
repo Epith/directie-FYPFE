@@ -166,19 +166,19 @@ export class BeaconPage {
   }
 
   ionViewDidLeave() {
-    this.isFirstBeacon = true;
-    //this.ibeacon.stopRangingBeaconsInRegion(this.beaconRegion);
-    this.displayMessage = false;
-    this.sub.unsubscribe();
     if (this.authProvider.goToDetails != true) {
       if (this.reachedDestination == true) {
         this.authProvider.updateCounter((this.counter + 1));
+        this.sub.unsubscribe();
+        this.sub4.unsubscribe();
         this.navCtrl.push(HomePage);
       }
       else {
         this.dateTime = new Date().toISOString();
         this.authProvider.updateEndTime(this.counter, this.dateTime);
         this.authProvider.updateCounter((this.counter + 1));
+        this.sub.unsubscribe();
+        this.sub4.unsubscribe();
         this.navCtrl.push(HomePage);
       }
     }
@@ -368,8 +368,8 @@ export class BeaconPage {
                 NextLocation: this.currentUnit + "/" + this.currentBeacon,
                 TimeStamp: this.dateTime,
               }
-              //this.nodeArray.push(data);
-              //this.authProvider.updateTimeStampDestination(this.counter, this.dateTime);
+              this.nodeArray.push(data);
+              this.authProvider.updateTimeStampDestination(this.counter, this.dateTime);
               this.imageSRC = "assets/imgs/straight.png";
               this.setTextToDisplay("", "", 3);
               this.destinationMessage = "Arrived at destination " + this.destinationUnit + " " + this.destinationUnitName;
@@ -411,8 +411,8 @@ export class BeaconPage {
                 NextLocation: this.nextUnit + "/" + this.nextBeaconToGo,
                 TimeStamp: this.dateTime,
               }
-              //this.nodeArray.push(data);
-              //this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
+              this.nodeArray.push(data);
+              this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
               this.directionToGo = "Go Straight";
               this.determineIfTurningPoint(this.nextBeaconToGo);
               this.determineNote(this.currentBeacon, this.nextBeaconToGo);
@@ -533,6 +533,9 @@ export class BeaconPage {
           if (this.shortestPath.includes(this.testForCurrentBeacon)) {
             this.previousBeaconIndex = this.beaconDetails.findIndex(x => x.beaconID == this.previousBeacon);
             let previousPreviousIndex = this.shortestPath.indexOf(this.previousPreviousBeacon);
+            let previousPreviousBeacon = this.shortestPath[previousPreviousIndex + 1];
+            let findPreviousPreviousIndex = this.beaconDetails.findIndex(x => x.beaconID == previousPreviousBeacon);
+            console.log(findPreviousPreviousIndex);
             if (this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
               if (this.testForCurrentBeacon == this.checkPreviousCurrent) {
                 this.currentBeacon = this.testForCurrentBeacon;
@@ -542,7 +545,7 @@ export class BeaconPage {
                 this.checkPreviousCurrent = this.testForCurrentBeacon;
               }
             }
-            else if (this.beaconDetails[previousPreviousIndex + 1]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
+            else if (this.beaconDetails[findPreviousPreviousIndex]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
               this.previousBeacon = this.shortestPath[this.previousBeaconIndex + 1];
               this.currentBeacon = this.testForCurrentBeacon;
               this.determineUnitAndUnitName();
@@ -556,7 +559,6 @@ export class BeaconPage {
               this.currentBeacon = this.testForCurrentBeacon;
               this.determineUnitAndUnitName();
             }
-
           }
           //check if user facing the right direction
           this.getCompassBearing(this.currentBeacon, this.nextBeaconToGo);
@@ -748,13 +750,13 @@ export class BeaconPage {
       this.currentMessage = '';
       this.currentMessage = 'At ' + this.currentUnit + " " + this.currentUnitName + " "
         + directionToGo + ' to ' + this.nextUnit + " " + this.nextUnitName
-        + ' Be prepared to ' + this.turningPointDirection + " at the next location"
+        + ' Be prepared to ' + this.turningPointDirection + " at the next location" + " "
         + this.note;
     }
     else {
       this.currentMessage = '';
       this.currentMessage = 'At ' + this.currentUnit + " " + this.currentUnitName + " "
-        + directionToGo + ' to ' + this.nextUnit + " " + this.nextUnitName
+        + directionToGo + ' to ' + this.nextUnit + " " + this.nextUnitName + " "
         + this.note;
     }
   }
