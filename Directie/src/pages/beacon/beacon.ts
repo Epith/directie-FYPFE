@@ -105,6 +105,8 @@ export class BeaconPage {
   checkPreviousCurrent: any;
   readCurrentMessageDone: boolean = true;
   readStraightMessageDone: boolean = true;
+  timestampNextBeacon: any;
+  uploadedTimeStamp: boolean = false;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private ibeacon: IBeacon,
@@ -351,7 +353,6 @@ export class BeaconPage {
       if (this.getCurrenBeacons.length > 0) {
         //when user arrived at the next beacon
         if (this.currentBeacon == this.nextBeaconToGo || this.currentBeacon == this.destinationBeacon) {
-          console.log("== executed");
           this.determineUnitAndUnitName();
           for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
             if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[(this.shortestPath.length - 1)])) {
@@ -379,6 +380,22 @@ export class BeaconPage {
           }
           //else if user is at next beacon
           else {
+            if (this.uploadedTimeStamp == false) {
+              for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
+                if (JSON.stringify(this.currentBeacon) == JSON.stringify(this.shortestPath[pathCounter])) {
+                  this.timestampNextBeacon = this.shortestPath[pathCounter + 1];
+                }
+              }//end of for loop
+              this.dateTime = new Date().toISOString();
+              var data = {
+                CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
+                NextLocation: this.nextUnit + "/" + this.timestampNextBeacon,
+                TimeStamp: this.dateTime,
+              }
+              this.nodeArray.push(data);
+              this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
+              this.uploadedTimeStamp = true;
+            }
             //check if user if user is facing the right direction before executing the codes
             //get the compass bearing for the next next beacon
             for (let pathCounter = 0; pathCounter < this.shortestPath.length; pathCounter++) {
@@ -404,15 +421,7 @@ export class BeaconPage {
                 }
               }//end of for loop
               this.determineBeaconDirection(this.currentBeacon, this.nextBeaconToGo);
-              this.dateTime = new Date().toISOString();
               this.determineUnitAndUnitName();
-              var data = {
-                CurrentLocation: this.currentUnit + "/" + this.currentBeacon,
-                NextLocation: this.nextUnit + "/" + this.nextBeaconToGo,
-                TimeStamp: this.dateTime,
-              }
-              this.nodeArray.push(data);
-              this.authProvider.updateTimeStamp(this.counter, this.nodeArray);
               this.directionToGo = "Go Straight";
               this.determineIfTurningPoint(this.nextBeaconToGo);
               this.determineNote(this.currentBeacon, this.nextBeaconToGo);
@@ -425,7 +434,6 @@ export class BeaconPage {
                   this.imageSRC = "assets/imgs/left.png";
                   //this.readMessageList.length = 0;
                   this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
-                  console.log(this.currentMessage);
                   //this.addTextToList(this.currentMessage);
                   this.tts.speak(this.currentMessage).then(() => {
                     this.previousBeacon = this.currentBeacon;
@@ -433,6 +441,7 @@ export class BeaconPage {
                     this.facingRightDirection = false;
                     this.readOnce = false;
                     this.secondFacingDirectionCheck = false;
+                    this.uploadedTimeStamp = false;
                     this.showDirectionToTurn = true;
                     this.readCurrentMessageDone = true;
                     this.readMessageCounter = true;
@@ -447,7 +456,6 @@ export class BeaconPage {
                   this.imageSRC = "assets/imgs/right.png";
                   //this.readMessageList.length = 0;
                   this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 1);
-                  console.log(this.currentMessage);
                   //this.addTextToList(this.currentMessage);
                   this.tts.speak(this.currentMessage).then(() => {
                     this.previousBeacon = this.currentBeacon;
@@ -455,6 +463,7 @@ export class BeaconPage {
                     this.facingRightDirection = false;
                     this.readOnce = false;
                     this.secondFacingDirectionCheck = false;
+                    this.uploadedTimeStamp = false;
                     this.showDirectionToTurn = true;
                     this.readCurrentMessageDone = true;
                     this.readMessageCounter = true;
@@ -470,7 +479,6 @@ export class BeaconPage {
                 this.determineNextUnit(this.nextBeaconToGo);
                 this.imageSRC = "assets/imgs/straight.png";
                 this.setCurrentMessage(this.currentBeacon, this.directionToGo, this.nextUnit, 2);
-                console.log(this.currentMessage);
                 //this.addTextToList(this.currentMessage);
                 this.tts.speak(this.currentMessage).then(() => {
                   this.previousBeacon = this.currentBeacon;
@@ -478,6 +486,7 @@ export class BeaconPage {
                   this.facingRightDirection = false;
                   this.readOnce = false;
                   this.secondFacingDirectionCheck = false;
+                  this.uploadedTimeStamp = false;
                   this.showDirectionToTurn = true;
                   this.readCurrentMessageDone = true;
                   this.readMessageCounter = true;
@@ -517,9 +526,6 @@ export class BeaconPage {
 
         }
         else if ((JSON.stringify(this.currentBeacon) != JSON.stringify(this.nextBeaconToGo)) || (JSON.stringify(this.currentBeacon) != JSON.stringify(this.destinationBeacon))) {
-          console.log("!= executed");
-          console.log(this.currentBeacon);
-          console.log(this.nextBeaconToGo);
           //check for which beacons that are detected have the lowest accuracy
           this.pBeaconAccuracy = this.getCurrenBeacons[0]["accuracy"]
           this.testForCurrentBeacon = this.getCurrenBeacons[0]["major"];
@@ -535,7 +541,6 @@ export class BeaconPage {
             let previousPreviousIndex = this.shortestPath.indexOf(this.previousPreviousBeacon);
             let previousPreviousBeacon = this.shortestPath[previousPreviousIndex + 1];
             let findPreviousPreviousIndex = this.beaconDetails.findIndex(x => x.beaconID == previousPreviousBeacon);
-            console.log(findPreviousPreviousIndex);
             if (this.beaconDetails[this.previousBeaconIndex]["relatedBeacons"].includes(Number(this.testForCurrentBeacon))) {
               if (this.testForCurrentBeacon == this.checkPreviousCurrent) {
                 this.currentBeacon = this.testForCurrentBeacon;
@@ -620,7 +625,6 @@ export class BeaconPage {
               }
             }
           }
-          console.log("checkPrevious code = true");
           if (this.readStraightMessageDone == true) {
             this.checkPreviousCodeDone = true;
           }
