@@ -14,3 +14,55 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+@font-face{
+    font-family: firstFont;
+    src: url('../assets/fonts/roboto-bold.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.pic{
+    width: 35vw;
+    height: 20vh;
+    //margin-left: 103px;
+    //margin-top: 25px;
+    border-radius: 50%;
+    display:table;
+    margin:3% auto 0% auto;
+}
+
+.name{
+    font-family: firstFont;
+    text-align: center;
+    color: black;
+    display:table;
+    margin:0% auto;
+}
+
+.color{
+    margin-top: 20px;
+    background-color: #a9a9a9;//#cccccc;
+    
+}
+
+.color2{
+    background-color: #dcdcdc;
+}
+
+.others{
+    font-family: firstFont;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 23px;
+    padding-left: 40px;
+    background-color: #dcdcdc;
+}
+
+.logout{
+    font-family: firstFont;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 23px;
+    padding-left: 40px;
+    background-color: #dcdcdc;
+}

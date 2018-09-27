@@ -1,0 +1,63 @@
+//page-signup {
+//formControlName="name" type="name" 
+//}
+@font-face{
+    font-family: firstFont;
+    src: url('../assets/fonts/roboto-bold.ttf') format('ttf');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: secondFont;
+    src: url('../assets/fonts/Calibri.ttf') format('ttf');
+    font-style: normal;
+}
+
+/*.img{
+    text-align: center;
+    width: 350px;
+    height: 80px;
+    padding-left: 17px;
+    padding-top: 60px;
+    margin-bottom: 80px;
+}*/
+
+.cancel{
+    font-family: secondFont;
+    font-weight: normal;
+    font-size: 1.3em;
+    padding-top: 6%;
+    padding-left: 3%;
+    float: left;
+    background-color: white;
+    color: red;
+    /*font-size: 18px;
+    padding-top: 20px;
+    padding-left: 15px;*/
+}
+
+/*.register{
+    font-family: secondFont;
+    font-weight: normal;
+    font-size: 18px;
+    float: right;
+    padding-top: 20px;
+    padding-right: 15px;
+    background-color: white;
+    color: blue;
+}*/
+
+.top{
+    font-family: firstFont;
+    font-weight: normal;
+    font-size: 14px;
+    color: #696969;
+}
+
+.btm{
+    font-family: firstFont;
+    font-weight: normal;
+    font-size: 17px;
+    color: #696969;
+}

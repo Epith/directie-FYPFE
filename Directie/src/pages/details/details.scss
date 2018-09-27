@@ -1,0 +1,48 @@
+//page-details {
+
+//}
+@font-face{
+    font-family: firstFont;
+    src: url('../assets/fonts/roboto-bold.ttf') format('ttf');
+    font-style: normal;
+}
+
+.fullHeight1{
+    height:100vh;
+    width:100vw;
+}
+
+.top3{
+    font-family: firstFont;
+    font-size: 2.0em;
+    font-weight: bold;
+    margin-bottom: 3%;
+    margin-top: 2%;
+    text-align: center;
+
+    img{
+        width: 88vw;
+        height: 38vh;
+        display:table;
+        margin:3% auto 0% auto;
+        //border: 1px solid black;
+    }
+}
+
+.btm2{
+    width: 95%;
+    font-family: firstFont;
+    font-size: 1.2em;
+    margin:0 auto;
+    //border: 1px solid black;
+    
+    h1{
+        font-weight: bold;
+    }
+
+    .text5{
+        text-align: left;
+        //display: inline-block;
+    }
+}
+    

@@ -1,18 +1,39 @@
 <ion-header>
-  <ion-navbar>
+  <ion-toolbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+    <div text-center>
+      <div class="icon">
+        <img src="assets/imgs/icon1.png">
+      </div>
+    </div>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+<ion-content text-center class="fullHeight">
+  <div class="hometop">
+    <div>
+      <div class="current">
+        <span>
+          Current location:
+        </span>
+      </div>
+      <span>
+        {{currentUnit}}
+        <br>{{currentUnitName}}
+      </span>
+    </div>
+  </div>
+  <div class="homebtm">
+    <div>
+      <span>
+        Destination:
+      </span>
+    </div>
+    <ion-input [(ngModel)]="destination" autocapitalize="characters"></ion-input>
+  </div>
+  <button class="message" (click)="goToBeacon()">
+    Start
+  </button>
 </ion-content>

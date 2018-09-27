@@ -1,0 +1,42 @@
+<!--
+  Generated template for the ProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-content>
+  <ion-item no-lines>
+    <div class="top1">
+      <img (click)="goToHome()" src="assets/imgs/X.png">
+      <span class="save1" (click)="updateDatabase()">Save</span>
+    </div>
+    <br>
+  </ion-item>
+
+  <ion-item no-lines>
+      <img src="{{cameraImage}}" (click)="selectImage()" class="img4">
+      <img src="assets/imgs/edit.png" (click)="selectImage()" class="img5">
+  </ion-item>
+
+  <form [formGroup]="profileForm" novalidate>
+    <ion-item>
+      <ion-label stacked class="top">Name</ion-label>
+      <ion-input [(ngModel)]="name" class="btm" formControlName="name">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked class="top">Date of Birth</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dob" [(ngModel)]="dob" class="btm"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked class="top">Gender</ion-label>
+      <ion-select formControlName="gender" [(ngModel)]="gender" class="btm">
+        <ion-option value="Male">Male</ion-option>
+        <ion-option value="Female">Female</ion-option>
+      </ion-select>
+    </ion-item>
+  </form>
+</ion-content>

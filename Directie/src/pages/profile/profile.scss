@@ -1,0 +1,73 @@
+//page-profile {
+
+//}
+@font-face{
+    font-family: firstFont;
+    src: url('../assets/fonts/roboto-bold.ttf') format('ttf');
+    font-style: normal;
+}
+
+@font-face{
+    font-family: secondFont;
+    src: url('../assets/fonts/Calibri.ttf') format('ttf');
+    font-style: normal;
+}
+
+/*.bgp {
+    background-image: url(../assets/imgs/ppbg.png)
+}*/
+
+.top1{
+    margin-bottom: 3%;
+    //margin-bottom: 10px;
+
+    img{
+        width: 5vw;
+        height: 3vh;
+        margin-top: 3%;
+        margin-left: 5%;
+        float: left;
+        //margin-top: 10px;
+        //padding-left: 20px;
+    }
+}
+
+.save1{
+    font-family: secondFont;
+    font-size: 1.4em;
+    padding-top: 3%;
+    padding-right: 5%;
+    float: right;
+    color: blue;
+    /*font-size: 23px;
+    padding-top: 10px;
+    padding-right: 20px;*/
+}
+
+.img4{
+    width: 40vw;
+    height: 25vh;
+    margin-left: 27%;
+    //float: left;
+    border-radius: 50%;
+    //padding-left: 36px;
+}
+
+.img5{
+    top: 68%;
+    margin-left: -9%;
+    //position: absolute;
+    /*top: 75%;
+    margin-left: -8%;
+    position: absolute;*/
+}
+
+.text4{
+    //font-family:'roboto-bold';
+    font-size: 1.3em;
+    text-align: center;
+    color: black;
+    display:table;
+    margin:2% auto;
+    
+}
